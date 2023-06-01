@@ -1,14 +1,40 @@
-## 0.1.7 (unreleased)
+## 0.1.9
+
+- Add `iosxr_router_bgp_vrf_neighbor_address_family` resource and data source
+- Add `iosxr_router_bgp_neighbor_group` resource and data source
+- Add `iosxr_router_static` resource and data source
+- Add `iosxr_key_chain` resource and data source
+- Add attributes to `iosxr_interface` resource and data source
+- Add attributes to `iosxr_router_bgp` resource and data source
+- Add attributes to `iosxr_router_bgp_address_family` resource and data source
+- Add attributes to `iosxr_router_bgp_vrf` resource and data source
+- Add attributes to `iosxr_router_isis` resource and data source
+- Add attributes to `iosxr_router_isis_address_family` resource and data source
+- Add attributes to `iosxr_router_isis_interface_address_family` resource and data source
+
+## 0.1.8
+
+- Fix incompatibility with gNMI and IOS-XR 7.6
+- Remove `iosxr_segment_routing` resource and data source due to unified model being deprecated
+
+## 0.1.7
 
 - Add `iosxr_mpls_traffic_eng` resource and data source
 - Add `iosxr_mpls_oam` resource and data source
 - Add `iosxr_segment_routing` resource and data source
 - Add `iosxr_logging` resource and data source
+- Add `iosxr_logging_source_interface` resource and data source
 - Add `iosxr_logging_vrf` resource and data source
 - Add `iosxr_snmp_server` resource and data source
 - Add `iosxr_snmp_server_mib` resource and data source
 - Add `iosxr_snmp_server_view` resource and data source
 - Add `iosxr_snmp_server_vrf_host` resource and data source
+- Add `verify_certificate` provider attribute
+- Add `tls` provider attribute
+- Add `certificate` provider attribute
+- Add `key` provider attribute
+- Add `ca_certificate` provider attribute
+- BREAKING CHANGE: Use TLS by default
 
 ## 0.1.6
 

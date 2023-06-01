@@ -27,13 +27,12 @@ func TestAccIosxrLogging(t *testing.T) {
 					resource.TestCheckResourceAttr("iosxr_logging.test", "facility_level", "local7"),
 					resource.TestCheckResourceAttr("iosxr_logging.test", "hostnameprefix", "HOSTNAME01"),
 					resource.TestCheckResourceAttr("iosxr_logging.test", "suppress_duplicates", "true"),
-					resource.TestCheckResourceAttr("iosxr_logging.test", "source_interfaces.0.source_interface_name", "Loopback10"),
 				),
 			},
 			{
 				ResourceName:  "iosxr_logging.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XR-um-logging-cfg:logging",
+				ImportStateId: "Cisco-IOS-XR-um-logging-cfg:/logging",
 			},
 		},
 	})
@@ -60,9 +59,6 @@ func testAccIosxrLoggingConfig_all() string {
 		facility_level = "local7"
 		hostnameprefix = "HOSTNAME01"
 		suppress_duplicates = true
-		source_interfaces = [{
-			source_interface_name = "Loopback10"
-		}]
 	}
 	`
 }

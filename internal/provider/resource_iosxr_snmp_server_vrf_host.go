@@ -62,6 +62,13 @@ func (r *SNMPServerVRFHostResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
+			"address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify hosts to receive SNMP notifications").String,
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
 			"unencrypted_strings": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) community string").String,
 				Optional:            true,
@@ -72,6 +79,14 @@ func (r *SNMPServerVRFHostResource) Schema(ctx context.Context, req resource.Sch
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.LengthBetween(1, 32),
+							},
+						},
+						"udp_port": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("udp port to which notifications should be sent").AddDefaultValueDescription("default").String,
+							Optional:            true,
+							Computed:            true,
+							PlanModifiers: []planmodifier.String{
+								helpers.StringDefaultModifier("default"),
 							},
 						},
 						"version_v3_security_level": schema.StringAttribute{

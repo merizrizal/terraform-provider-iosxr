@@ -16,6 +16,9 @@ func TestAccDataSourceIosxrRouterBGPVRF(t *testing.T) {
 			{
 				Config: testAccDataSourceIosxrRouterBGPVRFConfig,
 				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("data.iosxr_router_bgp_vrf.test", "rd_auto", "false"),
+					resource.TestCheckResourceAttr("data.iosxr_router_bgp_vrf.test", "rd_ip_address_ipv4_address", "14.14.14.14"),
+					resource.TestCheckResourceAttr("data.iosxr_router_bgp_vrf.test", "rd_ip_address_index", "3"),
 					resource.TestCheckResourceAttr("data.iosxr_router_bgp_vrf.test", "default_information_originate", "true"),
 					resource.TestCheckResourceAttr("data.iosxr_router_bgp_vrf.test", "default_metric", "125"),
 					resource.TestCheckResourceAttr("data.iosxr_router_bgp_vrf.test", "timers_bgp_keepalive_interval", "5"),
@@ -49,7 +52,10 @@ const testAccDataSourceIosxrRouterBGPVRFConfig = `
 
 resource "iosxr_router_bgp_vrf" "test" {
 	as_number = "65001"
-	vrf_name = "VRF1"
+	vrf_name = "VRF2"
+	rd_auto = false
+	rd_ip_address_ipv4_address = "14.14.14.14"
+	rd_ip_address_index = 3
 	default_information_originate = true
 	default_metric = 125
 	timers_bgp_keepalive_interval = 5
@@ -79,7 +85,7 @@ resource "iosxr_router_bgp_vrf" "test" {
 
 data "iosxr_router_bgp_vrf" "test" {
 	as_number = "65001"
-	vrf_name = "VRF1"
+	vrf_name = "VRF2"
 	depends_on = [iosxr_router_bgp_vrf.test]
 }
 `

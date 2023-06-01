@@ -15,26 +15,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &SegmentRoutingDataSource{}
-	_ datasource.DataSourceWithConfigure = &SegmentRoutingDataSource{}
+	_ datasource.DataSource              = &LoggingSourceInterfaceDataSource{}
+	_ datasource.DataSourceWithConfigure = &LoggingSourceInterfaceDataSource{}
 )
 
-func NewSegmentRoutingDataSource() datasource.DataSource {
-	return &SegmentRoutingDataSource{}
+func NewLoggingSourceInterfaceDataSource() datasource.DataSource {
+	return &LoggingSourceInterfaceDataSource{}
 }
 
-type SegmentRoutingDataSource struct {
+type LoggingSourceInterfaceDataSource struct {
 	client *client.Client
 }
 
-func (d *SegmentRoutingDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_segment_routing"
+func (d *LoggingSourceInterfaceDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_logging_source_interface"
 }
 
-func (d *SegmentRoutingDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *LoggingSourceInterfaceDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Segment Routing configuration.",
+		MarkdownDescription: "This data source can read the Logging Source Interface configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -45,27 +45,27 @@ func (d *SegmentRoutingDataSource) Schema(ctx context.Context, req datasource.Sc
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"global_block_lower_bound": schema.Int64Attribute{
-				MarkdownDescription: "Prefix-SID Global label Block (SRGB)",
-				Computed:            true,
+			"name": schema.StringAttribute{
+				MarkdownDescription: "Specify interface for source address in logging transactions",
+				Required:            true,
 			},
-			"global_block_upper_bound": schema.Int64Attribute{
-				MarkdownDescription: "The upper bound of SRGB",
+			"vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: "Set VRF option",
 				Computed:            true,
-			},
-			"local_block_lower_bound": schema.Int64Attribute{
-				MarkdownDescription: "Local Block (SRLB) of labels",
-				Computed:            true,
-			},
-			"local_block_upper_bound": schema.Int64Attribute{
-				MarkdownDescription: "The upper bound of SRLB (block size may not exceed 262143)",
-				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Set VRF option",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (d *SegmentRoutingDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *LoggingSourceInterfaceDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -73,8 +73,8 @@ func (d *SegmentRoutingDataSource) Configure(_ context.Context, req datasource.C
 	d.client = req.ProviderData.(*client.Client)
 }
 
-func (d *SegmentRoutingDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config SegmentRouting
+func (d *LoggingSourceInterfaceDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config LoggingSourceInterface
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)

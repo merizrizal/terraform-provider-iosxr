@@ -16,7 +16,10 @@ func TestAccIosxrRouterBGPVRF(t *testing.T) {
 			{
 				Config: testAccIosxrRouterBGPVRFConfig_all(),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "vrf_name", "VRF1"),
+					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "vrf_name", "VRF2"),
+					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "rd_auto", "false"),
+					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "rd_ip_address_ipv4_address", "14.14.14.14"),
+					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "rd_ip_address_index", "3"),
 					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "default_information_originate", "true"),
 					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "default_metric", "125"),
 					resource.TestCheckResourceAttr("iosxr_router_bgp_vrf.test", "timers_bgp_keepalive_interval", "5"),
@@ -45,7 +48,7 @@ func TestAccIosxrRouterBGPVRF(t *testing.T) {
 			{
 				ResourceName:  "iosxr_router_bgp_vrf.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XR-um-router-bgp-cfg:router/bgp/as[as-number=65001]/vrfs/vrf[vrf-name=VRF1]",
+				ImportStateId: "Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]/vrfs/vrf[vrf-name=VRF2]",
 			},
 		},
 	})
@@ -55,7 +58,7 @@ func testAccIosxrRouterBGPVRFConfig_minimum() string {
 	return `
 	resource "iosxr_router_bgp_vrf" "test" {
 		as_number = "65001"
-		vrf_name = "VRF1"
+		vrf_name = "VRF2"
 		timers_bgp_keepalive_interval = 5
 		timers_bgp_holdtime = "20"
 	}
@@ -66,7 +69,10 @@ func testAccIosxrRouterBGPVRFConfig_all() string {
 	return `
 	resource "iosxr_router_bgp_vrf" "test" {
 		as_number = "65001"
-		vrf_name = "VRF1"
+		vrf_name = "VRF2"
+		rd_auto = false
+		rd_ip_address_ipv4_address = "14.14.14.14"
+		rd_ip_address_index = 3
 		default_information_originate = true
 		default_metric = 125
 		timers_bgp_keepalive_interval = 5

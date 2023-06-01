@@ -17,24 +17,32 @@ type SNMPServerVRFHost struct {
 	Device             types.String                          `tfsdk:"device"`
 	Id                 types.String                          `tfsdk:"id"`
 	VrfName            types.String                          `tfsdk:"vrf_name"`
+	Address            types.String                          `tfsdk:"address"`
 	UnencryptedStrings []SNMPServerVRFHostUnencryptedStrings `tfsdk:"unencrypted_strings"`
 }
 type SNMPServerVRFHostUnencryptedStrings struct {
 	CommunityString        types.String `tfsdk:"community_string"`
+	UdpPort                types.String `tfsdk:"udp_port"`
 	VersionV3SecurityLevel types.String `tfsdk:"version_v3_security_level"`
 }
 
 func (data SNMPServerVRFHost) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XR-um-snmp-server-cfg:snmp-server/vrfs/vrf[vrf-name-%s]/hosts/host[address=%s]", data.VrfName.ValueString())
+	return fmt.Sprintf("Cisco-IOS-XR-um-snmp-server-cfg:/snmp-server/vrfs/vrf[vrf-name=%s]/hosts/host[address=%s]", data.VrfName.ValueString(), data.Address.ValueString())
 }
 
 func (data SNMPServerVRFHost) toBody(ctx context.Context) string {
 	body := "{}"
+	if !data.Address.IsNull() && !data.Address.IsUnknown() {
+		body, _ = sjson.Set(body, "address", data.Address.ValueString())
+	}
 	if len(data.UnencryptedStrings) > 0 {
 		body, _ = sjson.Set(body, "traps.unencrypted.unencrypted-string", []interface{}{})
 		for index, item := range data.UnencryptedStrings {
 			if !item.CommunityString.IsNull() && !item.CommunityString.IsUnknown() {
 				body, _ = sjson.Set(body, "traps.unencrypted.unencrypted-string"+"."+strconv.Itoa(index)+"."+"community-string", item.CommunityString.ValueString())
+			}
+			if !item.UdpPort.IsNull() && !item.UdpPort.IsUnknown() {
+				body, _ = sjson.Set(body, "traps.unencrypted.unencrypted-string"+"."+strconv.Itoa(index)+"."+"udp-port", item.UdpPort.ValueString())
 			}
 			if !item.VersionV3SecurityLevel.IsNull() && !item.VersionV3SecurityLevel.IsUnknown() {
 				body, _ = sjson.Set(body, "traps.unencrypted.unencrypted-string"+"."+strconv.Itoa(index)+"."+"version.v3.security-level", item.VersionV3SecurityLevel.ValueString())
@@ -73,6 +81,11 @@ func (data *SNMPServerVRFHost) updateFromBody(ctx context.Context, res []byte) {
 		} else {
 			data.UnencryptedStrings[i].CommunityString = types.StringNull()
 		}
+		if value := r.Get("udp-port"); value.Exists() && !data.UnencryptedStrings[i].UdpPort.IsNull() {
+			data.UnencryptedStrings[i].UdpPort = types.StringValue(value.String())
+		} else {
+			data.UnencryptedStrings[i].UdpPort = types.StringNull()
+		}
 		if value := r.Get("version.v3.security-level"); value.Exists() && !data.UnencryptedStrings[i].VersionV3SecurityLevel.IsNull() {
 			data.UnencryptedStrings[i].VersionV3SecurityLevel = types.StringValue(value.String())
 		} else {
@@ -89,6 +102,9 @@ func (data *SNMPServerVRFHost) fromBody(ctx context.Context, res []byte) {
 			if cValue := v.Get("community-string"); cValue.Exists() {
 				item.CommunityString = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("udp-port"); cValue.Exists() {
+				item.UdpPort = types.StringValue(cValue.String())
+			}
 			if cValue := v.Get("version.v3.security-level"); cValue.Exists() {
 				item.VersionV3SecurityLevel = types.StringValue(cValue.String())
 			}
@@ -101,6 +117,7 @@ func (data *SNMPServerVRFHost) fromBody(ctx context.Context, res []byte) {
 func (data *SNMPServerVRFHost) fromPlan(ctx context.Context, plan SNMPServerVRFHost) {
 	data.Device = plan.Device
 	data.VrfName = types.StringValue(plan.VrfName.ValueString())
+	data.Address = types.StringValue(plan.Address.ValueString())
 }
 
 func (data *SNMPServerVRFHost) getDeletedListItems(ctx context.Context, state SNMPServerVRFHost) []string {

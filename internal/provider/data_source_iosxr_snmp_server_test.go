@@ -16,29 +16,29 @@ func TestAccDataSourceIosxrSNMPServer(t *testing.T) {
 			{
 				Config: testAccDataSourceIosxrSNMPServerConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_rf", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_bfd", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_ntp", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_ethernet_oam_events", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_copy_complete", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "rf", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "bfd", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "ntp", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "ethernet_oam_events", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "copy_complete", "true"),
 					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_snmp_linkup", "true"),
 					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_snmp_linkdown", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_power", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_config", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_entity", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_system", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_bridgemib", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_entity_state_operstatus", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_entity_redundancy_all", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "power", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "config", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "entity", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "system", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "bridgemib", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "entity_state_operstatus", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "entity_redundancy_all", "true"),
 					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "trap_source_both", "Loopback10"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_l2vpn_all", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_l2vpn_vc_up", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_l2vpn_vc_down", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_sensor", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_fru_ctrl", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_isis_authentication_failure", "enable"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_bgp_cbgp2_updown", "true"),
-					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "traps_bgp_bgp4_mib_updown", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "l2vpn_all", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "l2vpn_vc_up", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "l2vpn_vc_down", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "sensor", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "fru_ctrl", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "isis_authentication_failure", "enable"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "bgp_cbgp2_updown", "true"),
+					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "bgp_bgp4_mib_updown", "true"),
 					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "users.0.user_name", "USER1"),
 					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "users.0.group_name", "GROUP1"),
 					resource.TestCheckResourceAttr("data.iosxr_snmp_server.test", "users.0.v3_auth_md5_encryption_aes", "073C05626E2A4841141D"),
@@ -59,29 +59,29 @@ func TestAccDataSourceIosxrSNMPServer(t *testing.T) {
 const testAccDataSourceIosxrSNMPServerConfig = `
 
 resource "iosxr_snmp_server" "test" {
-	traps_rf = true
-	traps_bfd = true
-	traps_ntp = true
-	traps_ethernet_oam_events = true
-	traps_copy_complete = true
+	rf = true
+	bfd = true
+	ntp = true
+	ethernet_oam_events = true
+	copy_complete = true
 	traps_snmp_linkup = true
 	traps_snmp_linkdown = true
-	traps_power = true
-	traps_config = true
-	traps_entity = true
-	traps_system = true
-	traps_bridgemib = true
-	traps_entity_state_operstatus = true
-	traps_entity_redundancy_all = true
+	power = true
+	config = true
+	entity = true
+	system = true
+	bridgemib = true
+	entity_state_operstatus = true
+	entity_redundancy_all = true
 	trap_source_both = "Loopback10"
-	traps_l2vpn_all = true
-	traps_l2vpn_vc_up = true
-	traps_l2vpn_vc_down = true
-	traps_sensor = true
-	traps_fru_ctrl = true
-	traps_isis_authentication_failure = "enable"
-	traps_bgp_cbgp2_updown = true
-	traps_bgp_bgp4_mib_updown = true
+	l2vpn_all = true
+	l2vpn_vc_up = true
+	l2vpn_vc_down = true
+	sensor = true
+	fru_ctrl = true
+	isis_authentication_failure = "enable"
+	bgp_cbgp2_updown = true
+	bgp_bgp4_mib_updown = true
 	users = [{
 		user_name = "USER1"
 		group_name = "GROUP1"

@@ -1,6 +1,6 @@
 ---
 name: Router ISIS Interface Address Family
-path: Cisco-IOS-XR-um-router-isis-cfg:router/isis/processes/process[process-id=%s]/interfaces/interface[interface-name=%s]/address-families/address-family[af-name=%s][saf-name=%s]
+path: Cisco-IOS-XR-um-router-isis-cfg:/router/isis/processes/process[process-id=%s]/interfaces/interface[interface-name=%s]/address-families/address-family[af-name=%s][saf-name=%s]
 doc_category: ISIS
 attributes:
   - yang_name: process-id
@@ -25,11 +25,30 @@ attributes:
     example: 100
   - yang_name: prefix-sid/sid/absolute/sid-value
     tf_name: prefix_sid_absolute
+    example: 16000
     optional: true
     exclude_test: true
-    example: 16001
+  - yang_name: prefix-sid/sid/n-flag-clear
+    tf_name: prefix_sid_n_flag_clear
+    example: true
+    exclude_test: true
+  - yang_name: advertise/prefix/route-policy
+    example: ROUTE_POLICY_1
+  - yang_name: prefix-sid/sid/index/sid-index
+    tf_name: prefix_sid_index
+    example: 150
+    exclude_test: true
+    optional: true
   - yang_name: prefix-sid/strict-spf/absolute/sid-value
     tf_name: prefix_sid_strict_spf_absolute
     optional: true
     exclude_test: true
     example: 24001
+
+test_prerequisites:
+  - path: Cisco-IOS-XR-um-route-policy-cfg:/routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
+    attributes:
+      - name: route-policy-name
+        value: ROUTE_POLICY_1
+      - name: rpl-route-policy
+        value: "route-policy ROUTE_POLICY_1\\n  pass\\nend-policy\\n"

@@ -19,14 +19,14 @@ func TestAccIosxrLoggingVRF(t *testing.T) {
 					resource.TestCheckResourceAttr("iosxr_logging_vrf.test", "vrf_name", "VRF1"),
 					resource.TestCheckResourceAttr("iosxr_logging_vrf.test", "host_ipv4_addresses.0.ipv4_address", "1.1.1.1"),
 					resource.TestCheckResourceAttr("iosxr_logging_vrf.test", "host_ipv4_addresses.0.severity", "info"),
-					resource.TestCheckResourceAttr("iosxr_logging_vrf.test", "host_ipv6_addresses.0.ipv6_address", "2001:0db8:85a3:0000:0000:8a2e:0370:7334"),
+					resource.TestCheckResourceAttr("iosxr_logging_vrf.test", "host_ipv6_addresses.0.ipv6_address", "2001::1"),
 					resource.TestCheckResourceAttr("iosxr_logging_vrf.test", "host_ipv6_addresses.0.severity", "info"),
 				),
 			},
 			{
 				ResourceName:  "iosxr_logging_vrf.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XR-um-logging-cfg:logging/vrfs/vrf[vrf-name=VRF1]",
+				ImportStateId: "Cisco-IOS-XR-um-logging-cfg:/logging/vrfs/vrf[vrf-name=VRF1]",
 			},
 		},
 	})
@@ -49,7 +49,7 @@ func testAccIosxrLoggingVRFConfig_all() string {
 			severity = "info"
 		}]
 		host_ipv6_addresses = [{
-			ipv6_address = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+			ipv6_address = "2001::1"
 			severity = "info"
 		}]
 	}

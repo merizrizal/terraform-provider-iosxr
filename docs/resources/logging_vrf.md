@@ -23,7 +23,7 @@ resource "iosxr_logging_vrf" "example" {
   ]
   host_ipv6_addresses = [
     {
-      ipv6_address = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+      ipv6_address = "2001::1"
       severity     = "info"
     }
   ]
@@ -71,5 +71,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_logging_vrf.example "Cisco-IOS-XR-um-logging-cfg:logging/vrfs/vrf[vrf-name=VRF1]"
+terraform import iosxr_logging_vrf.example "Cisco-IOS-XR-um-logging-cfg:/logging/vrfs/vrf[vrf-name=VRF1]"
 ```

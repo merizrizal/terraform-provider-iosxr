@@ -14,7 +14,8 @@ This data source can read the SNMP Server VRF Host configuration.
 
 ```terraform
 data "iosxr_snmp_server_vrf_host" "example" {
-  vrf_name = "11.11.11.11"
+  vrf_name = "VRF1"
+  address  = "11.11.11.11"
 }
 ```
 
@@ -23,6 +24,7 @@ data "iosxr_snmp_server_vrf_host" "example" {
 
 ### Required
 
+- `address` (String) Specify hosts to receive SNMP notifications
 - `vrf_name` (String) VRF name
 
 ### Optional
@@ -40,6 +42,7 @@ data "iosxr_snmp_server_vrf_host" "example" {
 Read-Only:
 
 - `community_string` (String) The UNENCRYPTED (cleartext) community string
+- `udp_port` (String) udp port to which notifications should be sent
 - `version_v3_security_level` (String)
 
 

@@ -1,10 +1,10 @@
 ---
 name: VRF
-path: Cisco-IOS-XR-um-vrf-cfg:vrfs/vrf[vrf-name=%s]
+path: Cisco-IOS-XR-um-vrf-cfg:/vrfs/vrf[vrf-name=%s]
 doc_category: VRF
 attributes:
   - yang_name: vrf-name
-    example: VRF1
+    example: VRF3
   - yang_name: description
     example: My VRF Description
   - yang_name: vpn/id
@@ -35,10 +35,10 @@ attributes:
     example: true
   - yang_name: Cisco-IOS-XR-um-router-bgp-cfg:rd/two-byte-as/as-number
     optional: true
-    example: 1
+    example: 123
   - yang_name: Cisco-IOS-XR-um-router-bgp-cfg:rd/two-byte-as/index
     optional: true
-    example: 1
+    example: 123
   - yang_name: Cisco-IOS-XR-um-router-bgp-cfg:rd/four-byte-as/as-number
     optional: true
     example: 65001
@@ -223,7 +223,7 @@ attributes:
         example: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XR-um-route-policy-cfg:routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
+  - path: Cisco-IOS-XR-um-route-policy-cfg:/routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
     attributes:
       - name: route-policy-name
         value: ROUTE_POLICY_1
