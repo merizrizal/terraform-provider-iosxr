@@ -1,0 +1,2167 @@
+module: Cisco-IOS-XR-um-l2vpn-cfg
+  +--rw evpn!
+  |  +--rw interface
+  |  |  +--rw interface* [interface-name]
+  |  |     +--rw interface-name              xr:Interface-name
+  |  |     +--rw mac-flush
+  |  |     |  +--rw mvrp!
+  |  |     +--rw timers!
+  |  |     |  +--rw peering?       uint32
+  |  |     |  +--rw recovery?      uint32
+  |  |     |  +--rw carving?       uint32
+  |  |     |  +--rw ac-debounce?   uint32
+  |  |     +--rw ethernet-segment!
+  |  |     |  +--rw identifier
+  |  |     |  |  +--rw type
+  |  |     |  |     +--rw zero!
+  |  |     |  |        +--rw bytes-1     xr:Hex-integer-8
+  |  |     |  |        +--rw bytes-23    xr:Hex-integer-16
+  |  |     |  |        +--rw bytes-45    xr:Hex-integer-16
+  |  |     |  |        +--rw bytes-67    xr:Hex-integer-16
+  |  |     |  |        +--rw bytes-89    xr:Hex-integer-16
+  |  |     |  +--rw load-balancing-mode
+  |  |     |  |  +--rw all-active!
+  |  |     |  |  +--rw port-active!
+  |  |     |  |  +--rw single-active!
+  |  |     |  |  +--rw single-flow-active!
+  |  |     |  +--rw backbone-source-mac?   yang:mac-address
+  |  |     |  +--rw force
+  |  |     |  |  +--rw single-homed!
+  |  |     |  +--rw service-carving
+  |  |     |  |  +--rw manual!
+  |  |     |  |  |  +--rw primary?     string
+  |  |     |  |  |  +--rw secondary?   string
+  |  |     |  |  +--rw hrw!
+  |  |     |  |  +--rw multicast
+  |  |     |  |  |  +--rw hrw-s-g!
+  |  |     |  |  |  +--rw hrw-g!
+  |  |     |  |  +--rw preference-based!
+  |  |     |  |     +--rw weight?          uint32
+  |  |     |  |     +--rw access-driven!
+  |  |     |  +--rw bgp
+  |  |     |  |  +--rw route-target?   yang:mac-address
+  |  |     |  +--rw convergence!
+  |  |     |     +--rw reroute!
+  |  |     |     +--rw mac-mobility!
+  |  |     |     +--rw nexthop-tracking!
+  |  |     +--rw core-isolation-group?       uint32 {l2vpn_evpn_is_bundle_intf}?
+  |  |     +--rw access-signal {l2vpn_evpn_is_bundle_intf}?
+  |  |     |  +--rw bundle-down!
+  |  |     +--rw virtual-ethernet-segment! {l2vpn_evpn_ves_subif_supported}?
+  |  |        +--rw identifier
+  |  |           +--rw type
+  |  |              +--rw three?   yang:mac-address
+  |  +--rw virtual {l2vpn_evpn_ves_subif_supported}?
+  |  |  +--rw neighbor
+  |  |  |  +--rw neighbor* [address pw-id]
+  |  |  |     +--rw address             inet:ipv4-address-no-zone
+  |  |  |     +--rw pw-id               uint32
+  |  |  |     +--rw timers!
+  |  |  |     |  +--rw peering?       uint32
+  |  |  |     |  +--rw recovery?      uint32
+  |  |  |     |  +--rw carving?       uint32
+  |  |  |     |  +--rw ac-debounce?   uint32
+  |  |  |     +--rw ethernet-segment!
+  |  |  |        +--rw identifier
+  |  |  |        |  +--rw type
+  |  |  |        |     +--rw zero!
+  |  |  |        |        +--rw bytes-1     xr:Hex-integer-8
+  |  |  |        |        +--rw bytes-23    xr:Hex-integer-16
+  |  |  |        |        +--rw bytes-45    xr:Hex-integer-16
+  |  |  |        |        +--rw bytes-67    xr:Hex-integer-16
+  |  |  |        |        +--rw bytes-89    xr:Hex-integer-16
+  |  |  |        +--rw service-carving
+  |  |  |        |  +--rw manual!
+  |  |  |        |  |  +--rw primary?     string
+  |  |  |        |  |  +--rw secondary?   string
+  |  |  |        |  +--rw hrw!
+  |  |  |        |  +--rw multicast
+  |  |  |        |  |  +--rw hrw-s-g!
+  |  |  |        |  |  +--rw hrw-g!
+  |  |  |        |  +--rw preference-based!
+  |  |  |        |     +--rw weight?          uint32
+  |  |  |        |     +--rw access-driven!
+  |  |  |        +--rw bgp
+  |  |  |           +--rw route-target?   yang:mac-address
+  |  |  +--rw vfis
+  |  |  |  +--rw vfi* [vfi-name]
+  |  |  |     +--rw vfi-name            xr:Cisco-ios-xr-string
+  |  |  |     +--rw timers!
+  |  |  |     |  +--rw peering?       uint32
+  |  |  |     |  +--rw recovery?      uint32
+  |  |  |     |  +--rw carving?       uint32
+  |  |  |     |  +--rw ac-debounce?   uint32
+  |  |  |     +--rw ethernet-segment!
+  |  |  |        +--rw identifier
+  |  |  |        |  +--rw type
+  |  |  |        |     +--rw zero!
+  |  |  |        |        +--rw bytes-1     xr:Hex-integer-8
+  |  |  |        |        +--rw bytes-23    xr:Hex-integer-16
+  |  |  |        |        +--rw bytes-45    xr:Hex-integer-16
+  |  |  |        |        +--rw bytes-67    xr:Hex-integer-16
+  |  |  |        |        +--rw bytes-89    xr:Hex-integer-16
+  |  |  |        +--rw service-carving
+  |  |  |        |  +--rw manual!
+  |  |  |        |  |  +--rw primary?     string
+  |  |  |        |  |  +--rw secondary?   string
+  |  |  |        |  +--rw hrw!
+  |  |  |        |  +--rw preference-based!
+  |  |  |        |     +--rw weight?          uint32
+  |  |  |        |     +--rw access-driven!
+  |  |  |        +--rw bgp
+  |  |  |           +--rw route-target?   yang:mac-address
+  |  |  +--rw access-evi!
+  |  |     +--rw ethernet-segment!
+  |  |        +--rw identifier
+  |  |        |  +--rw type
+  |  |        |     +--rw zero!
+  |  |        |        +--rw bytes-1     xr:Hex-integer-8
+  |  |        |        +--rw bytes-23    xr:Hex-integer-16
+  |  |        |        +--rw bytes-45    xr:Hex-integer-16
+  |  |        |        +--rw bytes-67    xr:Hex-integer-16
+  |  |        |        +--rw bytes-89    xr:Hex-integer-16
+  |  |        +--rw bgp
+  |  |           +--rw route-target?   yang:mac-address
+  |  +--rw bgp!
+  |  |  +--rw rd
+  |  |     +--rw two-byte-as-number?             uint32
+  |  |     +--rw two-byte-as-assigned-number?    uint32
+  |  |     +--rw four-byte-as-number?            uint32
+  |  |     +--rw four-byte-as-assigned-number?   uint32
+  |  |     +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |     +--rw ipv4-address-assigned-number?   uint32
+  |  +--rw timers!
+  |  |  +--rw recovery?                   uint32
+  |  |  +--rw peering?                    uint32
+  |  |  +--rw carving?                    uint32
+  |  |  +--rw ac-debounce?                uint32
+  |  |  +--rw backup-replacement-delay?   uint32
+  |  |  +--rw mac-postpone?               uint32
+  |  +--rw load-balancing!
+  |  |  +--rw flow-label
+  |  |     +--rw static!
+  |  +--rw source
+  |  |  +--rw interface?   xr:Interface-name
+  |  +--rw cost-out!
+  |  +--rw startup-cost-in?           uint32
+  |  +--rw staggered-bringup-timer?   uint32
+  |  +--rw logging!
+  |  |  +--rw df-election!
+  |  +--rw ethernet-segment!
+  |  |  +--rw type
+  |  |     +--rw one
+  |  |        +--rw auto-generation-disable!
+  |  +--rw groups
+  |  |  +--rw group* [group-name]
+  |  |     +--rw group-name    uint32
+  |  |     +--rw core
+  |  |        +--rw interface* [interface-name]
+  |  |           +--rw interface-name    xr:Interface-name
+  |  +--rw evis
+  |  |  +--rw segment-routing {l2vpn_platform_srv6_supported}?
+  |  |  |  +--rw srv6
+  |  |  |     +--rw evi* [vpn-id]
+  |  |  |        +--rw vpn-id                                   uint32
+  |  |  |        +--rw bgp!
+  |  |  |        |  +--rw rd
+  |  |  |        |  |  +--rw two-byte-as-number?             uint32
+  |  |  |        |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |  |        |  |  +--rw four-byte-as-number?            uint32
+  |  |  |        |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |  |        |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |  |        |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |  |        |  +--rw route-target
+  |  |  |        |  |  +--rw two-byte-as-rts
+  |  |  |        |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |        |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |        |  |  |     +--rw assigned-number       uint32
+  |  |  |        |  |  +--rw four-byte-as-rts
+  |  |  |        |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |        |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |        |  |  |     +--rw assigned-number        uint32
+  |  |  |        |  |  +--rw ipv4-address-rts
+  |  |  |        |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |        |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |        |  |  |     +--rw assigned-number    uint32
+  |  |  |        |  |  +--rw none!
+  |  |  |        |  |  +--rw import
+  |  |  |        |  |  |  +--rw two-byte-as-rts
+  |  |  |        |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |        |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |        |  |  |  |     +--rw assigned-number       uint32
+  |  |  |        |  |  |  +--rw four-byte-as-rts
+  |  |  |        |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |        |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |        |  |  |  |     +--rw assigned-number        uint32
+  |  |  |        |  |  |  +--rw ipv4-address-rts
+  |  |  |        |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |        |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |        |  |  |  |     +--rw assigned-number    uint32
+  |  |  |        |  |  |  +--rw none!
+  |  |  |        |  |  +--rw export
+  |  |  |        |  |     +--rw two-byte-as-rts
+  |  |  |        |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |        |  |     |     +--rw two-byte-as-number    uint32
+  |  |  |        |  |     |     +--rw assigned-number       uint32
+  |  |  |        |  |     +--rw four-byte-as-rts
+  |  |  |        |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |        |  |     |     +--rw four-byte-as-number    uint32
+  |  |  |        |  |     |     +--rw assigned-number        uint32
+  |  |  |        |  |     +--rw ipv4-address-rts
+  |  |  |        |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |        |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |        |  |     |     +--rw assigned-number    uint32
+  |  |  |        |  |     +--rw none!
+  |  |  |        |  +--rw table-policy?              xr:Route-policy-name
+  |  |  |        |  +--rw implicit-import-disable!
+  |  |  |        |  +--rw route-policy
+  |  |  |        |     +--rw export?   xr:Route-policy-name
+  |  |  |        |     +--rw import?   xr:Route-policy-name
+  |  |  |        +--rw description?                             string
+  |  |  |        +--rw load-balancing!
+  |  |  |        |  +--rw flow-label
+  |  |  |        |     +--rw static!
+  |  |  |        +--rw ecmp-disable-deprecated!
+  |  |  |        +--rw preferred-nexthop
+  |  |  |        |  +--rw lowest-ip!
+  |  |  |        |  +--rw highest-ip!
+  |  |  |        |  +--rw modulo!
+  |  |  |        +--rw advertise-mac!
+  |  |  |        |  +--rw bvi-mac!
+  |  |  |        +--rw unknown-unicast-suppression!
+  |  |  |        +--rw control-word-disable!
+  |  |  |        +--rw ignore-mtu-mismatch!
+  |  |  |        |  +--rw disable-deprecated!
+  |  |  |        +--rw enforce-mtu-match!
+  |  |  |        +--rw transmit-mtu-zero!
+  |  |  |        |  +--rw disable-deprecated!
+  |  |  |        +--rw transmit-l2-mtu!
+  |  |  |        +--rw re-origination-disable!
+  |  |  |        +--rw vrf
+  |  |  |        |  +--rw default!
+  |  |  |        +--rw multicast!
+  |  |  |        |  +--rw source-connected!
+  |  |  |        +--rw proxy!
+  |  |  |        |  +--rw igmp-snooping!
+  |  |  |        +--rw etree!
+  |  |  |        |  +--rw leaf!
+  |  |  |        |  +--rw rt-leaf!
+  |  |  |        +--rw locator?                                 xr:Cisco-ios-xr-string
+  |  |  |        +--rw vpws-single-active-backup-suppression!
+  |  |  |        +--rw bvi-coupled-mode!
+  |  |  +--rw segment-routing-srv6-stitching {l2vpn_platform_srv6_supported}?
+  |  |  |  +--rw evi* [vpn-id]
+  |  |  |     +--rw vpn-id                         uint32
+  |  |  |     +--rw bgp!
+  |  |  |     |  +--rw rd
+  |  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |  |     |  +--rw route-target
+  |  |  |     |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  +--rw none!
+  |  |  |     |  |  +--rw import
+  |  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  |  +--rw none!
+  |  |  |     |  |  +--rw export
+  |  |  |     |  |     +--rw two-byte-as-rts
+  |  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |  |     |  |     +--rw four-byte-as-rts
+  |  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |  |     |  |     +--rw ipv4-address-rts
+  |  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |  |     |  |     +--rw none!
+  |  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |  |     |  +--rw implicit-import-disable!
+  |  |  |     |  +--rw route-policy
+  |  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |  |     +--rw description?                   string
+  |  |  |     +--rw preferred-nexthop
+  |  |  |     |  +--rw lowest-ip!
+  |  |  |     |  +--rw highest-ip!
+  |  |  |     |  +--rw modulo!
+  |  |  |     +--rw advertise-mac!
+  |  |  |     |  +--rw bvi-mac!
+  |  |  |     +--rw unknown-unicast-suppression!
+  |  |  |     +--rw ignore-mtu-mismatch!
+  |  |  |     |  +--rw disable!
+  |  |  |     +--rw transmit-mtu-zero!
+  |  |  |     |  +--rw disable!
+  |  |  |     +--rw re-origination-disable!
+  |  |  |     +--rw locator?                       xr:Cisco-ios-xr-string
+  |  |  +--rw stitching
+  |  |  |  +--rw evi* [vpn-id]
+  |  |  |     +--rw vpn-id                                   uint32
+  |  |  |     +--rw bgp!
+  |  |  |     |  +--rw rd
+  |  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |  |     |  +--rw route-target
+  |  |  |     |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  +--rw none!
+  |  |  |     |  |  +--rw import
+  |  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  |  +--rw none!
+  |  |  |     |  |  +--rw export
+  |  |  |     |  |     +--rw two-byte-as-rts
+  |  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |  |     |  |     +--rw four-byte-as-rts
+  |  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |  |     |  |     +--rw ipv4-address-rts
+  |  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |  |     |  |     +--rw none!
+  |  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |  |     |  +--rw implicit-import-disable!
+  |  |  |     |  +--rw route-policy
+  |  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |  |     +--rw description?                             string
+  |  |  |     +--rw load-balancing!
+  |  |  |     |  +--rw flow-label
+  |  |  |     |     +--rw static!
+  |  |  |     +--rw ecmp-disable-deprecated!
+  |  |  |     +--rw preferred-nexthop
+  |  |  |     |  +--rw lowest-ip!
+  |  |  |     |  +--rw highest-ip!
+  |  |  |     |  +--rw modulo!
+  |  |  |     +--rw advertise-mac!
+  |  |  |     |  +--rw bvi-mac!
+  |  |  |     +--rw unknown-unicast-suppression!
+  |  |  |     +--rw control-word-disable!
+  |  |  |     +--rw ignore-mtu-mismatch!
+  |  |  |     |  +--rw disable-deprecated!
+  |  |  |     +--rw enforce-mtu-match!
+  |  |  |     +--rw transmit-mtu-zero!
+  |  |  |     |  +--rw disable-deprecated!
+  |  |  |     +--rw transmit-l2-mtu!
+  |  |  |     +--rw re-origination-disable!
+  |  |  |     +--rw vrf
+  |  |  |     |  +--rw default!
+  |  |  |     +--rw multicast!
+  |  |  |     |  +--rw source-connected!
+  |  |  |     +--rw proxy!
+  |  |  |     |  +--rw igmp-snooping!
+  |  |  |     +--rw etree!
+  |  |  |     |  +--rw leaf!
+  |  |  |     |  +--rw rt-leaf!
+  |  |  |     +--rw locator?                                 xr:Cisco-ios-xr-string
+  |  |  |     +--rw vpws-single-active-backup-suppression!
+  |  |  |     +--rw bvi-coupled-mode!
+  |  |  +--rw evi* [vpn-id]
+  |  |     +--rw vpn-id                                   uint32
+  |  |     +--rw bgp!
+  |  |     |  +--rw rd
+  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |     |  +--rw route-target
+  |  |     |  |  +--rw two-byte-as-rts
+  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |     |  |  +--rw four-byte-as-rts
+  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |     |  |  +--rw ipv4-address-rts
+  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |     |  |  +--rw none!
+  |  |     |  |  +--rw import
+  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |     |  |  |  +--rw none!
+  |  |     |  |  +--rw export
+  |  |     |  |     +--rw two-byte-as-rts
+  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |     |  |     +--rw four-byte-as-rts
+  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |     |  |     +--rw ipv4-address-rts
+  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |     |  |     +--rw none!
+  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |     |  +--rw implicit-import-disable!
+  |  |     |  +--rw route-policy
+  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |     +--rw description?                             string
+  |  |     +--rw load-balancing!
+  |  |     |  +--rw flow-label
+  |  |     |     +--rw static!
+  |  |     +--rw ecmp-disable-deprecated!
+  |  |     +--rw preferred-nexthop
+  |  |     |  +--rw lowest-ip!
+  |  |     |  +--rw highest-ip!
+  |  |     |  +--rw modulo!
+  |  |     +--rw advertise-mac!
+  |  |     |  +--rw bvi-mac!
+  |  |     +--rw unknown-unicast-suppression!
+  |  |     +--rw control-word-disable!
+  |  |     +--rw ignore-mtu-mismatch!
+  |  |     |  +--rw disable-deprecated!
+  |  |     +--rw enforce-mtu-match!
+  |  |     +--rw transmit-mtu-zero!
+  |  |     |  +--rw disable-deprecated!
+  |  |     +--rw transmit-l2-mtu!
+  |  |     +--rw re-origination-disable!
+  |  |     +--rw vrf
+  |  |     |  +--rw default!
+  |  |     +--rw multicast!
+  |  |     |  +--rw source-connected!
+  |  |     +--rw proxy!
+  |  |     |  +--rw igmp-snooping!
+  |  |     +--rw etree!
+  |  |     |  +--rw leaf!
+  |  |     |  +--rw rt-leaf!
+  |  |     +--rw locator?                                 xr:Cisco-ios-xr-string
+  |  |     +--rw vpws-single-active-backup-suppression!
+  |  |     +--rw bvi-coupled-mode!
+  |  +--rw route-sync
+  |  |  +--rw stitching
+  |  |  |  +--rw evi* [vpn-id]
+  |  |  |     +--rw vpn-id                                   uint32
+  |  |  |     +--rw bgp!
+  |  |  |     |  +--rw rd
+  |  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |  |     |  +--rw route-target
+  |  |  |     |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  +--rw none!
+  |  |  |     |  |  +--rw import
+  |  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  |  +--rw none!
+  |  |  |     |  |  +--rw export
+  |  |  |     |  |     +--rw two-byte-as-rts
+  |  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |  |     |  |     +--rw four-byte-as-rts
+  |  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |  |     |  |     +--rw ipv4-address-rts
+  |  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |  |     |  |     +--rw none!
+  |  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |  |     |  +--rw implicit-import-disable!
+  |  |  |     |  +--rw route-policy
+  |  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |  |     +--rw description?                             string
+  |  |  |     +--rw load-balancing!
+  |  |  |     |  +--rw flow-label
+  |  |  |     |     +--rw static!
+  |  |  |     +--rw ecmp-disable-deprecated!
+  |  |  |     +--rw preferred-nexthop
+  |  |  |     |  +--rw lowest-ip!
+  |  |  |     |  +--rw highest-ip!
+  |  |  |     |  +--rw modulo!
+  |  |  |     +--rw advertise-mac!
+  |  |  |     |  +--rw bvi-mac!
+  |  |  |     +--rw unknown-unicast-suppression!
+  |  |  |     +--rw control-word-disable!
+  |  |  |     +--rw ignore-mtu-mismatch!
+  |  |  |     |  +--rw disable-deprecated!
+  |  |  |     +--rw enforce-mtu-match!
+  |  |  |     +--rw transmit-mtu-zero!
+  |  |  |     |  +--rw disable-deprecated!
+  |  |  |     +--rw transmit-l2-mtu!
+  |  |  |     +--rw re-origination-disable!
+  |  |  |     +--rw vrf
+  |  |  |     |  +--rw default!
+  |  |  |     +--rw multicast!
+  |  |  |     |  +--rw source-connected!
+  |  |  |     +--rw proxy!
+  |  |  |     |  +--rw igmp-snooping!
+  |  |  |     +--rw etree!
+  |  |  |     |  +--rw leaf!
+  |  |  |     |  +--rw rt-leaf!
+  |  |  |     +--rw locator?                                 xr:Cisco-ios-xr-string
+  |  |  |     +--rw vpws-single-active-backup-suppression!
+  |  |  |     +--rw bvi-coupled-mode!
+  |  |  +--rw evi* [vpn-id]
+  |  |     +--rw vpn-id                                   uint32
+  |  |     +--rw bgp!
+  |  |     |  +--rw rd
+  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |     |  +--rw route-target
+  |  |     |  |  +--rw two-byte-as-rts
+  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |     |  |  +--rw four-byte-as-rts
+  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |     |  |  +--rw ipv4-address-rts
+  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |     |  |  +--rw none!
+  |  |     |  |  +--rw import
+  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |     |  |  |  +--rw none!
+  |  |     |  |  +--rw export
+  |  |     |  |     +--rw two-byte-as-rts
+  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |     |  |     +--rw four-byte-as-rts
+  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |     |  |     +--rw ipv4-address-rts
+  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |     |  |     +--rw none!
+  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |     |  +--rw implicit-import-disable!
+  |  |     |  +--rw route-policy
+  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |     +--rw description?                             string
+  |  |     +--rw load-balancing!
+  |  |     |  +--rw flow-label
+  |  |     |     +--rw static!
+  |  |     +--rw ecmp-disable-deprecated!
+  |  |     +--rw preferred-nexthop
+  |  |     |  +--rw lowest-ip!
+  |  |     |  +--rw highest-ip!
+  |  |     |  +--rw modulo!
+  |  |     +--rw advertise-mac!
+  |  |     |  +--rw bvi-mac!
+  |  |     +--rw unknown-unicast-suppression!
+  |  |     +--rw control-word-disable!
+  |  |     +--rw ignore-mtu-mismatch!
+  |  |     |  +--rw disable-deprecated!
+  |  |     +--rw enforce-mtu-match!
+  |  |     +--rw transmit-mtu-zero!
+  |  |     |  +--rw disable-deprecated!
+  |  |     +--rw transmit-l2-mtu!
+  |  |     +--rw re-origination-disable!
+  |  |     +--rw vrf
+  |  |     |  +--rw default!
+  |  |     +--rw multicast!
+  |  |     |  +--rw source-connected!
+  |  |     +--rw proxy!
+  |  |     |  +--rw igmp-snooping!
+  |  |     +--rw etree!
+  |  |     |  +--rw leaf!
+  |  |     |  +--rw rt-leaf!
+  |  |     +--rw locator?                                 xr:Cisco-ios-xr-string
+  |  |     +--rw vpws-single-active-backup-suppression!
+  |  |     +--rw bvi-coupled-mode!
+  |  +--rw vnis
+  |  |  +--rw stitching
+  |  |  |  +--rw vni* [vni-id]
+  |  |  |     +--rw vni-id                         uint32
+  |  |  |     +--rw bgp!
+  |  |  |     |  +--rw rd
+  |  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |  |     |  +--rw route-target
+  |  |  |     |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  +--rw none!
+  |  |  |     |  |  +--rw import
+  |  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |  |     |  |  |  +--rw none!
+  |  |  |     |  |  +--rw export
+  |  |  |     |  |     +--rw two-byte-as-rts
+  |  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |  |     |  |     +--rw four-byte-as-rts
+  |  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |  |     |  |     +--rw ipv4-address-rts
+  |  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |  |     |  |     +--rw none!
+  |  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |  |     |  +--rw implicit-import-disable!
+  |  |  |     |  +--rw route-policy
+  |  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |  |     +--rw description?                   string
+  |  |  |     +--rw ecmp-disable-deprecated!
+  |  |  |     +--rw preferred-nexthop
+  |  |  |     |  +--rw lowest-ip!
+  |  |  |     |  +--rw highest-ip!
+  |  |  |     |  +--rw modulo!
+  |  |  |     +--rw advertise-mac!
+  |  |  |     |  +--rw bvi-mac!
+  |  |  |     +--rw unknown-unicast-suppression!
+  |  |  |     +--rw ignore-mtu-mismatch!
+  |  |  |     |  +--rw disable-deprecated!
+  |  |  |     +--rw enforce-mtu-match!
+  |  |  |     +--rw transmit-mtu-zero!
+  |  |  |     |  +--rw disable-deprecated!
+  |  |  |     +--rw transmit-l2-mtu!
+  |  |  |     +--rw re-origination-disable!
+  |  |  |     +--rw multicast!
+  |  |  |     |  +--rw source-connected!
+  |  |  |     +--rw proxy!
+  |  |  |     |  +--rw igmp-snooping!
+  |  |  |     +--rw bvi-coupled-mode!
+  |  |  +--rw vni* [vni-id]
+  |  |     +--rw vni-id                         uint32
+  |  |     +--rw bgp!
+  |  |     |  +--rw rd
+  |  |     |  |  +--rw two-byte-as-number?             uint32
+  |  |     |  |  +--rw two-byte-as-assigned-number?    uint32
+  |  |     |  |  +--rw four-byte-as-number?            uint32
+  |  |     |  |  +--rw four-byte-as-assigned-number?   uint32
+  |  |     |  |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+  |  |     |  |  +--rw ipv4-address-assigned-number?   uint32
+  |  |     |  +--rw route-target
+  |  |     |  |  +--rw two-byte-as-rts
+  |  |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |  |     +--rw two-byte-as-number    uint32
+  |  |     |  |  |     +--rw assigned-number       uint32
+  |  |     |  |  +--rw four-byte-as-rts
+  |  |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |  |     +--rw four-byte-as-number    uint32
+  |  |     |  |  |     +--rw assigned-number        uint32
+  |  |     |  |  +--rw ipv4-address-rts
+  |  |     |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |  |     +--rw assigned-number    uint32
+  |  |     |  |  +--rw none!
+  |  |     |  |  +--rw import
+  |  |     |  |  |  +--rw two-byte-as-rts
+  |  |     |  |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |  |  |     +--rw two-byte-as-number    uint32
+  |  |     |  |  |  |     +--rw assigned-number       uint32
+  |  |     |  |  |  +--rw four-byte-as-rts
+  |  |     |  |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |  |  |     +--rw four-byte-as-number    uint32
+  |  |     |  |  |  |     +--rw assigned-number        uint32
+  |  |     |  |  |  +--rw ipv4-address-rts
+  |  |     |  |  |  |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |  |  |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |  |  |     +--rw assigned-number    uint32
+  |  |     |  |  |  +--rw none!
+  |  |     |  |  +--rw export
+  |  |     |  |     +--rw two-byte-as-rts
+  |  |     |  |     |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+  |  |     |  |     |     +--rw two-byte-as-number    uint32
+  |  |     |  |     |     +--rw assigned-number       uint32
+  |  |     |  |     +--rw four-byte-as-rts
+  |  |     |  |     |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+  |  |     |  |     |     +--rw four-byte-as-number    uint32
+  |  |     |  |     |     +--rw assigned-number        uint32
+  |  |     |  |     +--rw ipv4-address-rts
+  |  |     |  |     |  +--rw ipv4-address-rt* [ipv4-address assigned-number]
+  |  |     |  |     |     +--rw ipv4-address       inet:ipv4-address-no-zone
+  |  |     |  |     |     +--rw assigned-number    uint32
+  |  |     |  |     +--rw none!
+  |  |     |  +--rw table-policy?              xr:Route-policy-name
+  |  |     |  +--rw implicit-import-disable!
+  |  |     |  +--rw route-policy
+  |  |     |     +--rw export?   xr:Route-policy-name
+  |  |     |     +--rw import?   xr:Route-policy-name
+  |  |     +--rw description?                   string
+  |  |     +--rw ecmp-disable-deprecated!
+  |  |     +--rw preferred-nexthop
+  |  |     |  +--rw lowest-ip!
+  |  |     |  +--rw highest-ip!
+  |  |     |  +--rw modulo!
+  |  |     +--rw advertise-mac!
+  |  |     |  +--rw bvi-mac!
+  |  |     +--rw unknown-unicast-suppression!
+  |  |     +--rw ignore-mtu-mismatch!
+  |  |     |  +--rw disable-deprecated!
+  |  |     +--rw enforce-mtu-match!
+  |  |     +--rw transmit-mtu-zero!
+  |  |     |  +--rw disable-deprecated!
+  |  |     +--rw transmit-l2-mtu!
+  |  |     +--rw re-origination-disable!
+  |  |     +--rw multicast!
+  |  |     |  +--rw source-connected!
+  |  |     +--rw proxy!
+  |  |     |  +--rw igmp-snooping!
+  |  |     +--rw bvi-coupled-mode!
+  |  +--rw segment-routing {l2vpn_platform_srv6_supported}?
+  |  |  +--rw srv6!
+  |  |     +--rw locator?   xr:Cisco-ios-xr-string
+  |  +--rw ignore-mtu-mismatch!
+  |  +--rw enforce-mtu-match!
+  |  +--rw transmit-mtu-zero!
+  |  +--rw transmit-l2-mtu!
+  +--rw generic-interface-lists
+  |  +--rw generic-interface-list* [generic-interface-list-name]
+  |     +--rw generic-interface-list-name    xr:Cisco-ios-xr-string
+  |     +--rw interfaces
+  |        +--rw interface* [interface-name] {l2vpn_iflist_intf_supported}?
+  |           +--rw interface-name    xr:Interface-name
+  +--rw l2vpn!
+     +--rw bridge
+     |  +--rw groups
+     |     +--rw group* [group-name]
+     |        +--rw group-name        xr:Cisco-ios-xr-string
+     |        +--rw bridge-domains
+     |           +--rw bridge-domain* [bridge-domain-name]
+     |              +--rw bridge-domain-name           xr:Cisco-ios-xr-string
+     |              +--rw evis
+     |              |  +--rw evi* [vpn-id]
+     |              |     +--rw vpn-id    uint32
+     |              +--rw segment-routing-srv6-evis
+     |              |  +--rw evi* [vpn-id]
+     |              |     +--rw vpn-id    uint32
+     |              +--rw vnis
+     |              |  +--rw vni* [vni-id]
+     |              |     +--rw vni-id    uint32
+     |              +--rw mtu?                         uint32
+     |              +--rw coupled-mode! {l2vpn_is_cli_supported}?
+     |              +--rw transport-mode
+     |              |  +--rw vlan
+     |              |     +--rw passthrough!
+     |              +--rw flooding
+     |              |  +--rw disable!
+     |              |  +--rw unknown-unicast
+     |              |     +--rw disable!
+     |              +--rw dynamic-arp-inspection!
+     |              |  +--rw logging!
+     |              |  +--rw address-validation!
+     |              |     +--rw src-mac!
+     |              |     +--rw dst-mac!
+     |              |     +--rw ipv4!
+     |              +--rw ip-source-guard!
+     |              |  +--rw logging!
+     |              +--rw dhcp
+     |              |  +--rw ipv4
+     |              |     +--rw snoop
+     |              |        +--rw profile?   xr:Cisco-ios-xr-string
+     |              +--rw igmp
+     |              |  +--rw snooping
+     |              |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              |     +--rw disable!
+     |              +--rw mld
+     |              |  +--rw snooping
+     |              |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              +--rw storm-control
+     |              |  +--rw broadcast
+     |              |  |  +--rw pps?    uint32
+     |              |  |  +--rw kbps?   uint32
+     |              |  +--rw multicast
+     |              |  |  +--rw pps?    uint32
+     |              |  |  +--rw kbps?   uint32
+     |              |  +--rw unknown-unicast
+     |              |     +--rw pps?    uint32
+     |              |     +--rw kbps?   uint32
+     |              +--rw multicast-source
+     |              |  +--rw ipv4!
+     |              |  +--rw ipv6!
+     |              |  +--rw ipv4-ipv6!
+     |              +--rw interfaces
+     |              |  +--rw interface* [interface-name] {l2vpn_iflist_intf_supported}?
+     |              |     +--rw interface-name            xr:Interface-name
+     |              |     +--rw dhcp
+     |              |     |  +--rw ipv4
+     |              |     |     +--rw none!
+     |              |     |     +--rw snoop!
+     |              |     |        +--rw profile?   xr:Cisco-ios-xr-string
+     |              |     +--rw dynamic-arp-inspection!
+     |              |     |  +--rw logging!
+     |              |     |  |  +--rw disable!
+     |              |     |  +--rw disable!
+     |              |     |  +--rw address-validation!
+     |              |     |     +--rw src-mac!
+     |              |     |     |  +--rw disable!
+     |              |     |     +--rw dst-mac!
+     |              |     |     |  +--rw disable!
+     |              |     |     +--rw ipv4!
+     |              |     |        +--rw disable!
+     |              |     +--rw flooding
+     |              |     |  +--rw disable!
+     |              |     |  +--rw unknown-unicast
+     |              |     |     +--rw disable!
+     |              |     +--rw igmp
+     |              |     |  +--rw snooping
+     |              |     |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              |     +--rw ip-source-guard!
+     |              |     |  +--rw logging!
+     |              |     |  |  +--rw disable!
+     |              |     |  +--rw disable!
+     |              |     +--rw mac
+     |              |     |  +--rw aging {l2vpn_is_cli_supported}?
+     |              |     |  |  +--rw time?   uint32
+     |              |     |  |  +--rw type
+     |              |     |  |     +--rw absolute!
+     |              |     |  |     +--rw inactivity!
+     |              |     |  +--rw learning!
+     |              |     |  |  +--rw disable!
+     |              |     |  +--rw limit
+     |              |     |  |  +--rw maximum?        uint32
+     |              |     |  |  +--rw action
+     |              |     |  |  |  +--rw flood!
+     |              |     |  |  |  +--rw no-flood!
+     |              |     |  |  |  +--rw shutdown!
+     |              |     |  |  |  +--rw none!
+     |              |     |  |  +--rw notification
+     |              |     |  |     +--rw trap!
+     |              |     |  |     +--rw both!
+     |              |     |  |     +--rw none!
+     |              |     |  |     +--rw syslog!
+     |              |     |  +--rw port-down
+     |              |     |  |  +--rw flush
+     |              |     |  |     +--rw disable!
+     |              |     |  +--rw secure!
+     |              |     |     +--rw logging!
+     |              |     |     |  +--rw disable!
+     |              |     |     +--rw action
+     |              |     |     |  +--rw none!
+     |              |     |     |  +--rw shutdown!
+     |              |     |     |  +--rw restrict!
+     |              |     |     +--rw disable!
+     |              |     |     +--rw shutdown-recovery-timeout
+     |              |     |        +--rw disable!
+     |              |     |        +--rw recovery-timer-in-second?   uint32
+     |              |     +--rw mld
+     |              |     |  +--rw snooping
+     |              |     |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              |     +--rw storm-control
+     |              |     |  +--rw broadcast
+     |              |     |  |  +--rw pps?    uint32
+     |              |     |  |  +--rw kbps?   uint32
+     |              |     |  +--rw multicast
+     |              |     |  |  +--rw pps?    uint32
+     |              |     |  |  +--rw kbps?   uint32
+     |              |     |  +--rw unknown-unicast
+     |              |     |     +--rw pps?    uint32
+     |              |     |     +--rw kbps?   uint32
+     |              |     +--rw split-horizon
+     |              |     |  +--rw group!
+     |              |     +--rw static-mac-addresses
+     |              |        +--rw static-mac-address* [mac-address]
+     |              |           +--rw mac-address    yang:mac-address
+     |              +--rw routed
+     |              |  +--rw interface* [interface-name]
+     |              |     +--rw interface-name    xr:Interface-name
+     |              |     +--rw split-horizon
+     |              |        +--rw group
+     |              |           +--rw core!
+     |              +--rw shutdown!
+     |              +--rw vfis
+     |              |  +--rw vfi* [vfi-name]
+     |              |     +--rw vfi-name         xr:Cisco-ios-xr-string
+     |              |     +--rw vpn-id?          uint32
+     |              |     +--rw shutdown!
+     |              |     +--rw autodiscovery
+     |              |     |  +--rw bgp!
+     |              |     |     +--rw rd
+     |              |     |     |  +--rw auto!
+     |              |     |     |  +--rw two-byte-as-number?             uint32
+     |              |     |     |  +--rw two-byte-as-assigned-number?    uint32
+     |              |     |     |  +--rw four-byte-as-number?            uint32
+     |              |     |     |  +--rw four-byte-as-assigned-number?   uint32
+     |              |     |     |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+     |              |     |     |  +--rw ipv4-address-assigned-number?   uint32
+     |              |     |     +--rw route-target
+     |              |     |     |  +--rw import
+     |              |     |     |  |  +--rw two-byte-as-rts
+     |              |     |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+     |              |     |     |  |  |     +--rw two-byte-as-number    uint32
+     |              |     |     |  |  |     +--rw assigned-number       uint32
+     |              |     |     |  |  +--rw four-byte-as-rts
+     |              |     |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+     |              |     |     |  |  |     +--rw four-byte-as-number    uint32
+     |              |     |     |  |  |     +--rw assigned-number        uint32
+     |              |     |     |  |  +--rw ipv4-address-rts
+     |              |     |     |  |     +--rw ipv4-address-rt* [ipv4-address assigned-number]
+     |              |     |     |  |        +--rw ipv4-address       inet:ipv4-address-no-zone
+     |              |     |     |  |        +--rw assigned-number    uint32
+     |              |     |     |  +--rw export
+     |              |     |     |  |  +--rw two-byte-as-rts
+     |              |     |     |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+     |              |     |     |  |  |     +--rw two-byte-as-number    uint32
+     |              |     |     |  |  |     +--rw assigned-number       uint32
+     |              |     |     |  |  +--rw four-byte-as-rts
+     |              |     |     |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+     |              |     |     |  |  |     +--rw four-byte-as-number    uint32
+     |              |     |     |  |  |     +--rw assigned-number        uint32
+     |              |     |     |  |  +--rw ipv4-address-rts
+     |              |     |     |  |     +--rw ipv4-address-rt* [ipv4-address assigned-number]
+     |              |     |     |  |        +--rw ipv4-address       inet:ipv4-address-no-zone
+     |              |     |     |  |        +--rw assigned-number    uint32
+     |              |     |     |  +--rw two-byte-as-rts
+     |              |     |     |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+     |              |     |     |  |     +--rw two-byte-as-number    uint32
+     |              |     |     |  |     +--rw assigned-number       uint32
+     |              |     |     |  +--rw four-byte-as-rts
+     |              |     |     |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+     |              |     |     |  |     +--rw four-byte-as-number    uint32
+     |              |     |     |  |     +--rw assigned-number        uint32
+     |              |     |     |  +--rw ipv4-address-rts
+     |              |     |     |     +--rw ipv4-address-rt* [ipv4-address assigned-number]
+     |              |     |     |        +--rw ipv4-address       inet:ipv4-address-no-zone
+     |              |     |     |        +--rw assigned-number    uint32
+     |              |     |     +--rw control-word!
+     |              |     |     +--rw signaling-protocol
+     |              |     |     |  +--rw bgp!
+     |              |     |     |  |  +--rw ve-id?            uint32
+     |              |     |     |  |  +--rw ve-range?         uint32 {l2vpn_is_cli_supported}?
+     |              |     |     |  |  +--rw load-balancing
+     |              |     |     |  |     +--rw flow-label
+     |              |     |     |  |        +--rw transmit!
+     |              |     |     |  |        +--rw receive!
+     |              |     |     |  |        +--rw both!
+     |              |     |     |  |        +--rw static!
+     |              |     |     |  +--rw ldp!
+     |              |     |     |     +--rw vpls-id {l2vpn_is_cli_supported}?
+     |              |     |     |        +--rw two-byte-as-number?             uint32
+     |              |     |     |        +--rw two-byte-as-assigned-number?    uint32
+     |              |     |     |        +--rw ipv4-address?                   inet:ipv4-address-no-zone
+     |              |     |     |        +--rw ipv4-address-assigned-number?   uint32
+     |              |     |     |        +--rw load-balancing
+     |              |     |     |           +--rw flow-label
+     |              |     |     |              +--rw transmit!
+     |              |     |     |              +--rw receive!
+     |              |     |     |              +--rw both!
+     |              |     |     |              +--rw static!
+     |              |     |     +--rw table-policy?         xr:Route-policy-name
+     |              |     |     +--rw route-policy
+     |              |     |        +--rw export?   xr:Route-policy-name
+     |              |     +--rw multicast {l2vpn_pw_p2mp_supported}?
+     |              |     |  +--rw p2mp!
+     |              |     |     +--rw transport
+     |              |     |     |  +--rw rsvp-te!
+     |              |     |     |     +--rw attribute-set
+     |              |     |     |        +--rw p2mp-te?   xr:Cisco-ios-xr-string
+     |              |     |     +--rw signaling-protocol
+     |              |     |        +--rw bgp!
+     |              |     +--rw neighbors
+     |              |        +--rw neighbor* [address pw-id]
+     |              |           +--rw address                 inet:ipv4-address-no-zone
+     |              |           +--rw pw-id                   uint32
+     |              |           +--rw static-mac-addresses
+     |              |           |  +--rw static-mac-address* [mac-address]
+     |              |           |     +--rw mac-address    yang:mac-address
+     |              |           +--rw mpls
+     |              |           |  +--rw static
+     |              |           |     +--rw label
+     |              |           |        +--rw local?    uint32
+     |              |           |        +--rw remote?   uint32
+     |              |           +--rw pw-class?               xr:Cisco-ios-xr-string
+     |              |           +--rw dhcp!
+     |              |           |  +--rw ipv4
+     |              |           |     +--rw snoop!
+     |              |           |     |  +--rw profile?   xr:Cisco-ios-xr-string
+     |              |           |     +--rw none!
+     |              |           +--rw igmp
+     |              |           |  +--rw snooping
+     |              |           |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              |           +--rw mld
+     |              |              +--rw snooping
+     |              |                 +--rw profile?   xr:Cisco-ios-xr-string
+     |              +--rw access-vfis
+     |              |  +--rw access-vfi* [access-vfi-name]
+     |              |     +--rw access-vfi-name    xr:Cisco-ios-xr-string
+     |              |     +--rw shutdown!
+     |              |     +--rw neighbors
+     |              |        +--rw neighbor* [address pw-id]
+     |              |           +--rw address                 inet:ipv4-address-no-zone
+     |              |           +--rw pw-id                   uint32
+     |              |           +--rw static-mac-addresses
+     |              |           |  +--rw static-mac-address* [mac-address]
+     |              |           |     +--rw mac-address    yang:mac-address
+     |              |           +--rw pw-class?               xr:Cisco-ios-xr-string
+     |              +--rw mac
+     |              |  +--rw aging {l2vpn_is_cli_supported}?
+     |              |  |  +--rw time?   uint32
+     |              |  |  +--rw type
+     |              |  |     +--rw absolute!
+     |              |  +--rw static-addresses
+     |              |  |  +--rw static-address* [mac-address]
+     |              |  |     +--rw mac-address    yang:mac-address
+     |              |  |     +--rw drop!
+     |              |  +--rw learning
+     |              |  |  +--rw disable!
+     |              |  +--rw withdraw
+     |              |  |  +--rw disable!
+     |              |  |  +--rw access-pw
+     |              |  |  |  +--rw disable!
+     |              |  |  +--rw relay!
+     |              |  |  +--rw state-down!
+     |              |  |  +--rw optimize!
+     |              |  +--rw limit
+     |              |  |  +--rw maximum?        uint32
+     |              |  |  +--rw action
+     |              |  |  |  +--rw flood!
+     |              |  |  |  +--rw no-flood!
+     |              |  |  |  +--rw shutdown!
+     |              |  |  +--rw notification
+     |              |  |     +--rw trap!
+     |              |  |     +--rw both!
+     |              |  |     +--rw none!
+     |              |  +--rw port-down
+     |              |  |  +--rw flush
+     |              |  |     +--rw disable!
+     |              |  +--rw secure!
+     |              |     +--rw logging!
+     |              |     +--rw threshold!
+     |              |     +--rw action
+     |              |     |  +--rw none!
+     |              |     |  +--rw shutdown!
+     |              |     +--rw shutdown-recovery-timeout?   uint32
+     |              +--rw access-evis
+     |              |  +--rw access-evi* [access-evi-id]
+     |              |     +--rw access-evi-id    uint32
+     |              +--rw neighbors
+     |              |  +--rw neighbor* [address pw-id]
+     |              |  |  +--rw address                 inet:ipv4-address-no-zone
+     |              |  |  +--rw pw-id                   uint32
+     |              |  |  +--rw flooding! {l2vpn_is_cli_supported}?
+     |              |  |  |  +--rw disable!
+     |              |  |  |  +--rw unknown-unicast!
+     |              |  |  |     +--rw disable!
+     |              |  |  +--rw static-mac-addresses
+     |              |  |  |  +--rw static-mac-address* [mac-address]
+     |              |  |  |     +--rw mac-address    yang:mac-address
+     |              |  |  +--rw mpls
+     |              |  |  |  +--rw static
+     |              |  |  |     +--rw label
+     |              |  |  |        +--rw local?    uint32
+     |              |  |  |        +--rw remote?   uint32
+     |              |  |  +--rw pw-class?               xr:Cisco-ios-xr-string
+     |              |  |  +--rw split-horizon
+     |              |  |  |  +--rw group!
+     |              |  |  +--rw storm-control
+     |              |  |  |  +--rw broadcast
+     |              |  |  |  |  +--rw pps?    uint32
+     |              |  |  |  |  +--rw kbps?   uint32
+     |              |  |  |  +--rw multicast
+     |              |  |  |  |  +--rw pps?    uint32
+     |              |  |  |  |  +--rw kbps?   uint32
+     |              |  |  |  +--rw unknown-unicast
+     |              |  |  |     +--rw pps?    uint32
+     |              |  |  |     +--rw kbps?   uint32
+     |              |  |  +--rw mac
+     |              |  |  |  +--rw aging
+     |              |  |  |  |  +--rw time?   uint32
+     |              |  |  |  |  +--rw type
+     |              |  |  |  |     +--rw absolute!
+     |              |  |  |  |     +--rw inactivity!
+     |              |  |  |  +--rw learning!
+     |              |  |  |  |  +--rw disable!
+     |              |  |  |  +--rw limit
+     |              |  |  |  |  +--rw maximum?        uint32
+     |              |  |  |  |  +--rw action
+     |              |  |  |  |  |  +--rw flood!
+     |              |  |  |  |  |  +--rw no-flood!
+     |              |  |  |  |  |  +--rw shutdown!
+     |              |  |  |  |  |  +--rw none!
+     |              |  |  |  |  +--rw notification
+     |              |  |  |  |     +--rw trap!
+     |              |  |  |  |     +--rw both!
+     |              |  |  |  |     +--rw none!
+     |              |  |  |  |     +--rw syslog!
+     |              |  |  |  +--rw port-down
+     |              |  |  |  |  +--rw flush!
+     |              |  |  |  |     +--rw disable!
+     |              |  |  |  +--rw secure!
+     |              |  |  |     +--rw logging!
+     |              |  |  |     |  +--rw disable!
+     |              |  |  |     +--rw action
+     |              |  |  |     |  +--rw none!
+     |              |  |  |     |  +--rw shutdown!
+     |              |  |  |     |  +--rw restrict!
+     |              |  |  |     +--rw shutdown-recovery-timeout
+     |              |  |  |     |  +--rw disable!
+     |              |  |  |     |  +--rw recovery-timer-in-second?   uint32
+     |              |  |  |     +--rw disable!
+     |              |  |  +--rw dhcp!
+     |              |  |  |  +--rw ipv4
+     |              |  |  |     +--rw snoop!
+     |              |  |  |     |  +--rw profile?   xr:Cisco-ios-xr-string
+     |              |  |  |     +--rw none!
+     |              |  |  +--rw igmp
+     |              |  |  |  +--rw snooping
+     |              |  |  |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              |  |  +--rw mld
+     |              |  |  |  +--rw snooping
+     |              |  |  |     +--rw profile?   xr:Cisco-ios-xr-string
+     |              |  |  +--rw backup
+     |              |  |     +--rw neighbors
+     |              |  |        +--rw neighbor* [address pw-id]
+     |              |  |           +--rw address     inet:ipv4-address-no-zone
+     |              |  |           +--rw pw-id       uint32
+     |              |  |           +--rw pw-class?   xr:Cisco-ios-xr-string
+     |              |  +--rw evpn
+     |              |     +--rw evi* [vpn-id target]
+     |              |        +--rw vpn-id    uint32
+     |              |        +--rw target    uint32
+     |              +--rw description?                 string {l2vpn_is_cli_supported}?
+     |              +--rw efp-visibility!
+     |              +--rw etree!
+     |              |  +--rw leaf!
+     |              +--rw member
+     |              |  +--rw vnis
+     |              |     +--rw vni* [vni-id]
+     |              |        +--rw vni-id                  uint32
+     |              |        +--rw static-mac-addresses
+     |              |           +--rw static-mac-address* [mac-address]
+     |              |              +--rw mac-address    yang:mac-address
+     |              |              +--rw next-hop?      inet:ipv4-address-no-zone
+     |              +--rw pbb
+     |              |  +--rw core!
+     |              |  |  +--rw rewrite
+     |              |  |  |  +--rw ingress
+     |              |  |  |     +--rw tag
+     |              |  |  |        +--rw push
+     |              |  |  |           +--rw dot1ad?   uint32
+     |              |  |  +--rw mac
+     |              |  |  |  +--rw aging
+     |              |  |  |  |  +--rw time?   uint32
+     |              |  |  |  |  +--rw type
+     |              |  |  |  |     +--rw absolute!
+     |              |  |  |  |     +--rw inactivity!
+     |              |  |  |  +--rw learning!
+     |              |  |  |     +--rw disable!
+     |              |  |  +--rw mmrp-flood-optimization!
+     |              |  |  +--rw evis
+     |              |  |     +--rw evi* [vpn-id]
+     |              |  |        +--rw vpn-id    uint32
+     |              |  +--rw edge
+     |              |     +--rw i-sid* [instance-id core-bridge-name]
+     |              |        +--rw instance-id             uint32
+     |              |        +--rw core-bridge-name        xr:Cisco-ios-xr-string
+     |              |        +--rw static-mac-addresses
+     |              |        |  +--rw static-mac-address* [mac-address]
+     |              |        |     +--rw mac-address    yang:mac-address
+     |              |        |     +--rw bmac           yang:mac-address
+     |              |        +--rw unknown-unicast-bmac?   yang:mac-address
+     |              |        +--rw split-horizon
+     |              |        |  +--rw group
+     |              |        |     +--rw vfi
+     |              |        |        +--rw disable!
+     |              |        +--rw mac
+     |              |        |  +--rw aging
+     |              |        |  |  +--rw time?   uint32
+     |              |        |  |  +--rw type
+     |              |        |  |     +--rw absolute!
+     |              |        |  |     +--rw inactivity!
+     |              |        |  +--rw learning!
+     |              |        |  |  +--rw disable!
+     |              |        |  +--rw limit
+     |              |        |  |  +--rw maximum?        uint32
+     |              |        |  |  +--rw action
+     |              |        |  |  |  +--rw flood!
+     |              |        |  |  |  +--rw no-flood!
+     |              |        |  |  |  +--rw shutdown!
+     |              |        |  |  |  +--rw none!
+     |              |        |  |  +--rw notification
+     |              |        |  |     +--rw trap!
+     |              |        |  |     +--rw both!
+     |              |        |  |     +--rw none!
+     |              |        |  |     +--rw syslog!
+     |              |        |  +--rw secure!
+     |              |        |     +--rw logging!
+     |              |        |     |  +--rw disable!
+     |              |        |     +--rw action
+     |              |        |     |  +--rw none!
+     |              |        |     |  +--rw shutdown!
+     |              |        |     |  +--rw restrict!
+     |              |        |     +--rw disable!
+     |              |        |     +--rw accept-shutdown!
+     |              |        +--rw dhcp!
+     |              |        |  +--rw ipv4
+     |              |        |     +--rw snoop!
+     |              |        |     |  +--rw profile?   xr:Cisco-ios-xr-string
+     |              |        |     +--rw none!
+     |              |        +--rw igmp
+     |              |           +--rw snooping
+     |              |              +--rw profile?   xr:Cisco-ios-xr-string
+     |              +--rw nv
+     |                 +--rw satellite!
+     |                    +--rw offload
+     |                       +--rw ipv4
+     |                          +--rw multicast
+     |                             +--rw enable!
+     +--rw pbb
+     |  +--rw backbone-source-mac?   yang:mac-address
+     +--rw redundancy!
+     |  +--rw iccp
+     |     +--rw groups
+     |        +--rw group* [group-number]
+     |           +--rw group-number    uint32
+     |           +--rw interface* [interface-name]
+     |           |  +--rw interface-name    xr:Interface-name
+     |           |  +--rw primary
+     |           |  |  +--rw vlan?   xr:Cisco-ios-xr-string
+     |           |  +--rw secondary
+     |           |  |  +--rw vlan?   xr:Cisco-ios-xr-string
+     |           |  +--rw mac-flush
+     |           |  |  +--rw stp-tcn!
+     |           |  +--rw recovery
+     |           |     +--rw delay?   uint32
+     |           +--rw multi-homing
+     |              +--rw node-id?   uint32
+     +--rw ethernet
+     |  +--rw ring
+     |     +--rw g8032* [ethernet-ring-name]
+     |        +--rw ethernet-ring-name    xr:Cisco-ios-xr-string
+     |        +--rw port0
+     |        |  +--rw interface* [interface-name]
+     |        |     +--rw interface-name    xr:Interface-name
+     |        |     +--rw monitor
+     |        |        +--rw interface?   xr:Interface-name
+     |        +--rw port1
+     |        |  +--rw interface* [interface-name]
+     |        |  |  +--rw interface-name    xr:Interface-name
+     |        |  |  +--rw monitor
+     |        |  |     +--rw interface?   xr:Interface-name
+     |        |  +--rw none!
+     |        |  +--rw virtual!
+     |        +--rw open-ring!
+     |        +--rw exclusion-list
+     |        |  +--rw vlan-ids?   xr:Cisco-ios-xr-string
+     |        +--rw instances
+     |           +--rw instance* [instance-id]
+     |              +--rw instance-id       uint32
+     |              +--rw description?      string
+     |              +--rw profile?          xr:Cisco-ios-xr-string
+     |              +--rw rpl
+     |              |  +--rw port0!
+     |              |  |  +--rw owner!
+     |              |  |  +--rw neighbor!
+     |              |  |  +--rw next-neighbor!
+     |              |  +--rw port1!
+     |              |     +--rw owner!
+     |              |     +--rw neighbor!
+     |              |     +--rw next-neighbor!
+     |              +--rw inclusion-list
+     |              |  +--rw vlan-ids?   string
+     |              +--rw aps-channel!
+     |                 +--rw level?   uint32
+     |                 +--rw port0
+     |                 |  +--rw interface?   xr:Interface-name
+     |                 +--rw port1
+     |                    +--rw interface?       xr:Interface-name
+     |                    +--rw bridge-domain?   xr:Cisco-ios-xr-string
+     |                    +--rw xconnect?        xr:Cisco-ios-xr-string
+     |                    +--rw none!
+     +--rw flexible-xconnect-service
+     |  +--rw vlan-unawares
+     |  |  +--rw vlan-unaware* [service-name]
+     |  |     +--rw service-name    xr:Cisco-ios-xr-string
+     |  |     +--rw interfaces
+     |  |     |  +--rw interface* [interface-name]
+     |  |     |     +--rw interface-name    xr:Interface-name
+     |  |     +--rw neighbor
+     |  |        +--rw evpn
+     |  |           +--rw evis
+     |  |              +--rw evi* [vpn-id remote-ac-id]
+     |  |                 +--rw vpn-id          uint32
+     |  |                 +--rw remote-ac-id    uint32
+     |  +--rw vlan-aware
+     |     +--rw evis
+     |        +--rw evi* [vpn-id]
+     |           +--rw vpn-id        uint32
+     |           +--rw interfaces
+     |              +--rw interface* [interface-name]
+     |                 +--rw interface-name    xr:Interface-name
+     +--rw vlan-switches
+     |  +--rw vlan-switch* [vlan-switch-name]
+     |     +--rw vlan-switch-name    xr:Cisco-ios-xr-string
+     |     +--rw vlan
+     |     |  +--rw vlan-id-range1-start?   uint32
+     |     |  +--rw vlan-id-range1-end?     uint32
+     |     |  +--rw vlan-id-range2-start?   uint32
+     |     |  +--rw vlan-id-range2-end?     uint32
+     |     |  +--rw vlan-id-range3-start?   uint32
+     |     |  +--rw vlan-id-range3-end?     uint32
+     |     |  +--rw vlan-id-range4-start?   uint32
+     |     |  +--rw vlan-id-range4-end?     uint32
+     |     |  +--rw vlan-id-range5-start?   uint32
+     |     |  +--rw vlan-id-range5-end?     uint32
+     |     |  +--rw vlan-id-range6-start?   uint32
+     |     |  +--rw vlan-id-range6-end?     uint32
+     |     |  +--rw vlan-id-range7-start?   uint32
+     |     |  +--rw vlan-id-range7-end?     uint32
+     |     |  +--rw vlan-id-range8-start?   uint32
+     |     |  +--rw vlan-id-range8-end?     uint32
+     |     |  +--rw vlan-id-range9-start?   uint32
+     |     |  +--rw vlan-id-range9-end?     uint32
+     |     +--rw interfaces
+     |     |  +--rw interface* [interface-name]
+     |     |     +--rw interface-name    xr:Interface-name
+     |     +--rw routed
+     |     |  +--rw interface
+     |     |     +--rw bvi
+     |     |        +--rw interface-number-range1-start?   uint32
+     |     |        +--rw interface-number-range1-end?     uint32
+     |     |        +--rw interface-number-range2-start?   uint32
+     |     |        +--rw interface-number-range2-end?     uint32
+     |     |        +--rw interface-number-range3-start?   uint32
+     |     |        +--rw interface-number-range3-end?     uint32
+     |     |        +--rw interface-number-range4-start?   uint32
+     |     |        +--rw interface-number-range4-end?     uint32
+     |     |        +--rw interface-number-range5-start?   uint32
+     |     |        +--rw interface-number-range5-end?     uint32
+     |     |        +--rw interface-number-range6-start?   uint32
+     |     |        +--rw interface-number-range6-end?     uint32
+     |     |        +--rw interface-number-range7-start?   uint32
+     |     |        +--rw interface-number-range7-end?     uint32
+     |     |        +--rw interface-number-range8-start?   uint32
+     |     |        +--rw interface-number-range8-end?     uint32
+     |     |        +--rw interface-number-range9-start?   uint32
+     |     |        +--rw interface-number-range9-end?     uint32
+     |     +--rw vni
+     |     |  +--rw vni-range1-start?   uint32
+     |     |  +--rw vni-range1-end?     uint32
+     |     |  +--rw vni-range2-start?   uint32
+     |     |  +--rw vni-range2-end?     uint32
+     |     |  +--rw vni-range3-start?   uint32
+     |     |  +--rw vni-range3-end?     uint32
+     |     |  +--rw vni-range4-start?   uint32
+     |     |  +--rw vni-range4-end?     uint32
+     |     |  +--rw vni-range5-start?   uint32
+     |     |  +--rw vni-range5-end?     uint32
+     |     |  +--rw vni-range6-start?   uint32
+     |     |  +--rw vni-range6-end?     uint32
+     |     |  +--rw vni-range7-start?   uint32
+     |     |  +--rw vni-range7-end?     uint32
+     |     |  +--rw vni-range8-start?   uint32
+     |     |  +--rw vni-range8-end?     uint32
+     |     |  +--rw vni-range9-start?   uint32
+     |     |  +--rw vni-range9-end?     uint32
+     |     +--rw bridge-domains
+     |        +--rw bridge-domain* [bridge-domain-name]
+     |           +--rw bridge-domain-name        xr:Cisco-ios-xr-string
+     |           +--rw evis
+     |           |  +--rw evi* [vpn-id]
+     |           |     +--rw vpn-id    uint32
+     |           +--rw vnis
+     |           |  +--rw vni* [vni-id]
+     |           |     +--rw vni-id    uint32
+     |           +--rw nv
+     |           |  +--rw satellite!
+     |           |     +--rw offload
+     |           |        +--rw ipv4
+     |           |           +--rw multicast
+     |           |              +--rw enable!
+     |           +--rw pbb
+     |           |  +--rw core!
+     |           |  |  +--rw evis
+     |           |  |  |  +--rw evi* [vpn-id]
+     |           |  |  |     +--rw vpn-id    uint32
+     |           |  |  +--rw rewrite
+     |           |  |  |  +--rw ingress
+     |           |  |  |     +--rw tag
+     |           |  |  |        +--rw push
+     |           |  |  |           +--rw dot1ad?   uint32
+     |           |  |  +--rw mac
+     |           |  |  |  +--rw aging
+     |           |  |  |  |  +--rw time?   uint32
+     |           |  |  |  |  +--rw type
+     |           |  |  |  |     +--rw absolute!
+     |           |  |  |  |     +--rw inactivity!
+     |           |  |  |  +--rw learning!
+     |           |  |  |     +--rw disable!
+     |           |  |  +--rw mmrp-flood-optimization!
+     |           |  +--rw edge
+     |           |     +--rw i-sid* [instance-id core-bridge-name]
+     |           |        +--rw instance-id             uint32
+     |           |        +--rw core-bridge-name        xr:Cisco-ios-xr-string
+     |           |        +--rw static-mac-addresses
+     |           |        |  +--rw static-mac-address* [mac-address]
+     |           |        |     +--rw mac-address    yang:mac-address
+     |           |        |     +--rw bmac           yang:mac-address
+     |           |        +--rw unknown-unicast-bmac?   yang:mac-address
+     |           |        +--rw split-horizon
+     |           |        |  +--rw group
+     |           |        |     +--rw vfi
+     |           |        |        +--rw disable!
+     |           |        +--rw mac
+     |           |        |  +--rw aging
+     |           |        |  |  +--rw time?   uint32
+     |           |        |  |  +--rw type
+     |           |        |  |     +--rw absolute!
+     |           |        |  |     +--rw inactivity!
+     |           |        |  +--rw learning!
+     |           |        |  |  +--rw disable!
+     |           |        |  +--rw limit
+     |           |        |  |  +--rw maximum?        uint32
+     |           |        |  |  +--rw action
+     |           |        |  |  |  +--rw flood!
+     |           |        |  |  |  +--rw no-flood!
+     |           |        |  |  |  +--rw shutdown!
+     |           |        |  |  |  +--rw none!
+     |           |        |  |  +--rw notification
+     |           |        |  |     +--rw trap!
+     |           |        |  |     +--rw both!
+     |           |        |  |     +--rw none!
+     |           |        |  |     +--rw syslog!
+     |           |        |  +--rw secure!
+     |           |        |     +--rw logging!
+     |           |        |     |  +--rw disable!
+     |           |        |     +--rw action
+     |           |        |     |  +--rw none!
+     |           |        |     |  +--rw shutdown!
+     |           |        |     |  +--rw restrict!
+     |           |        |     +--rw disable!
+     |           |        |     +--rw accept-shutdown!
+     |           |        +--rw dhcp!
+     |           |        |  +--rw ipv4
+     |           |        |     +--rw snoop!
+     |           |        |     |  +--rw profile?   xr:Cisco-ios-xr-string
+     |           |        |     +--rw none!
+     |           |        +--rw igmp
+     |           |           +--rw snooping
+     |           |              +--rw profile?   xr:Cisco-ios-xr-string
+     |           +--rw mtu?                      uint32
+     |           +--rw coupled-mode! {l2vpn_is_cli_supported}?
+     |           +--rw transport-mode
+     |           |  +--rw vlan
+     |           |     +--rw passthrough!
+     |           +--rw flooding
+     |           |  +--rw disable!
+     |           |  +--rw unknown-unicast
+     |           |     +--rw disable!
+     |           +--rw dynamic-arp-inspection!
+     |           |  +--rw logging!
+     |           |  +--rw address-validation!
+     |           |     +--rw src-mac!
+     |           |     +--rw dst-mac!
+     |           |     +--rw ipv4!
+     |           +--rw ip-source-guard!
+     |           |  +--rw logging!
+     |           +--rw dhcp
+     |           |  +--rw ipv4
+     |           |     +--rw snoop
+     |           |        +--rw profile?   xr:Cisco-ios-xr-string
+     |           +--rw igmp
+     |           |  +--rw snooping
+     |           |     +--rw profile?   xr:Cisco-ios-xr-string
+     |           |     +--rw disable!
+     |           +--rw mld
+     |           |  +--rw snooping
+     |           |     +--rw profile?   xr:Cisco-ios-xr-string
+     |           +--rw storm-control
+     |           |  +--rw broadcast
+     |           |  |  +--rw pps?    uint32
+     |           |  |  +--rw kbps?   uint32
+     |           |  +--rw multicast
+     |           |  |  +--rw pps?    uint32
+     |           |  |  +--rw kbps?   uint32
+     |           |  +--rw unknown-unicast
+     |           |     +--rw pps?    uint32
+     |           |     +--rw kbps?   uint32
+     |           +--rw interface
+     |           |  +--rw interface* [interface-name]
+     |           |     +--rw interface-name              xr:Interface-name
+     |           |     +--rw flooding!
+     |           |     |  +--rw disable!
+     |           |     +--rw flooding-unknown-unicast!
+     |           |     |  +--rw disable!
+     |           |     +--rw storm-control
+     |           |     |  +--rw broadcast
+     |           |     |  |  +--rw pps?    uint32
+     |           |     |  |  +--rw kbps?   uint32
+     |           |     |  +--rw multicast
+     |           |     |  |  +--rw pps?    uint32
+     |           |     |  |  +--rw kbps?   uint32
+     |           |     |  +--rw unknown-unicast
+     |           |     |     +--rw pps?    uint32
+     |           |     |     +--rw kbps?   uint32
+     |           |     +--rw mac
+     |           |     |  +--rw aging
+     |           |     |  |  +--rw time?   uint32
+     |           |     |  |  +--rw type
+     |           |     |  |     +--rw absolute!
+     |           |     |  |     +--rw inactivity!
+     |           |     |  +--rw learning!
+     |           |     |  |  +--rw disable!
+     |           |     |  +--rw limit
+     |           |     |  |  +--rw maximum?        uint32
+     |           |     |  |  +--rw action
+     |           |     |  |  |  +--rw flood!
+     |           |     |  |  |  +--rw no-flood!
+     |           |     |  |  |  +--rw shutdown!
+     |           |     |  |  |  +--rw none!
+     |           |     |  |  +--rw notification
+     |           |     |  |     +--rw trap!
+     |           |     |  |     +--rw both!
+     |           |     |  |     +--rw none!
+     |           |     |  |     +--rw syslog!
+     |           |     |  +--rw port-down
+     |           |     |  |  +--rw flush!
+     |           |     |  |     +--rw disable!
+     |           |     |  +--rw secure!
+     |           |     |     +--rw logging!
+     |           |     |     |  +--rw disable!
+     |           |     |     +--rw action
+     |           |     |     |  +--rw none!
+     |           |     |     |  +--rw shutdown!
+     |           |     |     |  +--rw restrict!
+     |           |     |     +--rw disable!
+     |           |     +--rw dynamic-arp-inspection!
+     |           |     |  +--rw logging!
+     |           |     |  |  +--rw disable!
+     |           |     |  +--rw address-validation!
+     |           |     |  |  +--rw src-mac!
+     |           |     |  |  |  +--rw disable!
+     |           |     |  |  +--rw dst-mac!
+     |           |     |  |  |  +--rw disable!
+     |           |     |  |  +--rw ipv4!
+     |           |     |  |     +--rw disable!
+     |           |     |  +--rw disable!
+     |           |     +--rw ip-source-guard!
+     |           |     |  +--rw logging!
+     |           |     |  |  +--rw disable!
+     |           |     |  +--rw disable!
+     |           |     +--rw dhcp! {l2vpn_is_cli_supported}?
+     |           |     |  +--rw ipv4
+     |           |     |     +--rw snoop!
+     |           |     |     |  +--rw profile    xr:Cisco-ios-xr-string
+     |           |     |     +--rw none!
+     |           |     +--rw static-mac-addresses
+     |           |     |  +--rw static-mac-address* [mac-address]
+     |           |     |     +--rw mac-address    yang:mac-address
+     |           |     +--rw split-horizon
+     |           |     |  +--rw group!
+     |           |     +--rw igmp
+     |           |     |  +--rw snooping
+     |           |     |     +--rw profile?   xr:Cisco-ios-xr-string
+     |           |     +--rw mld
+     |           |        +--rw snooping
+     |           |           +--rw profile?   xr:Cisco-ios-xr-string
+     |           +--rw routed
+     |           |  +--rw interface* [interface-name]
+     |           |     +--rw interface-name    xr:Interface-name
+     |           |     +--rw split-horizon
+     |           |        +--rw group
+     |           |           +--rw core!
+     |           +--rw shutdown!
+     |           +--rw mac
+     |           |  +--rw aging {l2vpn_is_cli_supported}?
+     |           |  |  +--rw time?   uint32
+     |           |  |  +--rw type
+     |           |  |     +--rw absolute!
+     |           |  +--rw static-addresses
+     |           |  |  +--rw static-address* [mac-address]
+     |           |  |     +--rw mac-address    yang:mac-address
+     |           |  |     +--rw drop!
+     |           |  +--rw learning
+     |           |  |  +--rw disable!
+     |           |  +--rw withdraw
+     |           |  |  +--rw disable!
+     |           |  |  +--rw access-pw
+     |           |  |  |  +--rw disable!
+     |           |  |  +--rw relay!
+     |           |  |  +--rw state-down!
+     |           |  |  +--rw optimize!
+     |           |  +--rw limit
+     |           |  |  +--rw maximum?        uint32
+     |           |  |  +--rw action
+     |           |  |  |  +--rw flood!
+     |           |  |  |  +--rw no-flood!
+     |           |  |  |  +--rw shutdown!
+     |           |  |  +--rw notification
+     |           |  |     +--rw trap!
+     |           |  |     +--rw both!
+     |           |  |     +--rw none!
+     |           |  +--rw port-down
+     |           |  |  +--rw flush
+     |           |  |     +--rw disable!
+     |           |  +--rw secure!
+     |           |     +--rw logging!
+     |           |     +--rw threshold!
+     |           |     +--rw action
+     |           |        +--rw none!
+     |           |        +--rw shutdown!
+     |           +--rw description?              string
+     |           +--rw member
+     |              +--rw vnis
+     |                 +--rw vni* [vni-id]
+     |                    +--rw vni-id                  uint32
+     |                    +--rw static-mac-addresses
+     |                       +--rw static-mac-address* [mac-address]
+     |                          +--rw mac-address    yang:mac-address
+     |                          +--rw next-hop?      inet:ipv4-address-no-zone
+     +--rw pw-classes
+     |  +--rw pw-class* [pw-class-name]
+     |     +--rw pw-class-name    xr:Cisco-ios-xr-string
+     |     +--rw encapsulation
+     |     |  +--rw mpls!
+     |     |  |  +--rw protocol
+     |     |  |  |  +--rw ldp!
+     |     |  |  +--rw control-word!
+     |     |  |  +--rw transport-mode {l2vpn_is_cli_supported}?
+     |     |  |  |  +--rw ethernet!
+     |     |  |  |  +--rw vlan!
+     |     |  |  |  +--rw passthrough!
+     |     |  |  +--rw vccv
+     |     |  |  |  +--rw verification-type
+     |     |  |  |     +--rw none!
+     |     |  |  +--rw sequencing
+     |     |  |  |  +--rw transmit!
+     |     |  |  |  |  +--rw resync?   uint32
+     |     |  |  |  +--rw receive!
+     |     |  |  |  |  +--rw resync?   uint32
+     |     |  |  |  +--rw both!
+     |     |  |  |     +--rw resync?   uint32
+     |     |  |  +--rw preferred-path
+     |     |  |  |  +--rw interface
+     |     |  |  |  |  +--rw tunnel-te
+     |     |  |  |  |  |  +--rw tunnel-number?   uint32
+     |     |  |  |  |  |  +--rw tunnel-name?     xr:Cisco-ios-xr-string
+     |     |  |  |  |  +--rw tunnel-ip?   uint32
+     |     |  |  |  |  +--rw tunnel-tp?   uint32
+     |     |  |  |  +--rw sr-te
+     |     |  |  |  |  +--rw policy?   xr:Cisco-ios-xr-string
+     |     |  |  |  +--rw fallback
+     |     |  |  |     +--rw disable!
+     |     |  |  +--rw switching-tlv
+     |     |  |  |  +--rw hide!
+     |     |  |  +--rw tag-rewrite
+     |     |  |  |  +--rw ingress
+     |     |  |  |     +--rw vlan?   uint32
+     |     |  |  +--rw redundancy {l2vpn_is_cli_supported}?
+     |     |  |  |  +--rw one-way!
+     |     |  |  |  +--rw initial-delay?   uint32
+     |     |  |  +--rw load-balancing
+     |     |  |  |  +--rw pw-label!
+     |     |  |  |  +--rw flow-label
+     |     |  |  |     +--rw transmit!
+     |     |  |  |     |  +--rw static!
+     |     |  |  |     +--rw receive!
+     |     |  |  |     |  +--rw static!
+     |     |  |  |     +--rw both!
+     |     |  |  |     |  +--rw static!
+     |     |  |  |     +--rw code
+     |     |  |  |        +--rw one7!
+     |     |  |  |           +--rw disable!
+     |     |  |  +--rw ipv4
+     |     |  |     +--rw source?   inet:ipv4-address-no-zone
+     |     |  +--rw l2tpv3!
+     |     |     +--rw protocol
+     |     |     |  +--rw l2tpv3!
+     |     |     |     +--rw class?   xr:Cisco-ios-xr-string
+     |     |     +--rw dfbit
+     |     |     |  +--rw set!
+     |     |     +--rw tos
+     |     |     |  +--rw value?     uint32
+     |     |     |  +--rw reflect!
+     |     |     +--rw ttl?              uint32
+     |     |     +--rw pmtu!
+     |     |     |  +--rw max?   uint32
+     |     |     +--rw ipv4
+     |     |     |  +--rw source?   inet:ipv4-address-no-zone
+     |     |     +--rw cookie
+     |     |     |  +--rw size
+     |     |     |     +--rw zero!
+     |     |     |     +--rw four!
+     |     |     |     +--rw eight!
+     |     |     +--rw sequencing
+     |     |     |  +--rw both!
+     |     |     |     +--rw resync?   uint32
+     |     |     +--rw transport-mode
+     |     |        +--rw ethernet!
+     |     |        +--rw vlan!
+     |     +--rw backup
+     |     |  +--rw disable
+     |     |     +--rw delay?   uint32
+     |     |     +--rw never!
+     |     +--rw mac-withdraw!
+     +--rw ignore-mtu-mismatch-ad!
+     +--rw ignore-mtu-mismatch!
+     +--rw description?                 string
+     +--rw pw-status
+     |  +--rw disable!
+     +--rw router-id?                   inet:ipv4-address-no-zone {l2vpn_is_cli_supported}?
+     +--rw load-balancing
+     |  +--rw flow
+     |     +--rw src-dst-mac!
+     |     +--rw src-dst-ip!
+     +--rw capability
+     |  +--rw single-mode!
+     |  +--rw high-mode!
+     +--rw pw-oam
+     |  +--rw refresh
+     |     +--rw transmit?   uint32
+     +--rw tcn-propagation!
+     +--rw pw-grouping!
+     +--rw neighbors
+     |  +--rw all
+     |     +--rw ldp
+     |        +--rw flap!
+     +--rw mac
+     |  +--rw limit
+     |     +--rw threshold?   uint32
+     +--rw xconnect
+     |  +--rw groups
+     |     +--rw group* [group-name]
+     |        +--rw group-name    xr:Cisco-ios-xr-string
+     |        +--rw p2ps
+     |        |  +--rw p2p* [p2p-xconnect-name]
+     |        |     +--rw p2p-xconnect-name            xr:Cisco-ios-xr-string
+     |        |     +--rw interfaces
+     |        |     |  +--rw interface* [interface-name]
+     |        |     |     +--rw interface-name    xr:Interface-name
+     |        |     +--rw description?                 string
+     |        |     +--rw vpws-seamless-integration! {l2vpn_platform_vpws_seamless_integration_supported}?
+     |        |     +--rw interworking
+     |        |     |  +--rw ipv4!
+     |        |     |  +--rw ethernet!
+     |        |     +--rw backup {l2vpn_p2p_backup_supported}?
+     |        |     |  +--rw interface* [interface-name]
+     |        |     |     +--rw interface-name    xr:Interface-name
+     |        |     +--rw neighbor
+     |        |     |  +--rw ipv4s
+     |        |     |  |  +--rw ipv4* [address pw-id]
+     |        |     |  |     +--rw address       inet:ipv4-address-no-zone
+     |        |     |  |     +--rw pw-id         uint32
+     |        |     |  |     +--rw backup
+     |        |     |  |     |  +--rw neighbors
+     |        |     |  |     |     +--rw neighbor* [address pw-id]
+     |        |     |  |     |        +--rw address     inet:ipv4-address-no-zone
+     |        |     |  |     |        +--rw pw-id       uint32
+     |        |     |  |     |        +--rw mpls
+     |        |     |  |     |        |  +--rw static
+     |        |     |  |     |        |     +--rw label
+     |        |     |  |     |        |        +--rw local?    uint32
+     |        |     |  |     |        |        +--rw remote?   uint32
+     |        |     |  |     |        +--rw pw-class?   xr:Cisco-ios-xr-string
+     |        |     |  |     +--rw mpls
+     |        |     |  |     |  +--rw static
+     |        |     |  |     |     +--rw label
+     |        |     |  |     |        +--rw local?    uint32
+     |        |     |  |     |        +--rw remote?   uint32
+     |        |     |  |     +--rw pw-class?     xr:Cisco-ios-xr-string
+     |        |     |  |     +--rw tag-impose
+     |        |     |  |     |  +--rw vlan?   uint32
+     |        |     |  |     +--rw bandwidth?    uint32
+     |        |     |  |     +--rw source
+     |        |     |  |     |  +--rw ipv6-address?   inet:ipv6-address-no-zone
+     |        |     |  |     +--rw l2tp
+     |        |     |  |        +--rw static!
+     |        |     |  |           +--rw local
+     |        |     |  |           |  +--rw session?   uint32
+     |        |     |  |           |  +--rw cookie
+     |        |     |  |           |     +--rw size
+     |        |     |  |           |     |  +--rw zero!
+     |        |     |  |           |     |  +--rw four!
+     |        |     |  |           |     |  |  +--rw value    uint32
+     |        |     |  |           |     |  +--rw eight!
+     |        |     |  |           |     |     +--rw value                   uint32
+     |        |     |  |           |     |     +--rw higher-4-bytes-value    uint32
+     |        |     |  |           |     +--rw secondary
+     |        |     |  |           |        +--rw size
+     |        |     |  |           |           +--rw zero!
+     |        |     |  |           |           +--rw four!
+     |        |     |  |           |           |  +--rw value    uint32
+     |        |     |  |           |           +--rw eight!
+     |        |     |  |           |              +--rw value                   uint32
+     |        |     |  |           |              +--rw higher-4-bytes-value    uint32
+     |        |     |  |           +--rw remote
+     |        |     |  |              +--rw session?   uint32
+     |        |     |  |              +--rw cookie
+     |        |     |  |                 +--rw size
+     |        |     |  |                    +--rw zero!
+     |        |     |  |                    +--rw four!
+     |        |     |  |                    |  +--rw value    uint32
+     |        |     |  |                    +--rw eight!
+     |        |     |  |                       +--rw value                   uint32
+     |        |     |  |                       +--rw higher-4-bytes-value    uint32
+     |        |     |  +--rw ipv6s
+     |        |     |  |  +--rw ipv6* [address pw-id]
+     |        |     |  |     +--rw address       inet:ipv6-address-no-zone
+     |        |     |  |     +--rw pw-id         uint32
+     |        |     |  |     +--rw backup
+     |        |     |  |     |  +--rw neighbors
+     |        |     |  |     |     +--rw neighbor* [address pw-id]
+     |        |     |  |     |        +--rw address     inet:ipv4-address-no-zone
+     |        |     |  |     |        +--rw pw-id       uint32
+     |        |     |  |     |        +--rw mpls
+     |        |     |  |     |        |  +--rw static
+     |        |     |  |     |        |     +--rw label
+     |        |     |  |     |        |        +--rw local?    uint32
+     |        |     |  |     |        |        +--rw remote?   uint32
+     |        |     |  |     |        +--rw pw-class?   xr:Cisco-ios-xr-string
+     |        |     |  |     +--rw mpls
+     |        |     |  |     |  +--rw static
+     |        |     |  |     |     +--rw label
+     |        |     |  |     |        +--rw local?    uint32
+     |        |     |  |     |        +--rw remote?   uint32
+     |        |     |  |     +--rw pw-class?     xr:Cisco-ios-xr-string
+     |        |     |  |     +--rw tag-impose
+     |        |     |  |     |  +--rw vlan?   uint32
+     |        |     |  |     +--rw bandwidth?    uint32
+     |        |     |  |     +--rw source
+     |        |     |  |     |  +--rw ipv6-address?   inet:ipv6-address-no-zone
+     |        |     |  |     +--rw l2tp
+     |        |     |  |        +--rw static!
+     |        |     |  |           +--rw local
+     |        |     |  |           |  +--rw session?   uint32
+     |        |     |  |           |  +--rw cookie
+     |        |     |  |           |     +--rw size
+     |        |     |  |           |     |  +--rw zero!
+     |        |     |  |           |     |  +--rw four!
+     |        |     |  |           |     |  |  +--rw value    uint32
+     |        |     |  |           |     |  +--rw eight!
+     |        |     |  |           |     |     +--rw value                   uint32
+     |        |     |  |           |     |     +--rw higher-4-bytes-value    uint32
+     |        |     |  |           |     +--rw secondary
+     |        |     |  |           |        +--rw size
+     |        |     |  |           |           +--rw zero!
+     |        |     |  |           |           +--rw four!
+     |        |     |  |           |           |  +--rw value    uint32
+     |        |     |  |           |           +--rw eight!
+     |        |     |  |           |              +--rw value                   uint32
+     |        |     |  |           |              +--rw higher-4-bytes-value    uint32
+     |        |     |  |           +--rw remote
+     |        |     |  |              +--rw session?   uint32
+     |        |     |  |              +--rw cookie
+     |        |     |  |                 +--rw size
+     |        |     |  |                    +--rw zero!
+     |        |     |  |                    +--rw four!
+     |        |     |  |                    |  +--rw value    uint32
+     |        |     |  |                    +--rw eight!
+     |        |     |  |                       +--rw value                   uint32
+     |        |     |  |                       +--rw higher-4-bytes-value    uint32
+     |        |     |  +--rw routeds
+     |        |     |  |  +--rw routed* [global-id target-l2-prefix target-ac-id source]
+     |        |     |  |     +--rw global-id           uint32
+     |        |     |  |     +--rw target-l2-prefix    inet:ipv4-address-no-zone
+     |        |     |  |     +--rw target-ac-id        uint32
+     |        |     |  |     +--rw source              uint32
+     |        |     |  |     +--rw pw-class?           xr:Cisco-ios-xr-string
+     |        |     |  |     +--rw tag-impose
+     |        |     |  |        +--rw vlan?   uint32
+     |        |     |  +--rw evpn
+     |        |     |     +--rw evi
+     |        |     |        +--rw targets
+     |        |     |        |  +--rw target* [vpn-id remote-ac-id source]
+     |        |     |        |     +--rw vpn-id          uint32
+     |        |     |        |     +--rw remote-ac-id    uint32
+     |        |     |        |     +--rw source          uint32
+     |        |     |        |     +--rw pw-class?       xr:Cisco-ios-xr-string
+     |        |     |        +--rw services
+     |        |     |        |  +--rw service* [vpn-id service-id]
+     |        |     |        |     +--rw vpn-id        uint32
+     |        |     |        |     +--rw service-id    uint32
+     |        |     |        |     +--rw pw-class?     xr:Cisco-ios-xr-string
+     |        |     |        +--rw segment-routing-targets
+     |        |     |        |  +--rw target* [vpn-id remote-ac-id source]
+     |        |     |        |     +--rw vpn-id             uint32
+     |        |     |        |     +--rw remote-ac-id       uint32
+     |        |     |        |     +--rw source             uint32
+     |        |     |        |     +--rw segment-routing
+     |        |     |        |        +--rw srv6!
+     |        |     |        |           +--rw locator?   xr:Cisco-ios-xr-string
+     |        |     |        +--rw segment-routing-services
+     |        |     |           +--rw service* [vpn-id service-id]
+     |        |     |              +--rw vpn-id             uint32
+     |        |     |              +--rw service-id         uint32
+     |        |     |              +--rw segment-routing
+     |        |     |                 +--rw srv6!
+     |        |     |                    +--rw locator?   xr:Cisco-ios-xr-string
+     |        |     +--rw monitor-sessions
+     |        |        +--rw monitor-session* [monitor-session-name]
+     |        |           +--rw monitor-session-name    string
+     |        +--rw mp2mps
+     |           +--rw mp2mp* [instance-name]
+     |              +--rw instance-name       xr:Cisco-ios-xr-string
+     |              +--rw vpn-id?             uint32
+     |              +--rw mtu?                uint32
+     |              +--rw shutdown!
+     |              +--rw l2-encapsulation?   enumeration
+     |              +--rw interworking?       enumeration
+     |              +--rw control-word
+     |              |  +--rw disable!
+     |              +--rw autodiscovery
+     |                 +--rw bgp!
+     |                    +--rw rd
+     |                    |  +--rw auto!
+     |                    |  +--rw two-byte-as-number?             uint32
+     |                    |  +--rw two-byte-as-assigned-number?    uint32
+     |                    |  +--rw four-byte-as-number?            uint32
+     |                    |  +--rw four-byte-as-assigned-number?   uint32
+     |                    |  +--rw ipv4-address?                   inet:ipv4-address-no-zone
+     |                    |  +--rw ipv4-address-assigned-number?   uint32
+     |                    +--rw route-target
+     |                    |  +--rw import
+     |                    |  |  +--rw two-byte-as-rts
+     |                    |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+     |                    |  |  |     +--rw two-byte-as-number    uint32
+     |                    |  |  |     +--rw assigned-number       uint32
+     |                    |  |  +--rw four-byte-as-rts
+     |                    |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+     |                    |  |  |     +--rw four-byte-as-number    uint32
+     |                    |  |  |     +--rw assigned-number        uint32
+     |                    |  |  +--rw ipv4-address-rts
+     |                    |  |     +--rw ipv4-address-rt* [ipv4-address assigned-number]
+     |                    |  |        +--rw ipv4-address       inet:ipv4-address-no-zone
+     |                    |  |        +--rw assigned-number    uint32
+     |                    |  +--rw export
+     |                    |  |  +--rw two-byte-as-rts
+     |                    |  |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+     |                    |  |  |     +--rw two-byte-as-number    uint32
+     |                    |  |  |     +--rw assigned-number       uint32
+     |                    |  |  +--rw four-byte-as-rts
+     |                    |  |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+     |                    |  |  |     +--rw four-byte-as-number    uint32
+     |                    |  |  |     +--rw assigned-number        uint32
+     |                    |  |  +--rw ipv4-address-rts
+     |                    |  |     +--rw ipv4-address-rt* [ipv4-address assigned-number]
+     |                    |  |        +--rw ipv4-address       inet:ipv4-address-no-zone
+     |                    |  |        +--rw assigned-number    uint32
+     |                    |  +--rw two-byte-as-rts
+     |                    |  |  +--rw two-byte-as-rt* [two-byte-as-number assigned-number]
+     |                    |  |     +--rw two-byte-as-number    uint32
+     |                    |  |     +--rw assigned-number       uint32
+     |                    |  +--rw four-byte-as-rts
+     |                    |  |  +--rw four-byte-as-rt* [four-byte-as-number assigned-number]
+     |                    |  |     +--rw four-byte-as-number    uint32
+     |                    |  |     +--rw assigned-number        uint32
+     |                    |  +--rw ipv4-address-rts
+     |                    |     +--rw ipv4-address-rt* [ipv4-address assigned-number]
+     |                    |        +--rw ipv4-address       inet:ipv4-address-no-zone
+     |                    |        +--rw assigned-number    uint32
+     |                    +--rw signaling-protocol
+     |                    |  +--rw bgp!
+     |                    |     +--rw ce-id* [local-ce-id-value]
+     |                    |     |  +--rw local-ce-id-value            uint32
+     |                    |     |  +--rw interface* [interface-name]
+     |                    |     |  |  +--rw interface-name    xr:Interface-name
+     |                    |     |  |  +--rw remote-ce-id* [remote-ce-id-value]
+     |                    |     |  |     +--rw remote-ce-id-value    uint32
+     |                    |     |  +--rw vpws-seamless-integration!
+     |                    |     +--rw ce-range?         uint32 {l2vpn_is_cli_supported}?
+     |                    |     +--rw load-balancing
+     |                    |        +--rw flow-label
+     |                    |           +--rw transmit!
+     |                    |           +--rw receive!
+     |                    |           +--rw both!
+     |                    +--rw route-policy
+     |                       +--rw export?   xr:Route-policy-name
+     +--rw logging
+     |  +--rw pseudowire!
+     |  +--rw bridge-domain!
+     |  +--rw vfi!
+     |  +--rw nsr!
+     |  +--rw pwhe-replication
+     |     +--rw disable!
+     +--rw autodiscovery
+     |  +--rw bgp
+     |     +--rw signaling-protocol
+     |        +--rw bgp
+     |           +--rw mtu
+     |              +--rw mismatch
+     |                 +--rw ignore!
+     +--rw pw-routing
+     |  +--rw global-id?   uint32
+     |  +--rw bgp!
+     |     +--rw rd
+     |        +--rw two-byte-as-number?             uint32
+     |        +--rw two-byte-as-assigned-number?    uint32
+     |        +--rw four-byte-as-number?            uint32
+     |        +--rw four-byte-as-assigned-number?   uint32
+     |        +--rw ipv4-address?                   inet:ipv4-address-no-zone
+     |        +--rw ipv4-address-assigned-number?   uint32
+     +--rw snmp
+        +--rw mib
+           +--rw interface
+           |  +--rw format
+           |     +--rw external!
+           +--rw pseudowire
+              +--rw statistics!
+
+  augment /a3:vrfs/a3:vrf:
+    +--rw evpn-route-sync?   uint32
+  augment /a2:snmp-server/a2:traps:
+    +--rw l2vpn
+    |  +--rw all!
+    |  +--rw vc-up!
+    |  +--rw vc-down!
+    |  +--rw cisco!
+    +--rw vpls
+       +--rw all!
+       +--rw status!
+       +--rw full-raise!
+       +--rw full-clear!
+  augment /a1:interfaces/a1:interface:
+    +--rw host-routing!
+    +--rw gratuitous-announcement-timer!
+    |  +--rw interval?   uint32
+    |  +--rw jitter?     uint32
+    +--rw pw-ether
+    |  +--rw attach
+    |  |  +--rw generic-interface-list?   xr:Cisco-ios-xr-string
+    |  +--rw l2overhead?   uint32
+    +--rw pw-iw
+       +--rw attach
+       |  +--rw generic-interface-list?   xr:Cisco-ios-xr-string
+       +--rw l2overhead?   uint32
+  augment /a1:interfaces/a1:interface-preconfigure:
+    +--rw host-routing!
+    +--rw gratuitous-announcement-timer!
+    |  +--rw interval?   uint32
+    |  +--rw jitter?     uint32
+    +--rw pw-ether
+    |  +--rw attach
+    |  |  +--rw generic-interface-list?   xr:Cisco-ios-xr-string
+    |  +--rw l2overhead?   uint32
+    +--rw pw-iw
+       +--rw attach
+       |  +--rw generic-interface-list?   xr:Cisco-ios-xr-string
+       +--rw l2overhead?   uint32
