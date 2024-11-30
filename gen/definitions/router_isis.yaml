@@ -7,6 +7,18 @@ attributes:
     example: P1
   - yang_name: is-type
     example: level-1
+  - yang_name: set-overload-bit/on-startup/advertise-as-overloaded
+    example: true
+  - yang_name: set-overload-bit/on-startup/advertise-as-overloaded/time-to-advertise
+    optional: true
+    delete_parent: true
+    example: 10
+  - yang_name: set-overload-bit/on-startup/wait-for-bgp
+    example: false
+  - yang_name: set-overload-bit/advertise/external
+    example: true
+  - yang_name: set-overload-bit/advertise/interlevel
+    example: true
   - yang_name: set-overload-bit-levels/level
     tf_name: set_overload_bit_levels
     type: List
@@ -17,6 +29,7 @@ attributes:
       - yang_name: on-startup/advertise-as-overloaded
         example: true
       - yang_name: on-startup/advertise-as-overloaded/time-to-advertise
+        optional: true
         example: 10
       - yang_name: on-startup/wait-for-bgp
         example: false
@@ -52,6 +65,8 @@ attributes:
     example: 65535
   - yang_name: lsp-password/keychain/keychain-name
     tf_name: lsp_password_keychain
+    optional: true
+    no_delete: true
     example: ISIS-KEY
   - yang_name: distribute/link-state/instance-id
     example: 32
@@ -74,7 +89,7 @@ attributes:
   - yang_name: flex-algos/flex-algo
     tf_name: flex_algos
     type: List
-    attributes: 
+    attributes:
       - yang_name: algorithm-number
         id: true
         example: 128

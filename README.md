@@ -1,11 +1,11 @@
-[![Tests](https://github.com/netascode/terraform-provider-iosxr/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-provider-iosxr/actions/workflows/test.yml)
+[![Tests](https://github.com/CiscoDevNet/terraform-provider-iosxr/actions/workflows/test.yml/badge.svg)](https://github.com/CiscoDevNet/terraform-provider-iosxr/actions/workflows/test.yml)
 
 # Terraform Provider IOS-XR
 
 ## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.0
-- [Go](https://golang.org/doc/install) >= 1.19
+- [Go](https://golang.org/doc/install) >= 1.22
 
 ## Building The Provider
 
@@ -37,7 +37,7 @@ This Terraform Provider is available to install automatically via `terraform ini
 [install it as a plugin.](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin)
 After placing it into your plugins directory,  run `terraform init` to initialize it.
 
-Additional documentation, including available resources and their arguments/attributes can be found on the [Terraform documentation website](https://registry.terraform.io/providers/netascode/iosxr/latest/docs).
+Additional documentation, including available resources and their arguments/attributes can be found on the [Terraform documentation website](https://registry.terraform.io/providers/CiscoDevNet/iosxr/latest/docs).
 
 ## Developing the Provider
 

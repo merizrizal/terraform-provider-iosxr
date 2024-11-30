@@ -14,16 +14,32 @@ This resource can manage the Router BGP Neighbor Group configuration.
 
 ```terraform
 resource "iosxr_router_bgp_neighbor_group" "example" {
-  as_number     = "65001"
-  name          = "GROUP1"
-  remote_as     = "65001"
-  update_source = "Loopback0"
+  as_number                           = "65001"
+  name                                = "GROUP1"
+  remote_as                           = "65001"
+  description                         = "My Neighbor Group Description"
+  update_source                       = "Loopback0"
+  advertisement_interval_seconds      = 10
+  bfd_minimum_interval                = 3
+  bfd_multiplier                      = 4
+  bfd_fast_detect                     = true
+  bfd_fast_detect_strict_mode         = false
+  bfd_fast_detect_inheritance_disable = false
   address_families = [
     {
-      af_name                             = "ipv4-labeled-unicast"
-      soft_reconfiguration_inbound_always = true
+      af_name                                    = "ipv4-labeled-unicast"
+      soft_reconfiguration_inbound_always        = true
+      next_hop_self                              = true
+      next_hop_self_inheritance_disable          = true
+      route_reflector_client                     = true
+      route_reflector_client_inheritance_disable = true
+      route_policy_in                            = "ROUTE_POLICY_1"
+      route_policy_out                           = "ROUTE_POLICY_1"
     }
   ]
+  timers_keepalive_interval          = 3
+  timers_holdtime                    = "10"
+  timers_minimum_acceptable_holdtime = "9"
 }
 ```
 
@@ -38,10 +54,32 @@ resource "iosxr_router_bgp_neighbor_group" "example" {
 ### Optional
 
 - `address_families` (Attributes List) Enter Address Family command mode (see [below for nested schema](#nestedatt--address_families))
+- `advertisement_interval_milliseconds` (Number) time in milliseconds
+  - Range: `0`-`999`
+- `advertisement_interval_seconds` (Number) Minimum interval between sending BGP routing updates
+  - Range: `0`-`600`
 - `ao_include_tcp_options_enable` (Boolean) Include other TCP options in the header
 - `ao_key_chain_name` (String) Name of the key chain - maximum 32 characters
+- `bfd_fast_detect` (Boolean) Enable Fast detection
+- `bfd_fast_detect_inheritance_disable` (Boolean) Prevent bfd settings from being inherited from the parent
+- `bfd_fast_detect_strict_mode` (Boolean) Hold down neighbor session until BFD session is up
+- `bfd_minimum_interval` (Number) Hello interval
+  - Range: `3`-`30000`
+- `bfd_multiplier` (Number) Detect multiplier
+  - Range: `2`-`16`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
+- `description` (String) Neighbor specific description
 - `device` (String) A device name from the provider configuration.
+- `local_as` (String) bgp as-number
+- `local_as_dual_as` (Boolean) Dual-AS mode
+- `local_as_no_prepend` (Boolean) Do not prepend local AS to announcements from this neighbor
+- `local_as_replace_as` (Boolean) Prepend only local AS to announcements to this neighbor
 - `remote_as` (String) bgp as-number
+- `timers_holdtime` (String) Holdtime. Set 0 to disable keepalives/hold time.
+- `timers_keepalive_interval` (Number) BGP timers
+  - Range: `0`-`65535`
+- `timers_minimum_acceptable_holdtime` (String) Minimum acceptable holdtime from neighbor. Set 0 to disable keepalives/hold time.
 - `update_source` (String) Source of routing updates
 
 ### Read-Only
@@ -51,16 +89,26 @@ resource "iosxr_router_bgp_neighbor_group" "example" {
 <a id="nestedatt--address_families"></a>
 ### Nested Schema for `address_families`
 
-Optional:
+Required:
 
 - `af_name` (String) Enter Address Family command mode
   - Choices: `all-address-family`, `ipv4-flowspec`, `ipv4-labeled-unicast`, `ipv4-mdt`, `ipv4-multicast`, `ipv4-mvpn`, `ipv4-rt-filter`, `ipv4-sr-policy`, `ipv4-tunnel`, `ipv4-unicast`, `ipv6-flowspec`, `ipv6-labeled-unicast`, `ipv6-multicast`, `ipv6-mvpn`, `ipv6-sr-policy`, `ipv6-unicast`, `l2vpn-evpn`, `l2vpn-mspw`, `l2vpn-vpls-vpws`, `link-state-link-state`, `vpnv4-flowspec`, `vpnv4-multicast`, `vpnv4-unicast`, `vpnv6-flowspec`, `vpnv6-multicast`, `vpnv6-unicast`
+
+Optional:
+
+- `next_hop_self` (Boolean) Disable the next hop calculation for this neighbor
+- `next_hop_self_inheritance_disable` (Boolean) Prevent next-hop-self from being inherited from the parent
+- `route_policy_in` (String) Apply route policy to inbound routes
+- `route_policy_out` (String) Apply route policy to outbound routes
+- `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
+- `route_reflector_client_inheritance_disable` (Boolean) Prevent route-reflector-client from being inherited from the parent
 - `soft_reconfiguration_inbound_always` (Boolean) Always use soft reconfig, even if route refresh is supported
+- `use_af_group` (String) Inherit configuration for this address-family from an af-group
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_bgp_neighbor_group.example "Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]/neighbor-groups/neighbor-group[neighbor-group-name=GROUP1]"
+terraform import iosxr_router_bgp_neighbor_group.example "<as_number>,<name>"
 ```

@@ -38,8 +38,13 @@ data "iosxr_router_isis_interface_address_family" "example" {
 ### Read-Only
 
 - `advertise_prefix_route_policy` (String) Filter routes based on a route policy
+- `fast_reroute_per_prefix` (Boolean) Prefix dependent computation
 - `fast_reroute_per_prefix_levels` (Attributes List) Enable EPCFRR LFA for one level only (see [below for nested schema](#nestedatt--fast_reroute_per_prefix_levels))
+- `fast_reroute_per_prefix_ti_lfa` (Boolean) Enable TI LFA computation
 - `id` (String) The path of the retrieved object.
+- `metric` (Number) Default metric
+- `metric_levels` (Attributes List) Set metric for one level only (see [below for nested schema](#nestedatt--metric_levels))
+- `metric_maximum` (Boolean) Maximum wide metric. All routers will exclude this link from their SPF
 - `prefix_sid_absolute` (Number) Specify the absolute value of Prefix Segement ID
 - `prefix_sid_index` (Number) Specify the index of Prefix Segement ID
 - `prefix_sid_n_flag_clear` (Boolean) Clear N-flag for the prefix-SID
@@ -55,3 +60,11 @@ Read-Only:
 - `ti_lfa` (Boolean) Enable TI LFA computation
 
 
+<a id="nestedatt--metric_levels"></a>
+### Nested Schema for `metric_levels`
+
+Read-Only:
+
+- `level_id` (Number) Set metric for one level only
+- `maximum` (Boolean) Maximum wide metric. All routers will exclude this link from their SPF
+- `metric` (Number) Default metric

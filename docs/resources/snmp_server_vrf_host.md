@@ -35,6 +35,8 @@ resource "iosxr_snmp_server_vrf_host" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `unencrypted_strings` (Attributes List) The UNENCRYPTED (cleartext) community string (see [below for nested schema](#nestedatt--unencrypted_strings))
 
@@ -47,11 +49,11 @@ resource "iosxr_snmp_server_vrf_host" "example" {
 
 Required:
 
+- `community_string` (String) The UNENCRYPTED (cleartext) community string
 - `version_v3_security_level` (String) - Choices: `auth`, `noauth`, `priv`
 
 Optional:
 
-- `community_string` (String) The UNENCRYPTED (cleartext) community string
 - `udp_port` (String) udp port to which notifications should be sent
   - Default value: `default`
 
@@ -60,5 +62,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_snmp_server_vrf_host.example "Cisco-IOS-XR-um-snmp-server-cfg:/snmp-server/vrfs/vrf[vrf-name=VRF1]/hosts/host[address=11.11.11.11]"
+terraform import iosxr_snmp_server_vrf_host.example "<vrf_name>,<address>"
 ```

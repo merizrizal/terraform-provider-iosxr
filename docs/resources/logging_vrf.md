@@ -14,17 +14,21 @@ This resource can manage the Logging VRF configuration.
 
 ```terraform
 resource "iosxr_logging_vrf" "example" {
-  vrf_name = "VRF1"
+  vrf_name = "default"
   host_ipv4_addresses = [
     {
       ipv4_address = "1.1.1.1"
       severity     = "info"
+      port         = 514
+      operator     = "equals"
     }
   ]
   host_ipv6_addresses = [
     {
       ipv6_address = "2001::1"
       severity     = "info"
+      port         = 514
+      operator     = "equals-or-higher"
     }
   ]
 }
@@ -39,6 +43,8 @@ resource "iosxr_logging_vrf" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `host_ipv4_addresses` (Attributes List) IPV4 address of the logging host (see [below for nested schema](#nestedatt--host_ipv4_addresses))
 - `host_ipv6_addresses` (Attributes List) IPV6 address of the logging host (see [below for nested schema](#nestedatt--host_ipv6_addresses))
@@ -50,9 +56,16 @@ resource "iosxr_logging_vrf" "example" {
 <a id="nestedatt--host_ipv4_addresses"></a>
 ### Nested Schema for `host_ipv4_addresses`
 
-Optional:
+Required:
 
 - `ipv4_address` (String) IPV4 address of the logging host
+
+Optional:
+
+- `operator` (String) Set severity operator of  messages for particular remote host/vrf
+  - Choices: `equals`, `equals-or-higher`, `not-equals`
+- `port` (Number) Set UDP port for this remote host/vrf
+  - Range: `0`-`65535`
 - `severity` (String) Set severity of  messages for particular remote host/vrf
   - Choices: `alerts`, `critical`, `debugging`, `emergencies`, `error`, `info`, `notifications`, `warning`
 
@@ -60,9 +73,16 @@ Optional:
 <a id="nestedatt--host_ipv6_addresses"></a>
 ### Nested Schema for `host_ipv6_addresses`
 
-Optional:
+Required:
 
 - `ipv6_address` (String) IPV6 address of the logging host
+
+Optional:
+
+- `operator` (String) Set severity operator of  messages for particular remote host/vrf
+  - Choices: `equals`, `equals-or-higher`, `not-equals`
+- `port` (Number) Set UDP port for this remote host/vrf
+  - Range: `0`-`65535`
 - `severity` (String) Set severity of  messages for particular remote host/vrf
   - Choices: `alerts`, `critical`, `debugging`, `emergencies`, `error`, `info`, `notifications`, `warning`
 
@@ -71,5 +91,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_logging_vrf.example "Cisco-IOS-XR-um-logging-cfg:/logging/vrfs/vrf[vrf-name=VRF1]"
+terraform import iosxr_logging_vrf.example "<vrf_name>"
 ```

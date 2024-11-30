@@ -35,6 +35,7 @@ data "iosxr_router_bgp_vrf" "example" {
 
 - `bfd_minimum_interval` (Number) Hello interval
 - `bfd_multiplier` (Number) Detect multiplier
+- `bgp_router_id` (String) Configure Router-id
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_metric` (Number) default redistributed metric
 - `id` (String) The path of the retrieved object.
@@ -54,6 +55,11 @@ data "iosxr_router_bgp_vrf" "example" {
 
 Read-Only:
 
+- `advertisement_interval_milliseconds` (Number) time in milliseconds
+- `advertisement_interval_seconds` (Number) Minimum interval between sending BGP routing updates
+- `bfd_fast_detect` (Boolean) Enable Fast detection
+- `bfd_fast_detect_disable` (Boolean) Prevent bfd settings from being inherited from the parent
+- `bfd_fast_detect_strict_mode` (Boolean) Hold down neighbor session until BFD session is up
 - `bfd_minimum_interval` (Number) Hello interval
 - `bfd_multiplier` (Number) Detect multiplier
 - `description` (String) Neighbor specific description
@@ -71,5 +77,4 @@ Read-Only:
 - `timers_keepalive_interval` (Number) BGP timers
 - `ttl_security` (Boolean) Enable EBGP TTL security
 - `update_source` (String) Source of routing updates
-
-
+- `use_neighbor_group` (String) Inherit configuration from a neighbor-group

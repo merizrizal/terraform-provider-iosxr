@@ -39,11 +39,14 @@ resource "iosxr_l2vpn_bridge_group_bridge_domain" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `evis` (Attributes List) Ethernet VPN identifier (see [below for nested schema](#nestedatt--evis))
 - `interfaces` (Attributes List) Specify interface name (see [below for nested schema](#nestedatt--interfaces))
 - `mtu` (Number) Maximum transmission unit (payload) for this Bridge Domain
   - Range: `46`-`65535`
+- `segment_routing_srv6_evis` (Attributes List) Ethernet VPN identifier for srv6 (see [below for nested schema](#nestedatt--segment_routing_srv6_evis))
 - `storm_control_broadcast_kbps` (Number) Set the storm control kbps
   - Range: `64`-`1280000`
 - `storm_control_broadcast_pps` (Number) Set the storm control pps
@@ -65,7 +68,7 @@ resource "iosxr_l2vpn_bridge_group_bridge_domain" "example" {
 <a id="nestedatt--evis"></a>
 ### Nested Schema for `evis`
 
-Optional:
+Required:
 
 - `vpn_id` (Number) Ethernet VPN identifier
   - Range: `1`-`65534`
@@ -74,16 +77,28 @@ Optional:
 <a id="nestedatt--interfaces"></a>
 ### Nested Schema for `interfaces`
 
-Optional:
+Required:
 
 - `interface_name` (String) Specify interface name
+
+Optional:
+
 - `split_horizon_group` (Boolean) Configure split-horizon group
+
+
+<a id="nestedatt--segment_routing_srv6_evis"></a>
+### Nested Schema for `segment_routing_srv6_evis`
+
+Required:
+
+- `vpn_id` (Number) Ethernet VPN identifier for srv6
+  - Range: `1`-`65534`
 
 
 <a id="nestedatt--vnis"></a>
 ### Nested Schema for `vnis`
 
-Optional:
+Required:
 
 - `vni_id` (Number) VxLAN VPN identifier
   - Range: `1`-`16777215`
@@ -93,5 +108,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_l2vpn_bridge_group_bridge_domain.example "Cisco-IOS-XR-um-l2vpn-cfg:/l2vpn/bridge/groups/group[group-name=BG123]/bridge-domains/bridge-domain[bridge-domain-name=BD123]"
+terraform import iosxr_l2vpn_bridge_group_bridge_domain.example "<bridge_group_name>,<bridge_domain_name>"
 ```

@@ -39,6 +39,8 @@ resource "iosxr_logging" "example" {
   - Range: `307200`-`125000000`
 - `console` (String) Set console logging
   - Choices: `alerts`, `critical`, `debugging`, `disable`, `emergencies`, `errors`, `informational`, `notifications`, `warning`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `events_display_location` (Boolean) Include alarm source location in message text
 - `events_level` (String) Log all events with equal or higher (lower level) severity
@@ -62,5 +64,5 @@ resource "iosxr_logging" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_logging.example "Cisco-IOS-XR-um-logging-cfg:/logging"
+terraform import iosxr_logging.example ""
 ```

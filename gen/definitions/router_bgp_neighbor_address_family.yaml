@@ -1,0 +1,87 @@
+---
+name: Router BGP Neighbor Address Family
+path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=%s]/neighbors/neighbor[neighbor-address=%s]/address-families/address-family[af-name=%s]
+doc_category: BGP
+attributes:
+  - yang_name: as-number
+    read_raw: true
+    example: 65001
+  - yang_name: neighbor-address
+    example: 10.1.1.2
+  - yang_name: af-name
+    example: vpnv4-unicast
+  - yang_name: import/stitching-rt/re-originate/stitching-rt
+    example: true
+  - yang_name: route-reflector-client
+    example: true
+  - yang_name: route-reflector-client/inheritance-disable
+    example: true
+  - yang_name: advertise/vpnv4/unicast/enable/re-originated/stitching-rt
+    example: true
+  - yang_name: next-hop-self
+    example: true
+  - yang_name: next-hop-self/inheritance-disable
+    example: true
+  - yang_name: encapsulation-type/srv6
+    example: true
+  - yang_name: route-policy/in
+    example: ROUTE_POLICY_1
+  - yang_name: route-policy/out
+    example: ROUTE_POLICY_1
+  - yang_name: soft-reconfiguration/inbound/always
+    example: true
+  - yang_name: send-community-ebgp
+    example: true
+  - yang_name: send-community-ebgp/inheritance-disable
+    example: true
+  - yang_name: maximum-prefix/prefix-limit
+    tf_name: maximum_prefix_limit
+    optional: true
+    delete_parent: true
+    example: 1248576
+  - yang_name: maximum-prefix/threshold
+    optional: true
+    delete_parent: true
+    example: 80
+  - yang_name: maximum-prefix/restart
+    delete_parent: true
+    example: 5
+    exclude_test: true
+  - yang_name: maximum-prefix/discard-extra-paths
+    delete_parent: true
+    example: false
+    exclude_test: true
+  - yang_name: maximum-prefix/warning-only
+    delete_parent: true
+    example: true
+  - yang_name: default-originate/route-policy
+    example: ROUTE_POLICY_1
+  - yang_name: default-originate/inheritance-disable
+    example: true
+
+test_prerequisites:
+  - path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]
+    attributes:
+      - name: as-number
+        value: 65001
+    lists:
+      - name: address-families/address-family
+        key: af-name
+        items:
+          - attributes:
+              - name: af-name
+                value: vpnv4-unicast
+      - name: neighbors/neighbor
+        key: neighbor-address
+        items:
+          - attributes:
+              - name: neighbor-address
+                value: 10.1.1.2
+              - name: remote-as
+                value: 65001
+  - path: Cisco-IOS-XR-um-route-policy-cfg:/routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
+    attributes:
+      - name: route-policy-name
+        value: ROUTE_POLICY_1
+      - name: rpl-route-policy
+        value: "route-policy ROUTE_POLICY_1\\n  pass\\nend-policy\\n"

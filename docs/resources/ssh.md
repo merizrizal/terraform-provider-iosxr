@@ -21,7 +21,9 @@ resource "iosxr_ssh" "example" {
   server_v2            = true
   server_vrfs = [
     {
-      vrf_name = "VRF1"
+      vrf_name         = "VRF1"
+      ipv4_access_list = "ACL1"
+      ipv6_access_list = "ACL2"
     }
   ]
 }
@@ -32,6 +34,8 @@ resource "iosxr_ssh" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `server_dscp` (Number) Cisco ssh server DSCP
   - Range: `0`-`63`
@@ -50,14 +54,19 @@ resource "iosxr_ssh" "example" {
 <a id="nestedatt--server_vrfs"></a>
 ### Nested Schema for `server_vrfs`
 
-Optional:
+Required:
 
 - `vrf_name` (String) Cisco sshd VRF name
+
+Optional:
+
+- `ipv4_access_list` (String) Configure IPv4 access-list
+- `ipv6_access_list` (String) Configure IPv6 access-list
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_ssh.example "Cisco-IOS-XR-um-ssh-cfg:/ssh"
+terraform import iosxr_ssh.example ""
 ```

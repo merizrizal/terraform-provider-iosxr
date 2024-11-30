@@ -1,3 +1,20 @@
+// Copyright © 2023 Cisco Systems, Inc. and its affiliates.
+// All rights reserved.
+//
+// Licensed under the Mozilla Public License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//	https://mozilla.org/MPL/2.0/
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// SPDX-License-Identifier: MPL-2.0
+
 package client
 
 import (
@@ -10,6 +27,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	pf_path "github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/gnmic/api"
@@ -21,18 +39,21 @@ const (
 	DefaultBackoffMinDelay    int     = 4
 	DefaultBackoffMaxDelay    int     = 60
 	DefaultBackoffDelayFactor float64 = 3
+	GnmiTimeout                       = 15 * time.Second
 )
 
-type SetOperation string
+type SetOperationType string
 
 const (
-	Update  SetOperation = "update"
-	Replace SetOperation = "replace"
-	Delete  SetOperation = "delete"
+	Update  SetOperationType = "update"
+	Replace SetOperationType = "replace"
+	Delete  SetOperationType = "delete"
 )
 
 type Client struct {
 	Devices map[string]*Device
+	// Reuse connection
+	ReuseConnection bool
 	// Maximum number of retries
 	MaxRetries int
 	// Minimum delay between two retries
@@ -48,10 +69,17 @@ type Device struct {
 	Target   *target.Target
 }
 
-func NewClient() Client {
+type SetOperation struct {
+	Path      string
+	Body      string
+	Operation SetOperationType
+}
+
+func NewClient(reuseConnection bool) Client {
 	devices := make(map[string]*Device)
 	return Client{
 		Devices:            devices,
+		ReuseConnection:    reuseConnection,
 		MaxRetries:         DefaultMaxRetries,
 		BackoffMinDelay:    DefaultBackoffMinDelay,
 		BackoffMaxDelay:    DefaultBackoffMaxDelay,
@@ -84,68 +112,79 @@ func (c *Client) AddTarget(ctx context.Context, device, host, username, password
 		)
 		return diags
 	}
-	err = t.CreateGNMIClient(ctx)
-	if err != nil {
-		diags.AddError(
-			"Unable to create gNMI client",
-			"Unable to create gNMI client:\n\n"+err.Error(),
-		)
-		return diags
+
+	if c.ReuseConnection {
+		err = t.CreateGNMIClient(ctx)
+		if err != nil {
+			diags.AddError(
+				"Unable to create gNMI client",
+				"Unable to create gNMI client:\n\n"+err.Error(),
+			)
+			return diags
+		}
 	}
 
-	if device == "" {
-		c.Devices[""] = &Device{}
-		c.Devices[""].Target = t
-		c.Devices[""].SetMutex = &sync.Mutex{}
-	} else {
-		c.Devices[device] = &Device{}
-		c.Devices[device].Target = t
-		c.Devices[device].SetMutex = &sync.Mutex{}
-	}
+	c.Devices[device] = &Device{}
+	c.Devices[device].Target = t
+	c.Devices[device].SetMutex = &sync.Mutex{}
 
 	return nil
 }
 
-func (c *Client) Set(ctx context.Context, device, path, body string, operation SetOperation) (*gnmi.SetResponse, diag.Diagnostics) {
+func (c *Client) Set(ctx context.Context, device string, operations ...SetOperation) (*gnmi.SetResponse, diag.Diagnostics) {
 	var diags diag.Diagnostics
+
+	if _, ok := c.Devices[device]; !ok {
+		diags.AddAttributeError(pf_path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device))
+		return nil, diags
+	}
 
 	target := c.Devices[device].Target
 
-	var setReq *gnmi.SetRequest
-	var err error
-	if operation == Update {
-		setReq, err = api.NewSetRequest(
-			api.Update(
-				api.Path(path),
-				api.Value(body, "json_ietf"),
-			),
-		)
-	} else if operation == Replace {
-		setReq, err = api.NewSetRequest(
-			api.Replace(
-				api.Path(path),
-				api.Value(body, "json_ietf"),
-			),
-		)
-	} else if operation == Delete {
-		setReq, err = api.NewSetRequest(
-			api.Delete(
-				path,
-			),
-		)
+	var ops []api.GNMIOption
+	for _, op := range operations {
+		if op.Operation == Update {
+			ops = append(ops, api.Update(api.Path(op.Path), api.Value(op.Body, "json_ietf")))
+		} else if op.Operation == Replace {
+			ops = append(ops, api.Replace(api.Path(op.Path), api.Value(op.Body, "json_ietf")))
+		} else if op.Operation == Delete {
+			ops = append(ops, api.Delete(op.Path))
+		}
 	}
+
+	setReq, err := api.NewSetRequest(ops...)
 	if err != nil {
 		diags.AddError("Client Error", fmt.Sprintf("Failed to create set request, got error: %s", err))
 		return nil, diags
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("gNMI set request: %s", setReq.String()))
-
 	var setResp *gnmi.SetResponse
 	for attempts := 0; ; attempts++ {
 		c.Devices[device].SetMutex.Lock()
-		setResp, err = target.Set(ctx, setReq)
+		if !c.ReuseConnection {
+			err = target.CreateGNMIClient(ctx)
+			if err != nil {
+				if ok := c.Backoff(ctx, attempts); !ok {
+					diags.AddError(
+						"Unable to create gNMI client",
+						"Unable to create gNMI client:\n\n"+err.Error(),
+					)
+					return nil, diags
+				} else {
+					tflog.Error(ctx, fmt.Sprintf("Unable to create gNMI client: %s, retries: %v", err.Error(), attempts))
+					continue
+				}
+			}
+		}
+		tCtx, cancel := context.WithTimeout(ctx, GnmiTimeout)
+		defer cancel()
+		tflog.Debug(ctx, fmt.Sprintf("gNMI set request: %s", setReq.String()))
+		setResp, err = target.Set(tCtx, setReq)
+		tflog.Debug(ctx, fmt.Sprintf("gNMI set response: %s", setResp.String()))
 		c.Devices[device].SetMutex.Unlock()
+		if !c.ReuseConnection {
+			target.Close()
+		}
 		if err != nil {
 			if ok := c.Backoff(ctx, attempts); !ok {
 				diags.AddError("Client Error", fmt.Sprintf("Set request failed, got error: %s", err))
@@ -158,13 +197,16 @@ func (c *Client) Set(ctx context.Context, device, path, body string, operation S
 		break
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("gNMI set response: %s", setResp.String()))
-
 	return setResp, nil
 }
 
 func (c *Client) Get(ctx context.Context, device, path string) (*gnmi.GetResponse, diag.Diagnostics) {
 	var diags diag.Diagnostics
+
+	if _, ok := c.Devices[device]; !ok {
+		diags.AddAttributeError(pf_path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device))
+		return nil, diags
+	}
 
 	target := c.Devices[device].Target
 
@@ -174,11 +216,31 @@ func (c *Client) Get(ctx context.Context, device, path string) (*gnmi.GetRespons
 		return nil, diags
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("gNMI get request: %s", getReq.String()))
-
 	var getResp *gnmi.GetResponse
 	for attempts := 0; ; attempts++ {
-		getResp, err = target.Get(ctx, getReq)
+		tflog.Debug(ctx, fmt.Sprintf("gNMI get request: %s", getReq.String()))
+		if !c.ReuseConnection {
+			err = target.CreateGNMIClient(ctx)
+			if err != nil {
+				if ok := c.Backoff(ctx, attempts); !ok {
+					diags.AddError(
+						"Unable to create gNMI client",
+						"Unable to create gNMI client:\n\n"+err.Error(),
+					)
+					return nil, diags
+				} else {
+					tflog.Error(ctx, fmt.Sprintf("Unable to create gNMI client: %s, retries: %v", err.Error(), attempts))
+					continue
+				}
+			}
+		}
+		tCtx, cancel := context.WithTimeout(ctx, GnmiTimeout)
+		defer cancel()
+		getResp, err = target.Get(tCtx, getReq)
+		if !c.ReuseConnection {
+			target.Close()
+		}
+		tflog.Debug(ctx, fmt.Sprintf("gNMI get response: %s", getResp.String()))
 		if err != nil {
 			if ok := c.Backoff(ctx, attempts); !ok {
 				diags.AddError("Client Error", fmt.Sprintf("Get request failed, got error: %s", err))
@@ -190,7 +252,6 @@ func (c *Client) Get(ctx context.Context, device, path string) (*gnmi.GetRespons
 		}
 		break
 	}
-	tflog.Debug(ctx, fmt.Sprintf("gNMI get response: %s", getResp.String()))
 
 	return getResp, nil
 }

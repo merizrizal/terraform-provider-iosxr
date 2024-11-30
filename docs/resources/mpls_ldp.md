@@ -17,7 +17,8 @@ resource "iosxr_mpls_ldp" "example" {
   router_id = "1.2.3.4"
   address_families = [
     {
-      af_name = "ipv4"
+      af_name                              = "ipv4"
+      label_local_allocate_for_access_list = "ACL1"
     }
   ]
   interfaces = [
@@ -25,6 +26,23 @@ resource "iosxr_mpls_ldp" "example" {
       interface_name = "GigabitEthernet0/0/0/1"
     }
   ]
+  capabilities_sac_ipv4_disable   = true
+  capabilities_sac_ipv6_disable   = true
+  capabilities_sac_fec128_disable = true
+  capabilities_sac_fec129_disable = true
+  igp_sync_delay_on_session_up    = 10
+  igp_sync_delay_on_proc_restart  = 100
+  mldp_logging_notifications      = true
+  mldp_address_families = [
+    {
+      name                              = "ipv4"
+      make_before_break_delay           = 30
+      forwarding_recursive              = true
+      forwarding_recursive_route_policy = "ROUTE_POLICY_1"
+      recursive_fec                     = true
+    }
+  ]
+  session_protection = true
 }
 ```
 
@@ -34,9 +52,22 @@ resource "iosxr_mpls_ldp" "example" {
 ### Optional
 
 - `address_families` (Attributes List) Configure Address Family and its parameters (see [below for nested schema](#nestedatt--address_families))
+- `capabilities_sac_fec128_disable` (Boolean) Disable exchanging PW FEC128 label bindings
+- `capabilities_sac_fec129_disable` (Boolean) Disable exchanging PW FEC129 label bindings
+- `capabilities_sac_ipv4_disable` (Boolean) Disable exchanging IPv4 prefix label bindings
+- `capabilities_sac_ipv6_disable` (Boolean) Disable exchanging IPv6 prefix label bindings
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `igp_sync_delay_on_proc_restart` (Number) Global sync up delay to be used after process restart
+  - Range: `60`-`600`
+- `igp_sync_delay_on_session_up` (Number) Interface sync-up delay after session up
+  - Range: `5`-`300`
 - `interfaces` (Attributes List) Enable LDP on an interface and enter interface submode (see [below for nested schema](#nestedatt--interfaces))
+- `mldp_address_families` (Attributes List) Configure Address Family and its parameters (see [below for nested schema](#nestedatt--mldp_address_families))
+- `mldp_logging_notifications` (Boolean) MLDP logging notifications
 - `router_id` (String) Configure router Id
+- `session_protection` (Boolean) Configure session protection parameters
 
 ### Read-Only
 
@@ -45,23 +76,45 @@ resource "iosxr_mpls_ldp" "example" {
 <a id="nestedatt--address_families"></a>
 ### Nested Schema for `address_families`
 
-Optional:
+Required:
 
 - `af_name` (String) Configure Address Family and its parameters
   - Choices: `ipv4`, `ipv6`
+
+Optional:
+
+- `label_local_allocate_for_access_list` (String) IP access-list
+- `label_local_allocate_for_host_routes` (Boolean) Allocate label for host routes only
 
 
 <a id="nestedatt--interfaces"></a>
 ### Nested Schema for `interfaces`
 
-Optional:
+Required:
 
 - `interface_name` (String) Enable LDP on an interface and enter interface submode
+
+
+<a id="nestedatt--mldp_address_families"></a>
+### Nested Schema for `mldp_address_families`
+
+Required:
+
+- `name` (String) Configure Address Family and its parameters
+  - Choices: `ipv4`
+
+Optional:
+
+- `forwarding_recursive` (Boolean) Enable recursive forwarding
+- `forwarding_recursive_route_policy` (String) Route policy
+- `make_before_break_delay` (Number) MBB delay
+  - Range: `0`-`600`
+- `recursive_fec` (Boolean) MLDP Recursive FEC enable
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_mpls_ldp.example "Cisco-IOS-XR-um-mpls-ldp-cfg:/mpls/ldp"
+terraform import iosxr_mpls_ldp.example ""
 ```

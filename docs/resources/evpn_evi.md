@@ -74,6 +74,8 @@ resource "iosxr_evpn_evi" "example" {
 - `bgp_route_target_import_ipv4_address_format` (Attributes List) IP address (see [below for nested schema](#nestedatt--bgp_route_target_import_ipv4_address_format))
 - `bgp_route_target_import_two_byte_as_format` (Attributes List) Two Byte AS Number Route Target (see [below for nested schema](#nestedatt--bgp_route_target_import_two_byte_as_format))
 - `control_word_disable` (Boolean) Disabling control-word
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `description` (String) Description for this EVPN Instance
 - `device` (String) A device name from the provider configuration.
 - `etree` (Boolean) Configure EVPN Instance E-Tree
@@ -90,7 +92,7 @@ resource "iosxr_evpn_evi" "example" {
 <a id="nestedatt--bgp_route_target_export_four_byte_as_format"></a>
 ### Nested Schema for `bgp_route_target_export_four_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Four Byte AS number
   - Range: `65536`-`4294967295`
@@ -101,7 +103,7 @@ Optional:
 <a id="nestedatt--bgp_route_target_export_ipv4_address_format"></a>
 ### Nested Schema for `bgp_route_target_export_ipv4_address_format`
 
-Optional:
+Required:
 
 - `assigned_number` (Number) IP-address:nn (hex or decimal format)
   - Range: `0`-`65535`
@@ -111,7 +113,7 @@ Optional:
 <a id="nestedatt--bgp_route_target_export_two_byte_as_format"></a>
 ### Nested Schema for `bgp_route_target_export_two_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Two Byte AS Number
   - Range: `1`-`65535`
@@ -122,7 +124,7 @@ Optional:
 <a id="nestedatt--bgp_route_target_import_four_byte_as_format"></a>
 ### Nested Schema for `bgp_route_target_import_four_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Four Byte AS number
   - Range: `65536`-`4294967295`
@@ -133,7 +135,7 @@ Optional:
 <a id="nestedatt--bgp_route_target_import_ipv4_address_format"></a>
 ### Nested Schema for `bgp_route_target_import_ipv4_address_format`
 
-Optional:
+Required:
 
 - `assigned_number` (Number) IP-address:nn (hex or decimal format)
   - Range: `0`-`65535`
@@ -143,7 +145,7 @@ Optional:
 <a id="nestedatt--bgp_route_target_import_two_byte_as_format"></a>
 ### Nested Schema for `bgp_route_target_import_two_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Two Byte AS Number
   - Range: `1`-`65535`
@@ -155,5 +157,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_evpn_evi.example "Cisco-IOS-XR-um-l2vpn-cfg:/evpn/evis/evi[vpn-id=1234]"
+terraform import iosxr_evpn_evi.example "<vpn_id>"
 ```

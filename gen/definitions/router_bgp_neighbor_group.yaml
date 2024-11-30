@@ -4,21 +4,60 @@ path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=%s]/neighbor-group
 doc_category: BGP
 attributes:
   - yang_name: as-number
+    read_raw: true
     example: 65001
   - yang_name: neighbor-group-name
     tf_name: name
     id: true
     example: GROUP1
   - yang_name: remote-as
+    read_raw: true
     example: 65001
+  - yang_name: description
+    example: My Neighbor Group Description
   - yang_name: update-source
     example: Loopback0
+  - yang_name: advertisement-interval/time-in-seconds
+    tf_name: advertisement_interval_seconds
+    optional: true
+    delete_parent: true
+    example: 10
+  - yang_name: advertisement-interval/time-in-milliseconds
+    tf_name: advertisement_interval_milliseconds
+    delete_parent: true
+    example: 500
+    exclude_test: true
   - yang_name: ao/key-chain-name
     example: BGP-GROUP1-CLIENTS
     exclude_test: true
   - yang_name: ao/include-tcp-options/enable
     example: true
     exclude_test: true
+  - yang_name: bfd/minimum-interval
+    example: 3
+  - yang_name: bfd/multiplier
+    example: 4
+  - yang_name: bfd/fast-detect
+    example: true
+  - yang_name: bfd/fast-detect/strict-mode
+    example: false
+  - yang_name: bfd/fast-detect/inheritance-disable
+    example: false
+  - yang_name: local-as/as-number
+    tf_name: local_as
+    exclude_test: true
+    example: 65003
+  - yang_name: local-as/no-prepend
+    exclude_test: true
+    example: true
+  - yang_name: local-as/no-prepend/replace-as
+    tf_name: local_as_replace_as
+    exclude_test: true
+    example: true
+  - yang_name: local-as/no-prepend/replace-as/dual-as
+    tf_name: local_as_dual_as
+    exclude_test: true
+    example: true
   - yang_name: address-families/address-family
     tf_name: address_families
     type: List
@@ -28,3 +67,41 @@ attributes:
         example: ipv4-labeled-unicast
       - yang_name: soft-reconfiguration/inbound/always
         example: true
+      - yang_name: next-hop-self
+        example: true
+      - yang_name: next-hop-self/inheritance-disable
+        example: true
+      - yang_name: route-reflector-client
+        example: true
+      - yang_name: route-reflector-client/inheritance-disable
+        example: true
+      - yang_name: route-policy/in
+        example: ROUTE_POLICY_1
+      - yang_name: route-policy/out
+        example: ROUTE_POLICY_1
+      - yang_name: use/af-group
+        example: ROUTE_POLICY_1
+        exclude_test: true
+  - yang_name: timers/keepalive-interval
+    optional: true
+    delete_parent: true
+    example: 3
+  - yang_name: timers/holdtime
+    optional: true
+    delete_parent: true
+    example: 10
+  - yang_name: timers/minimum-acceptable-holdtime
+    delete_parent: true
+    example: 9
+
+test_prerequisites:
+  - path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]
+    attributes:
+      - name: as-number
+        value: 65001
+  - path: Cisco-IOS-XR-um-route-policy-cfg:/routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
+    attributes:
+      - name: route-policy-name
+        value: ROUTE_POLICY_1
+      - name: rpl-route-policy
+        value: "route-policy ROUTE_POLICY_1\\n  pass\\nend-policy\\n"

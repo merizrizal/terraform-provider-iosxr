@@ -14,10 +14,12 @@ This resource can manage the Router ISIS Interface Address Family configuration.
 
 ```terraform
 resource "iosxr_router_isis_interface_address_family" "example" {
-  process_id     = "P1"
-  interface_name = "GigabitEthernet0/0/0/1"
-  af_name        = "ipv4"
-  saf_name       = "unicast"
+  process_id                     = "P1"
+  interface_name                 = "GigabitEthernet0/0/0/1"
+  af_name                        = "ipv4"
+  saf_name                       = "unicast"
+  fast_reroute_per_prefix        = true
+  fast_reroute_per_prefix_ti_lfa = true
   fast_reroute_per_prefix_levels = [
     {
       level_id = 1
@@ -26,6 +28,13 @@ resource "iosxr_router_isis_interface_address_family" "example" {
   ]
   tag                           = 100
   advertise_prefix_route_policy = "ROUTE_POLICY_1"
+  metric                        = 500
+  metric_levels = [
+    {
+      level_id = 1
+      maximum  = true
+    }
+  ]
 }
 ```
 
@@ -44,8 +53,16 @@ resource "iosxr_router_isis_interface_address_family" "example" {
 ### Optional
 
 - `advertise_prefix_route_policy` (String) Filter routes based on a route policy
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `fast_reroute_per_prefix` (Boolean) Prefix dependent computation
 - `fast_reroute_per_prefix_levels` (Attributes List) Enable EPCFRR LFA for one level only (see [below for nested schema](#nestedatt--fast_reroute_per_prefix_levels))
+- `fast_reroute_per_prefix_ti_lfa` (Boolean) Enable TI LFA computation
+- `metric` (Number) Default metric
+  - Range: `1`-`16777214`
+- `metric_levels` (Attributes List) Set metric for one level only (see [below for nested schema](#nestedatt--metric_levels))
+- `metric_maximum` (Boolean) Maximum wide metric. All routers will exclude this link from their SPF
 - `prefix_sid_absolute` (Number) Specify the absolute value of Prefix Segement ID
   - Range: `16000`-`1048575`
 - `prefix_sid_index` (Number) Specify the index of Prefix Segement ID
@@ -63,16 +80,34 @@ resource "iosxr_router_isis_interface_address_family" "example" {
 <a id="nestedatt--fast_reroute_per_prefix_levels"></a>
 ### Nested Schema for `fast_reroute_per_prefix_levels`
 
-Optional:
+Required:
 
 - `level_id` (Number) Enable EPCFRR LFA for one level only
   - Range: `1`-`2`
+
+Optional:
+
 - `ti_lfa` (Boolean) Enable TI LFA computation
+
+
+<a id="nestedatt--metric_levels"></a>
+### Nested Schema for `metric_levels`
+
+Required:
+
+- `level_id` (Number) Set metric for one level only
+  - Range: `1`-`2`
+
+Optional:
+
+- `maximum` (Boolean) Maximum wide metric. All routers will exclude this link from their SPF
+- `metric` (Number) Default metric
+  - Range: `1`-`16777214`
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_isis_interface_address_family.example "Cisco-IOS-XR-um-router-isis-cfg:/router/isis/processes/process[process-id=P1]/interfaces/interface[interface-name=GigabitEthernet0/0/0/1]/address-families/address-family[af-name=ipv4][saf-name=unicast]"
+terraform import iosxr_router_isis_interface_address_family.example "<process_id>,<interface_name>,<af_name>,<saf_name>"
 ```

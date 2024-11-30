@@ -21,6 +21,10 @@ resource "iosxr_router_ospf" "example" {
   default_information_originate             = true
   default_information_originate_always      = true
   default_information_originate_metric_type = 1
+  auto_cost_reference_bandwidth             = 100000
+  auto_cost_disable                         = false
+  segment_routing_mpls                      = true
+  segment_routing_sr_prefer                 = true
   areas = [
     {
       area_id = "0"

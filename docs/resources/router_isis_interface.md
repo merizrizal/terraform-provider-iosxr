@@ -25,6 +25,7 @@ resource "iosxr_router_isis_interface" "example" {
   suppressed              = false
   shutdown                = false
   hello_password_keychain = "KEY_CHAIN_1"
+  bfd_fast_detect_ipv6    = true
 }
 ```
 
@@ -38,8 +39,11 @@ resource "iosxr_router_isis_interface" "example" {
 
 ### Optional
 
+- `bfd_fast_detect_ipv6` (Boolean) Address Family
 - `circuit_type` (String) Configure circuit type for interface
   - Choices: `level-1`, `level-1-2`, `level-2-only`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `hello_padding_disable` (Boolean) Disable hello-padding
 - `hello_padding_sometimes` (Boolean) Enable hello-padding during adjacency formation only
@@ -62,5 +66,5 @@ resource "iosxr_router_isis_interface" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_isis_interface.example "Cisco-IOS-XR-um-router-isis-cfg:/router/isis/processes/process[process-id=P1]/interfaces/interface[interface-name=GigabitEthernet0/0/0/1]"
+terraform import iosxr_router_isis_interface.example "<process_id>,<interface_name>"
 ```

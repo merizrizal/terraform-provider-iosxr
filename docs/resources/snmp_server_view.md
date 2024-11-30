@@ -33,6 +33,8 @@ resource "iosxr_snmp_server_view" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `mib_view_families` (Attributes List) (see [below for nested schema](#nestedatt--mib_view_families))
 
@@ -43,16 +45,19 @@ resource "iosxr_snmp_server_view" "example" {
 <a id="nestedatt--mib_view_families"></a>
 ### Nested Schema for `mib_view_families`
 
+Required:
+
+- `name` (String) MIB view family name
+
 Optional:
 
 - `excluded` (Boolean) MIB family is excluded from the view
 - `included` (Boolean) MIB family is included in the view
-- `name` (String) MIB view family name
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_snmp_server_view.example "Cisco-IOS-XR-um-snmp-server-cfg:/snmp-server/views/view[view-name=VIEW12]"
+terraform import iosxr_snmp_server_view.example "<view_name>"
 ```

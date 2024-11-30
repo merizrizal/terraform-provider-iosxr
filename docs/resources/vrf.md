@@ -77,6 +77,8 @@ resource "iosxr_vrf" "example" {
 - `address_family_ipv6_unicast_import_route_target_four_byte_as_format` (Attributes List) Four Byte AS number Route Target (see [below for nested schema](#nestedatt--address_family_ipv6_unicast_import_route_target_four_byte_as_format))
 - `address_family_ipv6_unicast_import_route_target_ip_address_format` (Attributes List) IP address (see [below for nested schema](#nestedatt--address_family_ipv6_unicast_import_route_target_ip_address_format))
 - `address_family_ipv6_unicast_import_route_target_two_byte_as_format` (Attributes List) Two Byte AS Number Route Target (see [below for nested schema](#nestedatt--address_family_ipv6_unicast_import_route_target_two_byte_as_format))
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `description` (String) A description for the VRF
 - `device` (String) A device name from the provider configuration.
 - `rd_four_byte_as_as_number` (String) 4-byte AS number
@@ -97,7 +99,7 @@ resource "iosxr_vrf" "example" {
 <a id="nestedatt--address_family_ipv4_unicast_export_route_target_four_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv4_unicast_export_route_target_four_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Four Byte AS number
   - Range: `65536`-`4294967295`
@@ -109,7 +111,7 @@ Optional:
 <a id="nestedatt--address_family_ipv4_unicast_export_route_target_ip_address_format"></a>
 ### Nested Schema for `address_family_ipv4_unicast_export_route_target_ip_address_format`
 
-Optional:
+Required:
 
 - `index` (Number) IPv4Address:index (hex or decimal format)
   - Range: `0`-`65535`
@@ -120,7 +122,7 @@ Optional:
 <a id="nestedatt--address_family_ipv4_unicast_export_route_target_two_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv4_unicast_export_route_target_two_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Two Byte AS Number
   - Range: `1`-`65535`
@@ -132,7 +134,7 @@ Optional:
 <a id="nestedatt--address_family_ipv4_unicast_import_route_target_four_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv4_unicast_import_route_target_four_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Four Byte AS number
   - Range: `65536`-`4294967295`
@@ -144,7 +146,7 @@ Optional:
 <a id="nestedatt--address_family_ipv4_unicast_import_route_target_ip_address_format"></a>
 ### Nested Schema for `address_family_ipv4_unicast_import_route_target_ip_address_format`
 
-Optional:
+Required:
 
 - `index` (Number) IPv4Address:index (hex or decimal format)
   - Range: `0`-`65535`
@@ -155,7 +157,7 @@ Optional:
 <a id="nestedatt--address_family_ipv4_unicast_import_route_target_two_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv4_unicast_import_route_target_two_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Two Byte AS Number
   - Range: `1`-`65535`
@@ -167,7 +169,7 @@ Optional:
 <a id="nestedatt--address_family_ipv6_unicast_export_route_target_four_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv6_unicast_export_route_target_four_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Four Byte AS number
   - Range: `65536`-`4294967295`
@@ -179,7 +181,7 @@ Optional:
 <a id="nestedatt--address_family_ipv6_unicast_export_route_target_ip_address_format"></a>
 ### Nested Schema for `address_family_ipv6_unicast_export_route_target_ip_address_format`
 
-Optional:
+Required:
 
 - `index` (Number) IPv4Address:index (hex or decimal format)
   - Range: `0`-`65535`
@@ -190,7 +192,7 @@ Optional:
 <a id="nestedatt--address_family_ipv6_unicast_export_route_target_two_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv6_unicast_export_route_target_two_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Two Byte AS Number
   - Range: `1`-`65535`
@@ -202,7 +204,7 @@ Optional:
 <a id="nestedatt--address_family_ipv6_unicast_import_route_target_four_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv6_unicast_import_route_target_four_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Four Byte AS number
   - Range: `65536`-`4294967295`
@@ -214,7 +216,7 @@ Optional:
 <a id="nestedatt--address_family_ipv6_unicast_import_route_target_ip_address_format"></a>
 ### Nested Schema for `address_family_ipv6_unicast_import_route_target_ip_address_format`
 
-Optional:
+Required:
 
 - `index` (Number) IPv4Address:index (hex or decimal format)
   - Range: `0`-`65535`
@@ -225,7 +227,7 @@ Optional:
 <a id="nestedatt--address_family_ipv6_unicast_import_route_target_two_byte_as_format"></a>
 ### Nested Schema for `address_family_ipv6_unicast_import_route_target_two_byte_as_format`
 
-Optional:
+Required:
 
 - `as_number` (Number) Two Byte AS Number
   - Range: `1`-`65535`
@@ -238,5 +240,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_vrf.example "Cisco-IOS-XR-um-vrf-cfg:/vrfs/vrf[vrf-name=VRF3]"
+terraform import iosxr_vrf.example "<vrf_name>"
 ```

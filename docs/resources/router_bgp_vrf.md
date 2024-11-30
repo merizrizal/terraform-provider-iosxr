@@ -23,17 +23,23 @@ resource "iosxr_router_bgp_vrf" "example" {
   default_metric                = 125
   timers_bgp_keepalive_interval = 5
   timers_bgp_holdtime           = "20"
+  bgp_router_id                 = "22.22.22.22"
   bfd_minimum_interval          = 10
   bfd_multiplier                = 4
   neighbors = [
     {
       neighbor_address                = "10.1.1.2"
-      remote_as                       = "65002"
+      remote_as                       = "65002.100"
+      use_neighbor_group              = "GROUP1"
       description                     = "My Neighbor Description"
+      advertisement_interval_seconds  = 10
       ignore_connected_check          = true
       ebgp_multihop_maximum_hop_count = 10
       bfd_minimum_interval            = 10
       bfd_multiplier                  = 4
+      bfd_fast_detect                 = true
+      bfd_fast_detect_strict_mode     = false
+      bfd_fast_detect_disable         = false
       local_as                        = "65003"
       local_as_no_prepend             = true
       local_as_replace_as             = true
@@ -55,9 +61,6 @@ resource "iosxr_router_bgp_vrf" "example" {
 ### Required
 
 - `as_number` (String) bgp as-number
-- `timers_bgp_holdtime` (String) Holdtime. Set 0 to disable keepalives/hold time.
-- `timers_bgp_keepalive_interval` (Number) BGP timers
-  - Range: `0`-`65535`
 - `vrf_name` (String) Specify a vrf name
 
 ### Optional
@@ -66,9 +69,12 @@ resource "iosxr_router_bgp_vrf" "example" {
   - Range: `3`-`30000`
 - `bfd_multiplier` (Number) Detect multiplier
   - Range: `2`-`16`
+- `bgp_router_id` (String) Configure Router-id
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_metric` (Number) default redistributed metric
   - Range: `1`-`4294967295`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `neighbors` (Attributes List) Neighbor address (see [below for nested schema](#nestedatt--neighbors))
 - `rd_auto` (Boolean) Automatic route distinguisher
@@ -81,6 +87,9 @@ resource "iosxr_router_bgp_vrf" "example" {
 - `rd_two_byte_as_as_number` (String) bgp as-number
 - `rd_two_byte_as_index` (Number) ASN2:index (hex or decimal format)
   - Range: `0`-`4294967295`
+- `timers_bgp_holdtime` (String) Holdtime. Set 0 to disable keepalives/hold time.
+- `timers_bgp_keepalive_interval` (Number) BGP timers
+  - Range: `0`-`65535`
 
 ### Read-Only
 
@@ -91,35 +100,43 @@ resource "iosxr_router_bgp_vrf" "example" {
 
 Required:
 
-- `ebgp_multihop_maximum_hop_count` (Number) maximum hop count
-  - Range: `1`-`255`
-- `timers_holdtime` (String) Holdtime. Set 0 to disable keepalives/hold time.
-- `timers_keepalive_interval` (Number) BGP timers
-  - Range: `0`-`65535`
+- `neighbor_address` (String) Neighbor address
 
 Optional:
 
+- `advertisement_interval_milliseconds` (Number) time in milliseconds
+  - Range: `0`-`999`
+- `advertisement_interval_seconds` (Number) Minimum interval between sending BGP routing updates
+  - Range: `0`-`600`
+- `bfd_fast_detect` (Boolean) Enable Fast detection
+- `bfd_fast_detect_disable` (Boolean) Prevent bfd settings from being inherited from the parent
+- `bfd_fast_detect_strict_mode` (Boolean) Hold down neighbor session until BFD session is up
 - `bfd_minimum_interval` (Number) Hello interval
   - Range: `3`-`30000`
 - `bfd_multiplier` (Number) Detect multiplier
   - Range: `2`-`16`
 - `description` (String) Neighbor specific description
+- `ebgp_multihop_maximum_hop_count` (Number) maximum hop count
+  - Range: `1`-`255`
 - `ignore_connected_check` (Boolean) Bypass the directly connected nexthop check for single-hop eBGP peering
 - `local_as` (String) bgp as-number
 - `local_as_dual_as` (Boolean) Dual-AS mode
 - `local_as_no_prepend` (Boolean) Do not prepend local AS to announcements from this neighbor
 - `local_as_replace_as` (Boolean) Prepend only local AS to announcements to this neighbor
-- `neighbor_address` (String) Neighbor address
 - `password` (String) Specifies an ENCRYPTED password will follow
 - `remote_as` (String) bgp as-number
 - `shutdown` (Boolean) Administratively shut down this neighbor
+- `timers_holdtime` (String) Holdtime. Set 0 to disable keepalives/hold time.
+- `timers_keepalive_interval` (Number) BGP timers
+  - Range: `0`-`65535`
 - `ttl_security` (Boolean) Enable EBGP TTL security
 - `update_source` (String) Source of routing updates
+- `use_neighbor_group` (String) Inherit configuration from a neighbor-group
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_bgp_vrf.example "Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]/vrfs/vrf[vrf-name=VRF2]"
+terraform import iosxr_router_bgp_vrf.example "<as_number>,<vrf_name>"
 ```

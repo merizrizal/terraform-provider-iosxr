@@ -40,11 +40,10 @@ data "iosxr_router_bgp_vrf_neighbor_address_family" "example" {
 - `default_originate_inheritance_disable` (Boolean) Prevent default-originate being inherited from a parent group
 - `default_originate_route_policy` (String) Route policy to specify criteria to originate default
 - `id` (String) The path of the retrieved object.
+- `next_hop_self` (Boolean) Disable the next hop calculation for this neighbor
 - `next_hop_self_inheritance_disable` (Boolean) Prevent next-hop-self from being inherited from the parent
 - `remove_private_as_inheritance_disable` (Boolean) Prevent remove-private-AS from being inherited from the parent
 - `route_policy_in` (String) Apply route policy to inbound routes
 - `route_policy_out` (String) Apply route policy to outbound routes
 - `send_community_ebgp_inheritance_disable` (Boolean) Prevent send-community-ebgp from being inherited from the parent
 - `soft_reconfiguration_inbound_always` (Boolean) Always use soft reconfig, even if route refresh is supported
-
-

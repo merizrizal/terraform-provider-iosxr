@@ -1,18 +1,35 @@
+// Copyright © 2023 Cisco Systems, Inc. and its affiliates.
+// All rights reserved.
+//
+// Licensed under the Mozilla Public License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//	https://mozilla.org/MPL/2.0/
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// SPDX-License-Identifier: MPL-2.0
+
 package provider
 
 import (
 	"context"
 	"fmt"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxr/internal/provider/client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/terraform-provider-iosxr/internal/provider/client"
-	"github.com/netascode/terraform-provider-iosxr/internal/provider/helpers"
 )
 
 type resourceGnmiType struct{}
@@ -58,12 +75,11 @@ func (r *GnmiResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			"delete": schema.BoolAttribute{
 				MarkdownDescription: "Delete object during destroy operation. Default value is `true`.",
 				Optional:            true,
-				PlanModifiers: []planmodifier.Bool{
-					helpers.BooleanDefaultModifier(true),
-				},
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 			"attributes": schema.MapAttribute{
-				MarkdownDescription: "Map of key-value pairs which represents the attributes and its values.",
+				MarkdownDescription: "Map of key-value pairs which represents the attributes and its values. To indicate an empty YANG container use `<EMPTY>` as the value.",
 				Optional:            true,
 				ElementType:         types.StringType,
 			},
@@ -78,17 +94,49 @@ func (r *GnmiResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						},
 						"key": schema.StringAttribute{
 							MarkdownDescription: "YANG list key attribute(s). In case of multiple keys, those should be separated by a comma (`,`).",
-							Required:            true,
+							Optional:            true,
 						},
 						"items": schema.ListAttribute{
-							MarkdownDescription: "List of maps of key-value pairs which represents the attributes and its values.",
+							MarkdownDescription: "List of maps of key-value pairs which represents the attributes and its values. To indicate an empty YANG container use `<EMPTY>` as the value.",
 							Optional:            true,
 							ElementType:         types.MapType{ElemType: types.StringType},
+						},
+						"values": schema.ListAttribute{
+							MarkdownDescription: "YANG leaf-list values.",
+							Optional:            true,
+							ElementType:         types.StringType,
 						},
 					},
 				},
 			},
 		},
+	}
+}
+
+func (r *GnmiResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data Gnmi
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	for _, l := range data.Lists {
+		if (len(l.Values) == 0) == (len(l.Items) == 0) {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("lists"),
+				"Invalid List Configuration",
+				"List must contain either items or values.",
+			)
+		}
+		if len(l.Items) > 0 && l.Key.IsNull() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("lists"),
+				"Invalid List Configuration",
+				"List must contain a key.",
+			)
+		}
 	}
 }
 
@@ -115,7 +163,7 @@ func (r *GnmiResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if !plan.Attributes.IsNull() || len(plan.Lists) > 0 {
 		body := plan.toBody(ctx)
 
-		_, diags = r.client.Set(ctx, plan.Device.ValueString(), plan.Path.ValueString(), body, client.Update)
+		_, diags = r.client.Set(ctx, plan.Device.ValueString(), client.SetOperation{Path: plan.Path.ValueString(), Body: body, Operation: client.Update})
 		resp.Diagnostics.Append(diags...)
 		if resp.Diagnostics.HasError() {
 			return
@@ -177,27 +225,26 @@ func (r *GnmiResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
+	var ops []client.SetOperation
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
 
 	if !plan.Attributes.IsUnknown() {
 		body := plan.toBody(ctx)
-
-		_, diags = r.client.Set(ctx, plan.Device.ValueString(), plan.Path.ValueString(), body, client.Update)
-		resp.Diagnostics.Append(diags...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
+		ops = append(ops, client.SetOperation{Path: plan.Path.ValueString(), Body: body, Operation: client.Update})
 	}
 
-	deletedListItems := plan.getDeletedListItems(ctx, state)
+	deletedListItems := plan.getDeletedItems(ctx, state)
 	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedListItems))
 
 	for _, i := range deletedListItems {
-		_, diags := r.client.Set(ctx, state.Device.ValueString(), i, "", client.Delete)
-		resp.Diagnostics.Append(diags...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
+		ops = append(ops, client.SetOperation{Path: i, Body: "", Operation: client.Delete})
+	}
+
+	_, diags = r.client.Set(ctx, state.Device.ValueString(), ops...)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Update finished successfully", plan.Id.ValueString()))
@@ -219,7 +266,7 @@ func (r *GnmiResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 
 	if state.Delete.ValueBool() {
-		_, diags = r.client.Set(ctx, state.Device.ValueString(), state.Path.ValueString(), "", client.Delete)
+		_, diags = r.client.Set(ctx, state.Device.ValueString(), client.SetOperation{Path: state.Path.ValueString(), Body: "", Operation: client.Delete})
 		resp.Diagnostics.Append(diags...)
 		if resp.Diagnostics.HasError() {
 			return

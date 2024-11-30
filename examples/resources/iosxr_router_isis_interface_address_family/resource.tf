@@ -1,8 +1,10 @@
 resource "iosxr_router_isis_interface_address_family" "example" {
-  process_id     = "P1"
-  interface_name = "GigabitEthernet0/0/0/1"
-  af_name        = "ipv4"
-  saf_name       = "unicast"
+  process_id                     = "P1"
+  interface_name                 = "GigabitEthernet0/0/0/1"
+  af_name                        = "ipv4"
+  saf_name                       = "unicast"
+  fast_reroute_per_prefix        = true
+  fast_reroute_per_prefix_ti_lfa = true
   fast_reroute_per_prefix_levels = [
     {
       level_id = 1
@@ -11,4 +13,11 @@ resource "iosxr_router_isis_interface_address_family" "example" {
   ]
   tag                           = 100
   advertise_prefix_route_policy = "ROUTE_POLICY_1"
+  metric                        = 500
+  metric_levels = [
+    {
+      level_id = 1
+      maximum  = true
+    }
+  ]
 }

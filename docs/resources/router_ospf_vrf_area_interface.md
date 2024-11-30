@@ -43,6 +43,8 @@ resource "iosxr_router_ospf_vrf_area_interface" "example" {
 
 - `cost` (Number) Interface cost
   - Range: `1`-`65535`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `network_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_non_broadcast` (Boolean) Specify OSPF NBMA network
@@ -62,5 +64,5 @@ resource "iosxr_router_ospf_vrf_area_interface" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_ospf_vrf_area_interface.example "Cisco-IOS-XR-um-router-ospf-cfg:/router/ospf/processes/process[process-name=OSPF1]/vrfs/vrf[vrf-name=VRF1]/areas/area[area-id=0]/interfaces/interface[interface-name=GigabitEthernet0/0/0/1]"
+terraform import iosxr_router_ospf_vrf_area_interface.example "<process_name>,<vrf_name>,<area_id>,<interface_name>"
 ```

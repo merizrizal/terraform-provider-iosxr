@@ -14,17 +14,20 @@ This resource can manage the Router OSPF Area Interface configuration.
 
 ```terraform
 resource "iosxr_router_ospf_area_interface" "example" {
-  process_name                = "OSPF1"
-  area_id                     = "0"
-  interface_name              = "GigabitEthernet0/0/0/1"
-  network_broadcast           = false
-  network_non_broadcast       = false
-  network_point_to_point      = true
-  network_point_to_multipoint = false
-  cost                        = 20
-  priority                    = 100
-  passive_enable              = false
-  passive_disable             = true
+  process_name                                       = "OSPF1"
+  area_id                                            = "0"
+  interface_name                                     = "GigabitEthernet0/0/0/1"
+  network_broadcast                                  = false
+  network_non_broadcast                              = false
+  network_point_to_point                             = true
+  network_point_to_multipoint                        = false
+  cost                                               = 20
+  priority                                           = 100
+  passive_enable                                     = false
+  passive_disable                                    = true
+  fast_reroute_per_prefix_ti_lfa                     = true
+  fast_reroute_per_prefix_tiebreaker_srlg_disjoint   = 22
+  fast_reroute_per_prefix_tiebreaker_node_protecting = 33
 }
 ```
 
@@ -41,13 +44,23 @@ resource "iosxr_router_ospf_area_interface" "example" {
 
 - `cost` (Number) Interface cost
   - Range: `1`-`65535`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `fast_reroute_per_prefix_ti_lfa` (Boolean) Enable TI LFA computation
+- `fast_reroute_per_prefix_tiebreaker_node_protecting` (Number) Set preference order among tiebreakers
+  - Range: `1`-`255`
+- `fast_reroute_per_prefix_tiebreaker_srlg_disjoint` (Number) Set preference order among tiebreakers
+  - Range: `1`-`255`
 - `network_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_non_broadcast` (Boolean) Specify OSPF NBMA network
 - `network_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
 - `network_point_to_point` (Boolean) Specify OSPF point-to-point network
 - `passive_disable` (Boolean) Disable passive
 - `passive_enable` (Boolean) Enable passive
+- `prefix_sid_algorithms` (Attributes List) Algorithm Specific Prefix SID Configuration (see [below for nested schema](#nestedatt--prefix_sid_algorithms))
+- `prefix_sid_strict_spf_index` (Number) SID Index
+  - Range: `0`-`1048575`
 - `priority` (Number) Router priority
   - Range: `0`-`255`
 
@@ -55,10 +68,29 @@ resource "iosxr_router_ospf_area_interface" "example" {
 
 - `id` (String) The path of the object.
 
+<a id="nestedatt--prefix_sid_algorithms"></a>
+### Nested Schema for `prefix_sid_algorithms`
+
+Required:
+
+- `algorithm_number` (Number) Algorithm Specific Prefix SID Configuration
+  - Range: `128`-`255`
+
+Optional:
+
+- `absolute_explicit_null` (Boolean) Force penultimate hop to send explicit-null label
+- `absolute_n_flag_clear` (Boolean) Not a node SID (e.g. for anycast SID use)
+- `absolute_sid_label` (Number) SID value
+  - Range: `16000`-`1048575`
+- `index_explicit_null` (Boolean) Force penultimate hop to send explicit-null label
+- `index_n_flag_clear` (Boolean) Not a node SID (e.g. for anycast SID use)
+- `index_sid_index` (Number) SID Index
+  - Range: `0`-`1048575`
+
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_ospf_area_interface.example "Cisco-IOS-XR-um-router-ospf-cfg:/router/ospf/processes/process[process-name=OSPF1]/areas/area[area-id=0]/interfaces/interface[interface-name=GigabitEthernet0/0/0/1]"
+terraform import iosxr_router_ospf_area_interface.example "<process_name>,<area_id>,<interface_name>"
 ```

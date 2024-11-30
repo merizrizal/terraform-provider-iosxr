@@ -32,6 +32,8 @@ data "iosxr_router_ospf" "example" {
 ### Read-Only
 
 - `areas` (Attributes List) Enter the OSPF area configuration submode (see [below for nested schema](#nestedatt--areas))
+- `auto_cost_disable` (Boolean) Assign OSPF cost based on interface type
+- `auto_cost_reference_bandwidth` (Number) Specify reference bandwidth for OSPF cost computations
 - `bfd_fast_detect` (Boolean) Enable Fast detection
 - `bfd_minimum_interval` (Number) Minimum interval
 - `bfd_multiplier` (Number) Detect multiplier
@@ -57,6 +59,8 @@ data "iosxr_router_ospf" "example" {
 - `redistribute_static_metric_type` (String) OSPF exterior metric type for redistributed routes
 - `redistribute_static_tag` (Number) Set tag for routes redistributed into OSPF
 - `router_id` (String) configure this node
+- `segment_routing_mpls` (Boolean) SR using MPLS dataplane
+- `segment_routing_sr_prefer` (Boolean) Prefer segment routing labels over LDP labels
 
 <a id="nestedatt--areas"></a>
 ### Nested Schema for `areas`
@@ -100,5 +104,3 @@ Read-Only:
 - `match_nssa_external` (Boolean) Redistribute OSPF NSSA external routes
 - `metric_type` (String) OSPF exterior metric type for redistributed routes
 - `tag` (Number) Set tag for routes redistributed into OSPF
-
-

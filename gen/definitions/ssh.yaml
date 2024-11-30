@@ -1,6 +1,7 @@
 name: SSH
 path: Cisco-IOS-XR-um-ssh-cfg:/ssh
 doc_category: System
+test_tags: [SSH]
 attributes:
   - yang_name: server/dscp
     example: 48
@@ -19,3 +20,7 @@ attributes:
       - yang_name: vrf-name
         id: true
         example: VRF1
+      - yang_name: ipv4/access-list
+        example: ACL1
+      - yang_name: ipv6/access-list
+        example: ACL2

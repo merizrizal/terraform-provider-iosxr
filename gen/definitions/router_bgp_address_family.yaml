@@ -4,6 +4,7 @@ path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=%s]/address-famili
 doc_category: BGP
 attributes:
   - yang_name: as-number
+    read_raw: true
     example: 65001
   - yang_name: af-name
     example: ipv4-unicast
@@ -21,15 +22,24 @@ attributes:
   - yang_name: allocate-label/all
     example: true
   - yang_name: maximum-paths/ebgp/multipath
+    delete_parent: true
     example: 10
     optional: true
+    exclude_test: true
   - yang_name: maximum-paths/eibgp/multipath
+    delete_parent: true
     example: 10
     optional: true
     exclude_test: true
   - yang_name: maximum-paths/ibgp/multipath
+    delete_parent: true
     optional: true
     example: 10
+    exclude_test: true
+  - yang_name: nexthop/trigger-delay/critical
+    example: 10
+  - yang_name: nexthop/trigger-delay/non-critical
+    example: 20
   - yang_name: label/mode/per-ce
     example: false
   - yang_name: label/mode/per-vrf
@@ -38,10 +48,14 @@ attributes:
     example: true
   - yang_name: redistribute/connected/metric
     example: 10
+  - yang_name: redistribute/connected/route-policy
+    example: ROUTE_POLICY_1
   - yang_name: redistribute/static
     example: true
   - yang_name: redistribute/static/metric
     example: 10
+  - yang_name: redistribute/static/route-policy
+    example: ROUTE_POLICY_1
   - yang_name: aggregate-addresses/aggregate-address
     tf_name: aggregate_addresses
     type: List
@@ -68,6 +82,8 @@ attributes:
       - yang_name: masklength
         id: true
         example: 16
+      - yang_name: route-policy
+        example: ROUTE_POLICY_1
   - yang_name: redistribute/isis
     tf_name: redistribute_isis
     type: List
@@ -91,6 +107,8 @@ attributes:
         example: false
       - yang_name: metric
         example: 100
+      - yang_name: route-policy
+        example: ROUTE_POLICY_1
   - yang_name: redistribute/ospf
     tf_name: redistribute_ospf
     type: List
@@ -112,9 +130,17 @@ attributes:
         example: false
       - yang_name: metric
         example: 100
+      - yang_name: route-policy
+        example: ROUTE_POLICY_1
 
 test_prerequisites:
-  - path: Cisco-IOS-XR-um-route-policy-cfg:routing-policy/route-policies/route-policy[route-policy-name=%s]
+  - path: Cisco-IOS-XR-um-route-policy-cfg:/routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
     attributes:
       - name: route-policy-name
         value: ROUTE_POLICY_1
+      - name: rpl-route-policy
+        value: "route-policy ROUTE_POLICY_1\\n  pass\\nend-policy\\n"
+  - path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]
+    attributes:
+      - name: as-number
+        value: 65001

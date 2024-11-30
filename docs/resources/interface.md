@@ -30,18 +30,38 @@ resource "iosxr_interface" "example" {
       name = "PMAP-OUT"
     }
   ]
-  shutdown                = true
-  mtu                     = 9000
-  bandwidth               = 100000
-  description             = "My Interface Description"
-  load_interval           = 30
-  vrf                     = "VRF1"
-  ipv4_address            = "1.1.1.1"
-  ipv4_netmask            = "255.255.255.0"
-  ipv6_link_local_address = "fe80::1"
-  ipv6_link_local_zone    = "0"
-  ipv6_autoconfig         = false
-  ipv6_enable             = true
+  shutdown                                                 = true
+  mtu                                                      = 9000
+  bandwidth                                                = 100000
+  description                                              = "My Interface Description"
+  load_interval                                            = 30
+  vrf                                                      = "VRF1"
+  ipv4_address                                             = "1.1.1.1"
+  ipv4_netmask                                             = "255.255.255.0"
+  ipv4_verify_unicast_source_reachable_via_type            = "any"
+  ipv4_verify_unicast_source_reachable_via_allow_self_ping = true
+  ipv4_verify_unicast_source_reachable_via_allow_default   = false
+  ipv4_access_group_ingress_acl1                           = "ACL1"
+  ipv4_access_group_ingress_hardware_count                 = true
+  ipv4_access_group_ingress_interface_statistics           = true
+  ipv4_access_group_ingress_compress_level                 = 0
+  ipv4_access_group_egress_acl                             = "ACL1"
+  ipv4_access_group_egress_hardware_count                  = true
+  ipv4_access_group_egress_interface_statistics            = true
+  ipv4_access_group_egress_compress_level                  = 0
+  ipv6_verify_unicast_source_reachable_via_type            = "any"
+  ipv6_verify_unicast_source_reachable_via_allow_self_ping = true
+  ipv6_verify_unicast_source_reachable_via_allow_default   = false
+  ipv6_access_group_ingress_acl1                           = "ACL2"
+  ipv6_access_group_ingress_interface_statistics           = true
+  ipv6_access_group_ingress_compress_level                 = 0
+  ipv6_access_group_egress_acl1                            = "ACL2"
+  ipv6_access_group_egress_interface_statistics            = true
+  ipv6_access_group_egress_compress_level                  = 0
+  ipv6_link_local_address                                  = "fe80::1"
+  ipv6_link_local_zone                                     = "0"
+  ipv6_autoconfig                                          = false
+  ipv6_enable                                              = true
   ipv6_addresses = [
     {
       address       = "2001::1"
@@ -49,6 +69,7 @@ resource "iosxr_interface" "example" {
       zone          = "0"
     }
   ]
+  bundle_port_priority = 100
 }
 ```
 
@@ -57,8 +78,6 @@ resource "iosxr_interface" "example" {
 
 ### Required
 
-- `dampening_decay_half_life_value` (Number) Decay half life (in minutes)
-  - Range: `1`-`45`
 - `interface_name` (String) Interface configuration subcommands
 
 ### Optional
@@ -66,19 +85,70 @@ resource "iosxr_interface" "example" {
 - `bandwidth` (Number) Set the bandwidth of an interface
   - Range: `0`-`9223372036854775807`
 - `bfd_mode_ietf` (Boolean) Use IETF standard for BoB
+- `bundle_id` (Number) Add the port to an aggregated interface.
+  - Range: `1`-`65535`
+- `bundle_id_mode` (String) Specify the mode of operation.
+  - Choices: `active`, `inherit`, `on`, `passive`
+- `bundle_load_balancing_hash_dst_ip` (Boolean) Use the destination IP as the hash function
+- `bundle_load_balancing_hash_src_ip` (Boolean) Use the source IP as the hash function
+- `bundle_maximum_active_links` (Number) Set the maximum number of active links in this bundle
+  - Range: `1`-`64`
+- `bundle_minimum_active_links` (Number) Set the number of active links needed to bring up this bundle
+  - Range: `1`-`64`
+- `bundle_port_priority` (Number) Priority for this port. Lower value is higher priority.
+  - Range: `1`-`65535`
+- `bundle_shutdown` (Boolean) Bring all links in the bundle down to Standby state
+- `cdp` (Boolean) Enable CDP on an interface
+- `dampening_decay_half_life_value` (Number) Decay half life (in minutes)
+  - Range: `1`-`45`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `description` (String) Set description for this interface
 - `device` (String) A device name from the provider configuration.
 - `encapsulation_dot1q_vlan_id` (Number) Configure first (outer) VLAN ID on the subinterface
   - Range: `1`-`4094`
+- `flow_ipv4_egress_monitor_samplers` (Attributes List) Specify a flow monitor and sampler for outgoing packets (see [below for nested schema](#nestedatt--flow_ipv4_egress_monitor_samplers))
+- `flow_ipv4_egress_monitors` (Attributes List) Specify a flow monitor for packets (see [below for nested schema](#nestedatt--flow_ipv4_egress_monitors))
+- `flow_ipv4_ingress_monitor_samplers` (Attributes List) Specify a flow monitor and sampler for incoming packets (see [below for nested schema](#nestedatt--flow_ipv4_ingress_monitor_samplers))
+- `flow_ipv4_ingress_monitors` (Attributes List) Specify a flow monitor for packets (see [below for nested schema](#nestedatt--flow_ipv4_ingress_monitors))
+- `flow_ipv6_egress_monitor_samplers` (Attributes List) Specify a flow monitor and sampler for outgoing packets (see [below for nested schema](#nestedatt--flow_ipv6_egress_monitor_samplers))
+- `flow_ipv6_egress_monitors` (Attributes List) Specify a flow monitor for packets (see [below for nested schema](#nestedatt--flow_ipv6_egress_monitors))
+- `flow_ipv6_ingress_monitor_samplers` (Attributes List) Specify a flow monitor and sampler for incoming packets (see [below for nested schema](#nestedatt--flow_ipv6_ingress_monitor_samplers))
+- `flow_ipv6_ingress_monitors` (Attributes List) Specify a flow monitor for packets (see [below for nested schema](#nestedatt--flow_ipv6_ingress_monitors))
+- `ipv4_access_group_egress_acl` (String) Access-list name
+- `ipv4_access_group_egress_compress_level` (Number) Specify ACL compression in hardware
+  - Range: `0`-`3`
+- `ipv4_access_group_egress_hardware_count` (Boolean) Count packets in hardware
+- `ipv4_access_group_egress_interface_statistics` (Boolean) Per interface statistics in hardware
+- `ipv4_access_group_ingress_acl1` (String) Access-list name
+- `ipv4_access_group_ingress_compress_level` (Number) Specify ACL compression in hardware
+  - Range: `0`-`3`
+- `ipv4_access_group_ingress_hardware_count` (Boolean) Count packets in hardware
+- `ipv4_access_group_ingress_interface_statistics` (Boolean) Per interface statistics in hardware
 - `ipv4_address` (String) IP address
 - `ipv4_netmask` (String) IP subnet mask
 - `ipv4_point_to_point` (Boolean) Enable point-to-point handling for this interface.
+- `ipv4_verify_unicast_source_reachable_via_allow_default` (Boolean) Allow default route to match when checking source address
+- `ipv4_verify_unicast_source_reachable_via_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+- `ipv4_verify_unicast_source_reachable_via_type` (String) Source reachable type
+  - Choices: `any`, `rx`
+- `ipv6_access_group_egress_acl1` (String) Access-list name
+- `ipv6_access_group_egress_compress_level` (Number) Specify ACL compression in hardware
+  - Range: `0`-`3`
+- `ipv6_access_group_egress_interface_statistics` (Boolean) Per interface statistics in hardware
+- `ipv6_access_group_ingress_acl1` (String) Access-list name
+- `ipv6_access_group_ingress_compress_level` (Number) Specify ACL compression in hardware
+  - Range: `0`-`3`
+- `ipv6_access_group_ingress_interface_statistics` (Boolean) Per interface statistics in hardware
 - `ipv6_addresses` (Attributes List) IPv6 address (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_autoconfig` (Boolean) Enable slaac on Mgmt interface
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
 - `ipv6_link_local_address` (String) IPv6 address
 - `ipv6_link_local_zone` (String) IPv6 address zone
-  - Default value: `0`
+- `ipv6_verify_unicast_source_reachable_via_allow_default` (Boolean) Allow default route to match when checking source address
+- `ipv6_verify_unicast_source_reachable_via_allow_self_ping` (Boolean) Allow router to ping itself (opens vulnerability in verification)
+- `ipv6_verify_unicast_source_reachable_via_type` (String) Source reachable type
+  - Choices: `any`, `rx`
 - `l2transport` (Boolean) l2transport sub-interface
 - `l2transport_encapsulation_dot1q_second_dot1q` (String) End of VLAN range
 - `l2transport_encapsulation_dot1q_vlan_id` (String) Single VLAN id or start of VLAN range
@@ -99,17 +169,85 @@ resource "iosxr_interface" "example" {
 
 - `id` (String) The path of the object.
 
+<a id="nestedatt--flow_ipv4_egress_monitor_samplers"></a>
+### Nested Schema for `flow_ipv4_egress_monitor_samplers`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+- `sampler_map_name` (String) Specify a sampler for packets
+
+
+<a id="nestedatt--flow_ipv4_egress_monitors"></a>
+### Nested Schema for `flow_ipv4_egress_monitors`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+
+
+<a id="nestedatt--flow_ipv4_ingress_monitor_samplers"></a>
+### Nested Schema for `flow_ipv4_ingress_monitor_samplers`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+- `sampler_map_name` (String) Specify a sampler for packets
+
+
+<a id="nestedatt--flow_ipv4_ingress_monitors"></a>
+### Nested Schema for `flow_ipv4_ingress_monitors`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+
+
+<a id="nestedatt--flow_ipv6_egress_monitor_samplers"></a>
+### Nested Schema for `flow_ipv6_egress_monitor_samplers`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+- `sampler_map_name` (String) Specify a sampler for packets
+
+
+<a id="nestedatt--flow_ipv6_egress_monitors"></a>
+### Nested Schema for `flow_ipv6_egress_monitors`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+
+
+<a id="nestedatt--flow_ipv6_ingress_monitor_samplers"></a>
+### Nested Schema for `flow_ipv6_ingress_monitor_samplers`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+- `sampler_map_name` (String) Specify a sampler for packets
+
+
+<a id="nestedatt--flow_ipv6_ingress_monitors"></a>
+### Nested Schema for `flow_ipv6_ingress_monitors`
+
+Required:
+
+- `monitor_map_name` (String) Specify a flow monitor for packets
+
+
 <a id="nestedatt--ipv6_addresses"></a>
 ### Nested Schema for `ipv6_addresses`
 
 Required:
 
+- `address` (String) IPv6 name or address
 - `prefix_length` (Number) Prefix length in bits
   - Range: `0`-`128`
 
 Optional:
 
-- `address` (String) IPv6 name or address
 - `zone` (String) IPv6 address zone
   - Default value: `0`
 
@@ -117,7 +255,7 @@ Optional:
 <a id="nestedatt--service_policy_input"></a>
 ### Nested Schema for `service_policy_input`
 
-Optional:
+Required:
 
 - `name` (String) Name of the service policy. Set 'input' for 'service-ipsec and 'service-gre' interfaces
 
@@ -125,7 +263,7 @@ Optional:
 <a id="nestedatt--service_policy_output"></a>
 ### Nested Schema for `service_policy_output`
 
-Optional:
+Required:
 
 - `name` (String) Name of the service policy. Set 'output' for 'service-ipsec and 'service-gre' interfaces
 
@@ -134,5 +272,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_interface.example "Cisco-IOS-XR-um-interface-cfg:/interfaces/interface[interface-name=GigabitEthernet0/0/0/1]"
+terraform import iosxr_interface.example "<interface_name>"
 ```

@@ -4,19 +4,36 @@ path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=%s]/vrfs/vrf[vrf-n
 doc_category: BGP
 attributes:
   - yang_name: as-number
+    read_raw: true
     example: 65001
   - yang_name: vrf-name
     example: VRF1
   - yang_name: af-name
     example: ipv4-unicast
+  - yang_name: additional-paths/send
+    example: true
+  - yang_name: additional-paths/receive
+    example: true
+  - yang_name: additional-paths/selection/route-policy
+    example: ROUTE_POLICY_1
+  - yang_name: allocate-label/all/unlabeled-path
+    example: true
+    exclude_test: true
+  - yang_name: advertise/best-external
+    example: true
+  - yang_name: allocate-label/all
+    example: true
   - yang_name: maximum-paths/ebgp/multipath
+    delete_parent: true
     example: 10
     optional: true
   - yang_name: maximum-paths/eibgp/multipath
+    delete_parent: true
     example: 10
     optional: true
     exclude_test: true
   - yang_name: maximum-paths/ibgp/multipath
+    delete_parent: true
     optional: true
     example: 10
   - yang_name: label/mode/per-ce
@@ -27,10 +44,18 @@ attributes:
     example: true
   - yang_name: redistribute/connected/metric
     example: 10
+  - yang_name: redistribute/connected/route-policy
+    example: ROUTE_POLICY_1
   - yang_name: redistribute/static
     example: true
   - yang_name: redistribute/static/metric
     example: 10
+  - yang_name: redistribute/static/route-policy
+    example: ROUTE_POLICY_1
+  - yang_name: segment-routing/srv6/locator
+    example: LocAlgo11
+  - yang_name: segment-routing/srv6/alloc/mode/per-vrf
+    example: true
   - yang_name: aggregate-addresses/aggregate-address
     tf_name: aggregate_addresses
     type: List
@@ -57,6 +82,8 @@ attributes:
       - yang_name: masklength
         id: true
         example: 16
+      - yang_name: route-policy
+        example: ROUTE_POLICY_1
   - yang_name: redistribute/ospf
     tf_name: redistribute_ospf
     type: List
@@ -78,24 +105,30 @@ attributes:
         example: false
       - yang_name: metric
         example: 100
+      - yang_name: route-policy
+        example: ROUTE_POLICY_1
+
 test_prerequisites:
-  - path: Cisco-IOS-XR-um-vrf-cfg:/vrfs/vrf[vrf-name=VRF1]
+  - path: Cisco-IOS-XR-um-route-policy-cfg:/routing-policy/route-policies/route-policy[route-policy-name=ROUTE_POLICY_1]
     attributes:
-      - name: vrf-name
-        value: VRF1
+      - name: route-policy-name
+        value: ROUTE_POLICY_1
+      - name: rpl-route-policy
+        value: "route-policy ROUTE_POLICY_1\\n  pass\\nend-policy\\n"
   - path: Cisco-IOS-XR-um-vrf-cfg:/vrfs/vrf[vrf-name=VRF1]/Cisco-IOS-XR-um-router-bgp-cfg:rd/Cisco-IOS-XR-um-router-bgp-cfg:two-byte-as
     attributes:
       - name: as-number
         value: 1
       - name: index
         value: 1
-    dependencies: [0]
   - path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]
     attributes:
       - name: as-number
         value: 65001
-  - path: Cisco-IOS-XR-um-router-bgp-cfg:/router/bgp/as[as-number=65001]/address-families/address-family[af-name=vpnv4-unicast]
-    dependencies: [1, 2]
-    attributes:
-      - name: af-name
-        value: vpnv4-unicast
+    lists:
+      - name: address-families/address-family
+        key: af-name
+        items:
+          - attributes:
+              - name: af-name
+                value: vpnv4-unicast

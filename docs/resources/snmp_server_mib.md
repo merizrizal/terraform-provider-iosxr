@@ -24,6 +24,8 @@ resource "iosxr_snmp_server_mib" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `ifindex_persist` (Boolean) Persist interface indices
 - `ifmib_ifalias_long` (Boolean) Enable support for ifAlias values longer than 64 characters
@@ -37,5 +39,5 @@ resource "iosxr_snmp_server_mib" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_snmp_server_mib.example "Cisco-IOS-XR-um-snmp-server-cfg:/snmp-server-mibs"
+terraform import iosxr_snmp_server_mib.example ""
 ```

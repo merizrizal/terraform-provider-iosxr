@@ -36,6 +36,10 @@ resource "iosxr_router_ospf" "example" {
   default_information_originate             = true
   default_information_originate_always      = true
   default_information_originate_metric_type = 1
+  auto_cost_reference_bandwidth             = 100000
+  auto_cost_disable                         = false
+  segment_routing_mpls                      = true
+  segment_routing_sr_prefer                 = true
   areas = [
     {
       area_id = "0"
@@ -81,6 +85,9 @@ resource "iosxr_router_ospf" "example" {
 ### Optional
 
 - `areas` (Attributes List) Enter the OSPF area configuration submode (see [below for nested schema](#nestedatt--areas))
+- `auto_cost_disable` (Boolean) Assign OSPF cost based on interface type
+- `auto_cost_reference_bandwidth` (Number) Specify reference bandwidth for OSPF cost computations
+  - Range: `1`-`4294967`
 - `bfd_fast_detect` (Boolean) Enable Fast detection
 - `bfd_minimum_interval` (Number) Minimum interval
   - Range: `3`-`30000`
@@ -92,6 +99,8 @@ resource "iosxr_router_ospf" "example" {
 - `default_information_originate_always` (Boolean) Always advertise default route
 - `default_information_originate_metric_type` (Number) OSPF metric type for default routes
   - Range: `1`-`2`
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `hello_interval` (Number) Time between HELLO packets
   - Range: `1`-`65535`
@@ -116,6 +125,8 @@ resource "iosxr_router_ospf" "example" {
 - `redistribute_static_tag` (Number) Set tag for routes redistributed into OSPF
   - Range: `0`-`4294967295`
 - `router_id` (String) configure this node
+- `segment_routing_mpls` (Boolean) SR using MPLS dataplane
+- `segment_routing_sr_prefer` (Boolean) Prefer segment routing labels over LDP labels
 
 ### Read-Only
 
@@ -124,7 +135,7 @@ resource "iosxr_router_ospf" "example" {
 <a id="nestedatt--areas"></a>
 ### Nested Schema for `areas`
 
-Optional:
+Required:
 
 - `area_id` (String) Enter the OSPF area configuration submode
 
@@ -132,9 +143,12 @@ Optional:
 <a id="nestedatt--redistribute_bgp"></a>
 ### Nested Schema for `redistribute_bgp`
 
-Optional:
+Required:
 
 - `as_number` (String) bgp as-number
+
+Optional:
+
 - `metric_type` (String) OSPF exterior metric type for redistributed routes
   - Choices: `1`, `2`
 - `tag` (Number) Set tag for routes redistributed into OSPF
@@ -144,9 +158,12 @@ Optional:
 <a id="nestedatt--redistribute_isis"></a>
 ### Nested Schema for `redistribute_isis`
 
-Optional:
+Required:
 
 - `instance_name` (String) ISO IS-IS
+
+Optional:
+
 - `level_1` (Boolean) IS-IS level-1 routes only
 - `level_1_2` (Boolean) IS-IS level-1 and level-2 routes
 - `level_2` (Boolean) IS-IS level-2 routes only
@@ -159,9 +176,12 @@ Optional:
 <a id="nestedatt--redistribute_ospf"></a>
 ### Nested Schema for `redistribute_ospf`
 
-Optional:
+Required:
 
 - `instance_name` (String) Open Shortest Path First (OSPF)
+
+Optional:
+
 - `match_external` (Boolean) Redistribute OSPF external routes
 - `match_internal` (Boolean) Redistribute OSPF internal routes
 - `match_nssa_external` (Boolean) Redistribute OSPF NSSA external routes
@@ -175,5 +195,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_ospf.example "Cisco-IOS-XR-um-router-ospf-cfg:/router/ospf/processes/process[process-name=OSPF1]"
+terraform import iosxr_router_ospf.example "<process_name>"
 ```

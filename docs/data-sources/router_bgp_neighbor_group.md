@@ -34,10 +34,25 @@ data "iosxr_router_bgp_neighbor_group" "example" {
 ### Read-Only
 
 - `address_families` (Attributes List) Enter Address Family command mode (see [below for nested schema](#nestedatt--address_families))
+- `advertisement_interval_milliseconds` (Number) time in milliseconds
+- `advertisement_interval_seconds` (Number) Minimum interval between sending BGP routing updates
 - `ao_include_tcp_options_enable` (Boolean) Include other TCP options in the header
 - `ao_key_chain_name` (String) Name of the key chain - maximum 32 characters
+- `bfd_fast_detect` (Boolean) Enable Fast detection
+- `bfd_fast_detect_inheritance_disable` (Boolean) Prevent bfd settings from being inherited from the parent
+- `bfd_fast_detect_strict_mode` (Boolean) Hold down neighbor session until BFD session is up
+- `bfd_minimum_interval` (Number) Hello interval
+- `bfd_multiplier` (Number) Detect multiplier
+- `description` (String) Neighbor specific description
 - `id` (String) The path of the retrieved object.
+- `local_as` (String) bgp as-number
+- `local_as_dual_as` (Boolean) Dual-AS mode
+- `local_as_no_prepend` (Boolean) Do not prepend local AS to announcements from this neighbor
+- `local_as_replace_as` (Boolean) Prepend only local AS to announcements to this neighbor
 - `remote_as` (String) bgp as-number
+- `timers_holdtime` (String) Holdtime. Set 0 to disable keepalives/hold time.
+- `timers_keepalive_interval` (Number) BGP timers
+- `timers_minimum_acceptable_holdtime` (String) Minimum acceptable holdtime from neighbor. Set 0 to disable keepalives/hold time.
 - `update_source` (String) Source of routing updates
 
 <a id="nestedatt--address_families"></a>
@@ -46,6 +61,11 @@ data "iosxr_router_bgp_neighbor_group" "example" {
 Read-Only:
 
 - `af_name` (String) Enter Address Family command mode
+- `next_hop_self` (Boolean) Disable the next hop calculation for this neighbor
+- `next_hop_self_inheritance_disable` (Boolean) Prevent next-hop-self from being inherited from the parent
+- `route_policy_in` (String) Apply route policy to inbound routes
+- `route_policy_out` (String) Apply route policy to outbound routes
+- `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
+- `route_reflector_client_inheritance_disable` (Boolean) Prevent route-reflector-client from being inherited from the parent
 - `soft_reconfiguration_inbound_always` (Boolean) Always use soft reconfig, even if route refresh is supported
-
-
+- `use_af_group` (String) Inherit configuration for this address-family from an af-group

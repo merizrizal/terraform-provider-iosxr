@@ -15,7 +15,7 @@ This resource can manage the Router ISIS Address Family configuration.
 ```terraform
 resource "iosxr_router_isis_address_family" "example" {
   process_id              = "P1"
-  af_name                 = "ipv4"
+  af_name                 = "ipv6"
   saf_name                = "unicast"
   metric_style_narrow     = false
   metric_style_wide       = true
@@ -28,7 +28,7 @@ resource "iosxr_router_isis_address_family" "example" {
       transition = false
     }
   ]
-  router_id_ip_address                            = "1.2.3.4"
+  router_id_ip_address                            = "1050:0000:0000:0000:0005:0600:300c:326b"
   default_information_originate                   = true
   fast_reroute_delay_interval                     = 300
   fast_reroute_per_link_priority_limit_critical   = true
@@ -42,10 +42,8 @@ resource "iosxr_router_isis_address_family" "example" {
   advertise_passive_only                          = true
   advertise_link_attributes                       = true
   mpls_ldp_auto_config                            = false
-  mpls_traffic_eng_router_id_ip_address           = "1.2.3.4"
   mpls_traffic_eng_level_1_2                      = false
   mpls_traffic_eng_level_1                        = false
-  mpls_traffic_eng_level_2_only                   = true
   spf_interval_maximum_wait                       = 5000
   spf_interval_initial_wait                       = 50
   spf_interval_secondary_wait                     = 200
@@ -55,12 +53,23 @@ resource "iosxr_router_isis_address_family" "example" {
       tag      = 100
     }
   ]
-  segment_routing_mpls_sr_prefer = true
   maximum_redistributed_prefixes = 100
   maximum_redistributed_prefixes_levels = [
     {
       level_id         = 1
       maximum_prefixes = 1000
+    }
+  ]
+  redistribute_isis = [
+    {
+      instance_id  = "CORE"
+      route_policy = "ROUTE_POLICY_1"
+    }
+  ]
+  segment_routing_srv6_locators = [
+    {
+      locator_name = "AlgoLocator"
+      level        = 1
     }
   ]
 }
@@ -82,6 +91,8 @@ resource "iosxr_router_isis_address_family" "example" {
 - `advertise_link_attributes` (Boolean) Advertise additional link attributes
 - `advertise_passive_only` (Boolean) Advertise prefixes of passive interfaces only
 - `default_information_originate` (Boolean) Distribute a default route
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `fast_reroute_delay_interval` (Number) Delay before running FRR computation
   - Range: `100`-`60000`
@@ -106,9 +117,11 @@ resource "iosxr_router_isis_address_family" "example" {
 - `mpls_traffic_eng_level_2_only` (Boolean) Enable mpls traffic-eng at level 2
 - `mpls_traffic_eng_router_id_interface` (String)
 - `mpls_traffic_eng_router_id_ip_address` (String) configure this node
+- `redistribute_isis` (Attributes List) IS-IS (see [below for nested schema](#nestedatt--redistribute_isis))
 - `router_id_interface_name` (String) Router ID Interface
 - `router_id_ip_address` (String) Router ID address
 - `segment_routing_mpls_sr_prefer` (Boolean) Prefer segment routing labels over LDP labels
+- `segment_routing_srv6_locators` (Attributes List) Enter SRv6 Locator submode (see [below for nested schema](#nestedatt--segment_routing_srv6_locators))
 - `spf_interval_initial_wait` (Number) Initial delay before running a route calculation
   - Range: `0`-`120000`
 - `spf_interval_maximum_wait` (Number) Maximum delay before running a route calculation
@@ -126,35 +139,63 @@ resource "iosxr_router_isis_address_family" "example" {
 
 Required:
 
-- `maximum_prefixes` (Number) Maximum number of redistributed prefixes
-  - Range: `1`-`28000`
-
-Optional:
-
 - `level_id` (Number) Set maximum redistributed prefixes for one level only
   - Range: `1`-`2`
+- `maximum_prefixes` (Number) Maximum number of redistributed prefixes
+  - Range: `1`-`28000`
 
 
 <a id="nestedatt--metric_style_levels"></a>
 ### Nested Schema for `metric_style_levels`
 
-Optional:
+Required:
 
 - `level_id` (Number) Set metric-style for one level only
   - Range: `1`-`2`
+
+Optional:
+
 - `narrow` (Boolean) Use old style of TLVs with narrow metric
 - `transition` (Boolean) Send and accept both styles of TLVs during transition
 - `wide` (Boolean) Use new style of TLVs to carry wider metric
 
 
+<a id="nestedatt--redistribute_isis"></a>
+### Nested Schema for `redistribute_isis`
+
+Required:
+
+- `instance_id` (String) IS-IS
+
+Optional:
+
+- `route_policy` (String) Route policy reference
+
+
+<a id="nestedatt--segment_routing_srv6_locators"></a>
+### Nested Schema for `segment_routing_srv6_locators`
+
+Required:
+
+- `locator_name` (String) Enter SRv6 Locator submode
+
+Optional:
+
+- `level` (Number) Advertise the locator only in the specified level
+  - Range: `1`-`2`
+
+
 <a id="nestedatt--spf_prefix_priorities"></a>
 ### Nested Schema for `spf_prefix_priorities`
+
+Required:
+
+- `priority` (String) prefix priority
+  - Choices: `critical`, `high`, `medium`
 
 Optional:
 
 - `access_list_name` (String) Access-list name
-- `priority` (String) prefix priority
-  - Choices: `critical`, `high`, `medium`
 - `tag` (Number) Specify a tag to indicate priority
   - Range: `1`-`4294967295`
 
@@ -163,5 +204,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxr_router_isis_address_family.example "Cisco-IOS-XR-um-router-isis-cfg:/router/isis/processes/process[process-id=P1]/address-families/address-family[af-name=ipv4][saf-name=unicast]"
+terraform import iosxr_router_isis_address_family.example "<process_id>,<af_name>,<saf_name>"
 ```

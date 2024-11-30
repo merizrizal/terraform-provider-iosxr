@@ -16,7 +16,12 @@ The required device configuration can be found below.
 grpc
 ```
 
-All resources and data sources have been tested with IOS-XR 7.6.1 release, and might not be supported with earlier versions due to relying on unified YANG Models which were only started to be introduced in IOS-XR release 7.0.1.
+All resources and data sources have been tested with the following releases.
+
+| Platform | Version |
+| -------- | ------- |
+| XRv 9000 | 7.6.1   |
+| XRv 9000 | 7.9.1   |
 
 ## Example Usage
 
@@ -39,6 +44,7 @@ provider "iosxr" {
 - `host` (String) IP or name of the Cisco IOS-XR device. Optionally a port can be added with `:12345`. The default port is `57400`. This can also be set as the IOSXR_HOST environment variable. If no `host` is provided, the `host` of the first device from the `devices` list is being used.
 - `key` (String) TLS private key content. This can also be set as the IOSXR_KEY environment variable.
 - `password` (String, Sensitive) Password for the IOS-XR device. This can also be set as the IOSXR_PASSWORD environment variable.
+- `reuse_connection` (Boolean) Reuse gNMI connection. This can also be set as the IOSXR_REUSE_CONNECTION environment variable. Defaults to `true`.
 - `tls` (Boolean) Use TLS. This can also be set as the IOSXR_TLS environment variable. Defaults to `true`.
 - `username` (String) Username for the IOS-XR device. This can also be set as the IOSXR_USERNAME environment variable.
 - `verify_certificate` (Boolean) Verify target certificate. This can also be set as the IOSXR_VERIFY_CERTIFICATE environment variable. Defaults to `false`.
